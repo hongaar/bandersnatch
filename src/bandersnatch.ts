@@ -1,4 +1,4 @@
-import yargs from 'yargs'
+import yargs from 'yargs/yargs'
 import { Command } from '.'
 
 export function bandersnatch(name?: string) {
@@ -7,6 +7,7 @@ export function bandersnatch(name?: string) {
 
 export class Bandersnatch {
   description: string | undefined
+  yargs = yargs(process.argv.slice(2))
 
   constructor(description?: string) {
     this.description = description
@@ -14,7 +15,7 @@ export class Bandersnatch {
 
   add(command: Command) {
     // See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-    yargs.command({
+    this.yargs.command({
       command: command.command,
       aliases: [],
       describe: command.description,
@@ -34,9 +35,9 @@ export class Bandersnatch {
 
   run() {
     if (this.description) {
-      yargs.usage(this.description)
+      this.yargs.usage(this.description)
     }
 
-    yargs.help().parse()
+    this.yargs.help().parse()
   }
 }

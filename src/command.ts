@@ -1,3 +1,7 @@
+export function command(command: string) {
+  return new Command(command)
+}
+
 export class Command {
   command: string
   description?: string
