@@ -1,15 +1,12 @@
 {
-  "include": [
-    "./src"
-  ],
+  "include": ["./src"],
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "./lib",
-    "rootDir": "./src",
+    "outDir": "lib",
+    "rootDir": "src",
     "strict": true,
-    "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node"

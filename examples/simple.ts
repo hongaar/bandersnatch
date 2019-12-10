@@ -1,5 +1,11 @@
-import { bandersnatch } from '../src'
+import { bandersnatch, Command } from '../src'
 
-const app = bandersnatch()
+const app = bandersnatch('simple cli app')
 
-console.log(app)
+app.add(
+  new Command('say <something>').runs(function(argv: any) {
+    console.log(argv)
+  })
+)
+
+app.run()
