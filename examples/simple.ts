@@ -1,11 +1,13 @@
-import { bandersnatch, command } from '../src'
+import { program, command } from '../src'
 
-const app = bandersnatch('simple cli app')
+const app = program('simple cli app')
 
 app.add(
-  command('say').runs(function(argv: any) {
-    console.log(argv)
-  })
+  command('say', 'Say something to the terminal')
+    .argument('word', 'The word to say', { required: true })
+    .action(async function(argv) {
+      console.log(argv)
+    })
 )
 
 app.run()
