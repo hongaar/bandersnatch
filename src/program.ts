@@ -13,7 +13,7 @@ export class Program {
     this.description = description
   }
 
-  add(command: Command) {
+  add<T>(command: Command<T>) {
     // See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
     this.yargs.command(command.toYargs())
     return this

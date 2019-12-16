@@ -1,18 +1,22 @@
-import { Argv } from 'yargs'
-import { ArgValue } from './command'
+import { Argv, PositionalOptions } from 'yargs'
 
-export function argument(name: string) {
-  return new Argument(name)
+// We ignore some not-so-common use cases from the type to make using this
+// library easier. They could still be used at runtime but won't be documented
+// here.
+type IgnoreOptions = 'desc' | 'describe' | 'conflicts' | 'implies'
+
+export interface Options extends Omit<PositionalOptions, IgnoreOptions> {}
+
+export function argument(name: string, description?: string) {
+  return new Argument(name, description)
 }
 
 export class Argument {
   private name: string
   private description?: string
-  private required = false
-  private variadic = false
-  private defaultValue?: ArgValue
-  private defaultDescription?: string
-  private choices?: Function
+  private required = true
+  private vary = false
+  private opts: Options = {}
 
   constructor(name: string, description?: string) {
     this.name = name
@@ -26,36 +30,51 @@ export class Argument {
     return this
   }
 
-  require() {
-    this.required = true
+  optional() {
+    this.required = false
+    return this
   }
 
-  vary() {
-    this.variadic = true
+  isOptional() {
+    return !this.required
   }
 
-  default(value: ArgValue, description?: string) {
-    this.defaultValue = value
-
-    if (description) {
-      this.defaultDescription = description
-    }
+  variadic() {
+    this.vary = true
+    return this
   }
 
+  isVariadic() {
+    return this.vary
+  }
+
+  options(options: Options) {
+    this.opts = options
+    return this
+  }
+
+  /**
+   * Returns the formatted positional argument to be used in a command. See
+   * https://github.com/yargs/yargs/blob/master/docs/advanced.md#positional-arguments
+   */
   toCommand() {
+    if (this.vary) {
+      return `[${this.name}..]`
+    }
     if (this.required) {
       return `<${this.name}>`
-    }
-    if (this.variadic) {
-      return `[...${this.name}]`
     }
     return `[${this.name}]`
   }
 
-  toBuilder(yargs: Argv) {
-    yargs.positional(this.name, {
-      default: this.defaultValue,
-      defaultDescription: this.defaultDescription
+  /**
+   * Calls the positional() method on the passed in yargs instance and returns
+   * it. See http://yargs.js.org/docs/#api-positionalkey-opt
+   */
+  toPositional<T>(yargs: Argv<T>) {
+    return yargs.positional(this.name, {
+      description: this.description,
+      ...this.opts
     })
   }
 }
