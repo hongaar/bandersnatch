@@ -2,14 +2,13 @@ import { program, command } from '../src'
 
 const app = program('simple cli app')
 
-const say = command('say', 'Say something to the terminal')
-  .argument('word', 'The word to say', { default: 54 })
-  .argument('any', 'The word to say', { optional: true, type: 'boolean' })
+const cmd = command('say', 'Say something to the terminal')
+  .argument('word', 'The word to say')
+  .argument('any', 'The word to say', { optional: true })
   .argument('some', 'Say some words', { variadic: true })
-  .action(async function(argv) {
-    console.log(argv)
+  .action(async function(args) {
+    console.log(args)
   })
 
-app.add(say)
-
+app.add(cmd)
 app.run()
