@@ -5,7 +5,8 @@ import { Argv, PositionalOptions } from 'yargs'
 // here.
 type IgnoreOptions = 'desc' | 'describe' | 'conflicts' | 'implies'
 
-export interface Options extends Omit<PositionalOptions, IgnoreOptions> {}
+export interface ArgumentOptions
+  extends Omit<PositionalOptions, IgnoreOptions> {}
 
 export function argument(name: string, description?: string) {
   return new Argument(name, description)
@@ -16,7 +17,7 @@ export class Argument {
   private description?: string
   private required = true
   private vary = false
-  private opts: Options = {}
+  private opts: ArgumentOptions = {}
 
   constructor(name: string, description?: string) {
     this.name = name
@@ -48,7 +49,7 @@ export class Argument {
     return this.vary
   }
 
-  options(options: Options) {
+  options(options: ArgumentOptions) {
     this.opts = options
     return this
   }
@@ -71,7 +72,7 @@ export class Argument {
    * Calls the positional() method on the passed in yargs instance and returns
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
-  toPositional<T>(yargs: Argv<T>) {
+  toYargs<T>(yargs: Argv<T>) {
     return yargs.positional(this.name, {
       description: this.description,
       ...this.opts

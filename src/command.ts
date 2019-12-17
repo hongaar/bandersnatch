@@ -1,11 +1,13 @@
-import { Argv, CommandModule, InferredOptionType } from 'yargs'
-import { Argument, Options as BaseArgumentOptions } from './argument'
-import { Option } from './option'
+import { Argv, CommandModule, InferredOptionType, Arguments } from 'yargs'
+import { Argument, ArgumentOptions as BaseArgumentOptions } from './argument'
+import { Option, OptionOptions as BaseOptionOptions } from './option'
 
-export interface ArgumentOptions extends BaseArgumentOptions {
+interface ArgumentOptions extends BaseArgumentOptions {
   optional?: boolean
   variadic?: boolean
 }
+
+interface OptionOptions extends BaseOptionOptions {}
 
 export interface HandlerFn<T = {}> {
   (args: Omit<T, '_' | '$0'>): Promise<void>
@@ -43,7 +45,7 @@ export class Command<T = {}> {
   }
 
   /*
-   * This is shorthand for .add(command())
+   * This is shorthand for .add(argument())
    */
   argument<K extends string, O extends ArgumentOptions>(
     name: K,
@@ -67,7 +69,22 @@ export class Command<T = {}> {
   /*
    * This is shorthand for .add(option())
    */
-  option() {}
+  option<K extends string, O extends OptionOptions>(
+    name: K,
+    description?: string,
+    options?: O
+  ) {
+    const option = new Option(name, description)
+    const { ...yargOptions } = options || {}
+
+    option.options(yargOptions)
+
+    this.add(option)
+
+    return (this as unknown) as Command<
+      T & { [key in K]: InferredOptionType<O> }
+    >
+  }
 
   add(argOrOption: Argument | Option) {
     if (isArgument(argOrOption)) {
@@ -79,6 +96,8 @@ export class Command<T = {}> {
       }
 
       this.arguments.push(argOrOption)
+    } else if (isOption(argOrOption)) {
+      this.options.push(argOrOption)
     } else {
       throw new Error('Not implemented')
     }
@@ -91,15 +110,10 @@ export class Command<T = {}> {
 
   toYargs() {
     const module: CommandModule<{}, T> = {
-      command: this.buildCommand(),
+      command: this.getCommand(),
       aliases: [],
       describe: this.description,
-      builder: yargs => {
-        return this.arguments.reduce(
-          (yargs, argument) => argument.toPositional(yargs),
-          yargs as Argv<T>
-        )
-      },
+      builder: this.getBuilder(),
       handler: async argv => {
         if (this.handler) {
           const { _, $0, ...rest } = argv
@@ -114,7 +128,7 @@ export class Command<T = {}> {
    * Returns a formatted command which can be used in the command() function
    * of yargs
    */
-  private buildCommand() {
+  private getCommand() {
     const args = this.arguments.map(arg => arg.toCommand()).join(' ')
 
     if (args !== '') {
@@ -122,5 +136,31 @@ export class Command<T = {}> {
     }
 
     return this.command
+  }
+
+  private getBuilder() {
+    return (yargs: Argv) => {
+      // Call toYargs on each argument to add it to the command.
+      const withArguments = this.arguments.reduce(
+        (yargs, argument) => argument.toYargs(yargs),
+        yargs as Argv<T>
+      )
+      // Call toYargs on each option to add it to the command.
+      const withOptions = this.options.reduce(
+        (yargs, option) => option.toYargs(yargs),
+        withArguments
+      )
+      return withOptions
+    }
+  }
+
+  private getHandler() {
+    return async (argv: Arguments<T>) => {
+      console.log(this)
+      if (this.handler) {
+        const { _, $0, ...rest } = argv
+        await this.handler(rest)
+      }
+    }
   }
 }
