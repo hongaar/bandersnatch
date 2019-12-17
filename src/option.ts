@@ -21,22 +21,16 @@ export function option(name: string) {
 export class Option {
   private name: string
   private description?: string
-  private opts: OptionOptions = {}
+  private options: OptionOptions = {}
 
-  constructor(name: string, description?: string) {
+  constructor(name: string, description?: string, options?: OptionOptions) {
     this.name = name
-    if (description) {
-      this.describe(description)
-    }
-  }
-
-  describe(description: string) {
     this.description = description
-    return this
+    this.options = options || {}
   }
 
-  options(options: OptionOptions) {
-    this.opts = options
+  configure(options: OptionOptions) {
+    this.options = options
     return this
   }
 
@@ -47,7 +41,7 @@ export class Option {
   toYargs<T>(yargs: Argv<T>) {
     return yargs.option(this.name, {
       description: this.description,
-      ...this.opts
+      ...this.options
     })
   }
 }

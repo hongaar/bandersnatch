@@ -5,9 +5,9 @@ const app = program('simple cli app')
 const cmd = command('say', 'Say something to the terminal')
   .argument('word', 'The word to say')
   .argument('any', 'The word to say', { optional: true })
-  // .argument('some', 'Say some words', { variadic: true })
+  .argument('some', 'Say some words', { variadic: true })
   .option('cache', 'Use cache', { type: 'boolean' })
-  .action(async function(args) {
+  .action(function(args) {
     console.log(args)
   })
 

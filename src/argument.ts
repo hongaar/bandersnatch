@@ -6,7 +6,10 @@ import { Argv, PositionalOptions } from 'yargs'
 type IgnoreOptions = 'desc' | 'describe' | 'conflicts' | 'implies'
 
 export interface ArgumentOptions
-  extends Omit<PositionalOptions, IgnoreOptions> {}
+  extends Omit<PositionalOptions, IgnoreOptions> {
+  optional?: boolean
+  variadic?: boolean
+}
 
 export function argument(name: string, description?: string) {
   return new Argument(name, description)
@@ -15,43 +18,25 @@ export function argument(name: string, description?: string) {
 export class Argument {
   private name: string
   private description?: string
-  private required = true
-  private vary = false
-  private opts: ArgumentOptions = {}
+  private options: ArgumentOptions = {}
 
-  constructor(name: string, description?: string) {
+  constructor(name: string, description?: string, options?: ArgumentOptions) {
     this.name = name
-    if (description) {
-      this.describe(description)
-    }
-  }
-
-  describe(description: string) {
     this.description = description
-    return this
+    this.options = options || {}
   }
 
-  optional() {
-    this.required = false
+  configure(options: ArgumentOptions) {
+    this.options = options
     return this
   }
 
   isOptional() {
-    return !this.required
-  }
-
-  variadic() {
-    this.vary = true
-    return this
+    return this.options.optional
   }
 
   isVariadic() {
-    return this.vary
-  }
-
-  options(options: ArgumentOptions) {
-    this.opts = options
-    return this
+    return this.options.variadic
   }
 
   /**
@@ -59,13 +44,13 @@ export class Argument {
    * https://github.com/yargs/yargs/blob/master/docs/advanced.md#positional-arguments
    */
   toCommand() {
-    if (this.vary) {
+    if (this.isVariadic()) {
       return `[${this.name}..]`
     }
-    if (this.required) {
-      return `<${this.name}>`
+    if (this.isOptional()) {
+      return `[${this.name}]`
     }
-    return `[${this.name}]`
+    return `<${this.name}>`
   }
 
   /**
@@ -75,7 +60,7 @@ export class Argument {
   toYargs<T>(yargs: Argv<T>) {
     return yargs.positional(this.name, {
       description: this.description,
-      ...this.opts
+      ...this.options
     })
   }
 }

@@ -1,16 +1,9 @@
 import { Argv, CommandModule, InferredOptionType, Arguments } from 'yargs'
-import { Argument, ArgumentOptions as BaseArgumentOptions } from './argument'
-import { Option, OptionOptions as BaseOptionOptions } from './option'
-
-interface ArgumentOptions extends BaseArgumentOptions {
-  optional?: boolean
-  variadic?: boolean
-}
-
-interface OptionOptions extends BaseOptionOptions {}
+import { Argument, ArgumentOptions } from './argument'
+import { Option, OptionOptions } from './option'
 
 export interface HandlerFn<T = {}> {
-  (args: Omit<T, '_' | '$0'>): Promise<void>
+  (args: Omit<T, '_' | '$0'>): void | Promise<void>
 }
 
 function isArgument(argOrOption: Argument | Option): argOrOption is Argument {
@@ -34,32 +27,18 @@ export class Command<T = {}> {
 
   constructor(command: string, description?: string) {
     this.command = command
-    if (description) {
-      this.describe(description)
-    }
-  }
-
-  describe(description: string) {
     this.description = description
-    return this
   }
 
   /*
-   * This is shorthand for .add(argument())
+   * This is shorthand for .add(argument(...))
    */
   argument<K extends string, O extends ArgumentOptions>(
     name: K,
     description?: string,
     options?: O
   ) {
-    const argument = new Argument(name, description)
-    const { optional, variadic, ...yargOptions } = options || {}
-
-    optional && argument.optional()
-    variadic && argument.variadic()
-    argument.options(yargOptions)
-
-    this.add(argument)
+    this.add(new Argument(name, description, options))
 
     return (this as unknown) as Command<
       T & { [key in K]: InferredOptionType<O> }
@@ -67,19 +46,14 @@ export class Command<T = {}> {
   }
 
   /*
-   * This is shorthand for .add(option())
+   * This is shorthand for .add(option(...))
    */
   option<K extends string, O extends OptionOptions>(
     name: K,
     description?: string,
     options?: O
   ) {
-    const option = new Option(name, description)
-    const { ...yargOptions } = options || {}
-
-    option.options(yargOptions)
-
-    this.add(option)
+    this.add(new Option(name, description, options))
 
     return (this as unknown) as Command<
       T & { [key in K]: InferredOptionType<O> }
@@ -114,12 +88,7 @@ export class Command<T = {}> {
       aliases: [],
       describe: this.description,
       builder: this.getBuilder(),
-      handler: async argv => {
-        if (this.handler) {
-          const { _, $0, ...rest } = argv
-          await this.handler(rest)
-        }
-      }
+      handler: this.getHandler()
     }
     return module
   }
@@ -156,7 +125,6 @@ export class Command<T = {}> {
 
   private getHandler() {
     return async (argv: Arguments<T>) => {
-      console.log(this)
       if (this.handler) {
         const { _, $0, ...rest } = argv
         await this.handler(rest)

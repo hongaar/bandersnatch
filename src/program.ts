@@ -6,8 +6,10 @@ export function program(description?: string) {
 }
 
 export class Program {
-  private description: string | undefined
   private yargs = yargs(process.argv.slice(2))
+  private description: string | undefined
+  private help = true
+  private version = true
 
   constructor(description?: string) {
     this.description = description
@@ -15,6 +17,7 @@ export class Program {
 
   add<T>(command: Command<T>) {
     // See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
+    // @ts-ignore
     this.yargs.command(command.toYargs())
     return this
   }
@@ -23,11 +26,32 @@ export class Program {
     // Do magic repl stuff
   }
 
-  run() {
+  /**
+   * If invoked with a command, this is used instead of process.argv.
+   */
+  run(command?: string | ReadonlyArray<string>) {
     if (this.description) {
       this.yargs.usage(this.description)
     }
 
-    this.yargs.help().parse()
+    if (this.help) {
+      this.yargs.help()
+    }
+
+    if (this.version) {
+      this.yargs.version()
+    }
+
+    // This will make sure to display help when an invalid command is provided.
+    this.yargs.strict()
+
+    // This will make sure to display help when no command is provided.
+    this.yargs.demandCommand()
+
+    if (command) {
+      this.yargs.parse(command)
+    } else {
+      this.yargs.parse()
+    }
   }
 }
