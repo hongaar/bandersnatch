@@ -8,8 +8,8 @@ export function program(description?: string) {
 export class Program {
   private yargs = yargs(process.argv.slice(2))
   private description: string | undefined
-  private help = true
-  private version = true
+  private help = false
+  private version = false
 
   constructor(description?: string) {
     this.description = description
@@ -19,6 +19,16 @@ export class Program {
     // See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
     // @ts-ignore
     this.yargs.command(command.toYargs())
+    return this
+  }
+
+  withHelp() {
+    this.help = true
+    return this
+  }
+
+  withVersion() {
+    this.version = true
     return this
   }
 
@@ -34,13 +44,8 @@ export class Program {
       this.yargs.usage(this.description)
     }
 
-    if (this.help) {
-      this.yargs.help()
-    }
-
-    if (this.version) {
-      this.yargs.version()
-    }
+    this.yargs.help(this.help)
+    this.yargs.version(this.version)
 
     // This will make sure to display help when an invalid command is provided.
     this.yargs.strict()

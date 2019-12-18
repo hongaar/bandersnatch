@@ -20,16 +20,16 @@ export const defaultOptions: ArgumentOptions = { type: 'string' }
 export class Argument {
   private name: string
   private description?: string
-  private options: ArgumentOptions
+  private options: ArgumentOptions = {}
 
   constructor(name: string, description?: string, options?: ArgumentOptions) {
     this.name = name
     this.description = description
-    this.options = options || defaultArgumentOptions
+    this.configure(options || {})
   }
 
   configure(options: ArgumentOptions) {
-    this.options = options
+    this.options = { type: 'string', ...options }
     return this
   }
 

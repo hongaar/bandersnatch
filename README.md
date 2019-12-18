@@ -21,11 +21,28 @@ intuitive to work with.
 
 ## Getting started
 
-[wip]
+_Work in progress_
+
+```bash
+# Add dependency
+yarn add bandersnatch
+```
+
+## Development
+
+```bash
+# Clone and install
+git clone git@github.com:hongaar/bandersnatch.git
+cd bandersnatch
+yarn
+
+# Run an example
+yarn start examples/simple.ts
+```
 
 ## API
 
-[wip]
+_Work in progress_
 
 ---
 

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "prettier --write \"src/**/*\"",
-    "test": "jest"
+    "test": "jest",
+    "start": "ts-node"
   },
   "author": "",
   "license": "MIT",

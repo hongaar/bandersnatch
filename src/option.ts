@@ -26,7 +26,7 @@ export class Option {
   constructor(name: string, description?: string, options?: OptionOptions) {
     this.name = name
     this.description = description
-    this.options = options || {}
+    this.configure(options || {})
   }
 
   configure(options: OptionOptions) {
