@@ -1,6 +1,25 @@
-import { Argv, CommandModule, InferredOptionType, Arguments } from 'yargs'
+import {
+  Argv,
+  CommandModule,
+  InferredOptionType,
+  Arguments,
+  Options,
+  PositionalOptions
+} from 'yargs'
 import { Argument, ArgumentOptions } from './argument'
 import { Option, OptionOptions } from './option'
+
+type InferT<O extends Options | PositionalOptions> = O extends {
+  variadic: true
+  type: 'number'
+}
+  ? Array<number>
+  : O extends {
+      variadic: true
+      type: 'string'
+    }
+  ? Array<string>
+  : InferredOptionType<O>
 
 export interface HandlerFn<T = {}> {
   (args: Omit<T, '_' | '$0'>): void | Promise<void>
@@ -40,9 +59,7 @@ export class Command<T = {}> {
   ) {
     this.add(new Argument(name, description, options))
 
-    return (this as unknown) as Command<
-      T & { [key in K]: InferredOptionType<O> }
-    >
+    return (this as unknown) as Command<T & { [key in K]: InferT<O> }>
   }
 
   /*
@@ -55,11 +72,13 @@ export class Command<T = {}> {
   ) {
     this.add(new Option(name, description, options))
 
-    return (this as unknown) as Command<
-      T & { [key in K]: InferredOptionType<O> }
-    >
+    return (this as unknown) as Command<T & { [key in K]: InferT<O> }>
   }
 
+  /**
+   * This is the base method for adding arguments and options, but it doesn't provide
+   * type hints. Use .argument() and .option() instead.
+   */
   add(argOrOption: Argument | Option) {
     if (isArgument(argOrOption)) {
       // If last argument is variadic, we should not add more arguments. See
@@ -95,7 +114,7 @@ export class Command<T = {}> {
 
   /**
    * Returns a formatted command which can be used in the command() function
-   * of yargs
+   * of yargs.
    */
   private getCommand() {
     const args = this.arguments.map(arg => arg.toCommand()).join(' ')
@@ -107,6 +126,9 @@ export class Command<T = {}> {
     return this.command
   }
 
+  /**
+   * Returns the builder function to be used with yargs.command().
+   */
   private getBuilder() {
     return (yargs: Argv) => {
       // Call toYargs on each argument to add it to the command.
@@ -123,6 +145,9 @@ export class Command<T = {}> {
     }
   }
 
+  /**
+   * Returns the command handler
+   */
   private getHandler() {
     return async (argv: Arguments<T>) => {
       if (this.handler) {

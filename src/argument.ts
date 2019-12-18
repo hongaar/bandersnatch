@@ -15,15 +15,17 @@ export function argument(name: string, description?: string) {
   return new Argument(name, description)
 }
 
+export const defaultOptions: ArgumentOptions = { type: 'string' }
+
 export class Argument {
   private name: string
   private description?: string
-  private options: ArgumentOptions = {}
+  private options: ArgumentOptions
 
   constructor(name: string, description?: string, options?: ArgumentOptions) {
     this.name = name
     this.description = description
-    this.options = options || {}
+    this.options = options || defaultArgumentOptions
   }
 
   configure(options: ArgumentOptions) {
