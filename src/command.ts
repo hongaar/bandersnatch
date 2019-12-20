@@ -2,7 +2,7 @@ import {
   Argv,
   CommandModule,
   InferredOptionType,
-  Arguments,
+  Arguments as BaseArguments,
   Options,
   PositionalOptions
 } from 'yargs'
@@ -24,8 +24,15 @@ type InferT<O extends Options | PositionalOptions, D = unknown> = O extends {
   ? D
   : InferredOptionType<O>
 
+type HandlerFnRetVal = any | Promise<any>
+
+type Arguments<T = {}> = T &
+  BaseArguments<T> & {
+    __handlerRetVal?: HandlerFnRetVal
+  }
+
 export interface HandlerFn<T = {}> {
-  (args: Omit<T, '_' | '$0'>): void | Promise<void>
+  (args: Omit<T, '_' | '$0'>): HandlerFnRetVal
 }
 
 function isArgument(argOrOption: Argument | Option): argOrOption is Argument {
@@ -179,21 +186,45 @@ export class Command<T = {}> {
    * Returns the command handler
    */
   private getHandler() {
-    return async (argv: Arguments<T>) => {
-      if (this.handler) {
-        const { _, $0, ...rest } = argv
-        const args = await this.prompt(rest)
-
-        await this.handler(args)
-      } else {
+    return (argv: Arguments<T>) => {
+      if (!this.handler) {
         throw new Error('No handler defined for this command.')
       }
+
+      // Handler is async if:
+      // 1. We need to prompt for questions
+      // 2. The handler return value is a promise
+
+      console.log('in handler')
+
+      const { _, $0, ...rest } = argv
+      const questions = this.getQuestions(rest)
+      let promise
+
+      console.log('questions?', !!questions.length)
+
+      if (questions.length) {
+        promise = this.prompt(questions).then()
+      } else {
+        const handlerRetVal = this.hand
+      }
+
+      console.log('before await prompt')
+
+      const args = await this.prompt(rest)
+      // const args = rest
+
+      console.log('after await promp')
+
+      argv.__handlerRetVal = this.handler(args)
+
+      console.log('__handlerRetVal set', argv)
     }
   }
 
-  private async prompt<T = {}>(args: T) {
+  private getQuestions<T = {}>(args: T) {
     // If we need to prompt for things, fill questions array
-    const questions = this.args.reduce((questions, arg) => {
+    return this.args.reduce((questions, arg) => {
       const name = arg.getName()
       const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
       if (!presentInArgs && arg.isPromptable()) {
@@ -205,7 +236,9 @@ export class Command<T = {}> {
 
       return questions
     }, [] as Question[])
+  }
 
+  private async prompt<T = {}, Q = Question[]>(args: T, questions: Q) {
     // Ask questions and add to args
     const answers = await prompt(questions)
 

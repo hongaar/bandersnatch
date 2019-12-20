@@ -14,12 +14,12 @@ const makeOutput = function(op: string, initial = 0) {
 
 program('calculator')
   .add(
-    command('add', 'Add two or more numbers together')
+    command<Args>('add', 'Add two or more numbers together')
       .add(number)
       .action(makeOutput('+'))
   )
   .add(
-    command('multiply', 'Multiply two or more numbers')
+    command<Args>('multiply', 'Multiply two or more numbers')
       .add(number)
       .action(makeOutput('*', 1))
   )

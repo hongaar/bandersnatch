@@ -5,8 +5,9 @@ const say = command('say', 'Say something to the terminal')
   .argument('any', 'Maybe another', { optional: true })
   .argument('some', 'Say some words', { variadic: true, type: 'number' })
   .option('cache', 'Use cache', { type: 'boolean' })
-  .action(function(args) {
+  .action(async function(args) {
     console.log(args)
+    return 'test'
   })
 
 program('simple cli app')

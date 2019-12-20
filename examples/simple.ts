@@ -7,6 +7,7 @@ const say = command('say', 'Say something to the terminal')
   .option('cache', 'Use cache', { type: 'boolean' })
   .action(function(args) {
     console.log(args)
+    return 'test'
   })
 
 program('simple cli app')

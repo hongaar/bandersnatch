@@ -14,6 +14,7 @@ export class Repl {
 
   async run() {
     const stdin = await this.read()
+    console.log('received stdin', stdin)
     await this.eval(stdin)
   }
 
@@ -36,7 +37,7 @@ export class Repl {
   }
 
   private eval(stdin: string) {
-    return Promise.resolve(null)
+    return this.program.run(stdin)
   }
 
   private print() {}

@@ -1,11 +1,11 @@
 {
-  "include": ["./src"],
+  "include": ["./src", "./examples"],
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
     "declaration": true,
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": ".",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
