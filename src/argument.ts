@@ -1,4 +1,5 @@
 import { Argv, PositionalOptions } from 'yargs'
+import { BaseArg, BaseArgOptions } from './baseArg'
 
 // We ignore some not-so-common use cases from the type to make using this
 // library easier. They could still be used at runtime but won't be documented
@@ -6,30 +7,38 @@ import { Argv, PositionalOptions } from 'yargs'
 type IgnoreOptions = 'desc' | 'describe' | 'conflicts' | 'implies'
 
 export interface ArgumentOptions
-  extends Omit<PositionalOptions, IgnoreOptions> {
-  optional?: boolean
-  variadic?: boolean
+  extends Omit<PositionalOptions, IgnoreOptions>,
+    BaseArgOptions {
+  optional?: true
+  variadic?: true
 }
 
-export function argument(name: string, description?: string) {
-  return new Argument(name, description)
+export function argument(
+  name: string,
+  description?: string,
+  options?: ArgumentOptions
+) {
+  return new Argument(name, description, options)
 }
 
 export const defaultOptions: ArgumentOptions = { type: 'string' }
 
-export class Argument {
-  private name: string
-  private description?: string
-  private options: ArgumentOptions = {}
+export class Argument extends BaseArg {
+  protected options: ArgumentOptions = {}
 
   constructor(name: string, description?: string, options?: ArgumentOptions) {
-    this.name = name
-    this.description = description
+    super(name, description)
+
     this.configure(options || {})
   }
 
   configure(options: ArgumentOptions) {
     this.options = { type: 'string', ...options }
+
+    if (this.isPromptable()) {
+      this.options = { optional: true, ...this.options }
+    }
+
     return this
   }
 

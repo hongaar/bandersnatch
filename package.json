@@ -4,26 +4,27 @@
   "version": "1.0.0-alpha.1",
   "main": "lib/index.js",
   "scripts": {
+    "prepublishOnly": "yarn build",
     "build": "tsc",
     "lint": "prettier --write \"src/**/*\"",
     "test": "jest",
-    "start": "ts-node"
+    "start": "ts-node-dev"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/inquirer": "^6.5.0",
+    "@types/yargs": "^13.0.3",
     "inquirer": "^7.0.0",
     "yargs": "^15.0.2"
   },
   "devDependencies": {
-    "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.17",
-    "@types/yargs": "^13.0.3",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "ts-jest": "^24.2.0",
-    "ts-node": "^8.5.4",
+    "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.3"
   }
 }

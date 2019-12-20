@@ -1,4 +1,5 @@
 import { Options as BaseOptions, Argv } from 'yargs'
+import { BaseArgOptions, BaseArg } from './baseArg'
 
 // We ignore some not-so-common use cases from the type to make using this
 // library easier. They could still be used at runtime but won't be documented
@@ -12,20 +13,20 @@ type IgnoreOptions =
   | 'implies'
   | 'demand'
 
-export interface OptionOptions extends Omit<BaseOptions, IgnoreOptions> {}
+export interface OptionOptions
+  extends Omit<BaseOptions, IgnoreOptions>,
+    BaseArgOptions {}
 
 export function option(name: string) {
   return new Option(name)
 }
 
-export class Option {
-  private name: string
-  private description?: string
-  private options: OptionOptions = {}
+export class Option extends BaseArg {
+  protected options: OptionOptions = {}
 
   constructor(name: string, description?: string, options?: OptionOptions) {
-    this.name = name
-    this.description = description
+    super(name, description)
+
     this.configure(options || {})
   }
 
