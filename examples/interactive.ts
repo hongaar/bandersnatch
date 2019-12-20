@@ -14,3 +14,6 @@ const cmd = command('run', 'Take a survey')
 program('A survey')
   .default(cmd)
   .run()
+  .then(() => {
+    console.log('Bye!')
+  })

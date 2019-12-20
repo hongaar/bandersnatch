@@ -26,6 +26,6 @@ test('async handler should be executed', async () => {
     handled = true
   })
   const app = program().add(cmd)
-  app.run('test')
+  await app.run('test')
   expect(handled).toBeTruthy()
 })

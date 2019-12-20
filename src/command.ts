@@ -6,7 +6,7 @@ import {
   Options,
   PositionalOptions
 } from 'yargs'
-import { prompt, QuestionCollection, Question } from 'inquirer'
+import { prompt, Question } from 'inquirer'
 import { Argument, ArgumentOptions } from './argument'
 import { Option, OptionOptions } from './option'
 
@@ -24,23 +24,25 @@ type InferT<O extends Options | PositionalOptions, D = unknown> = O extends {
   ? D
   : InferredOptionType<O>
 
-type HandlerFnRetVal = any | Promise<any>
-
-type Arguments<T = {}> = T &
+export type Arguments<T = {}> = T &
   BaseArguments<T> & {
-    __handlerRetVal?: HandlerFnRetVal
+    __promise?: Promise<any>
   }
 
 export interface HandlerFn<T = {}> {
-  (args: Omit<T, '_' | '$0'>): HandlerFnRetVal
+  (args: Omit<T, '_' | '$0'>): Promise<any> | any
 }
 
-function isArgument(argOrOption: Argument | Option): argOrOption is Argument {
-  return argOrOption.constructor.name === 'Argument'
+function isArgument(obj: Argument | Option | Command): obj is Argument {
+  return obj.constructor.name === 'Argument'
 }
 
-function isOption(argOrOption: Argument | Option): argOrOption is Option {
-  return argOrOption.constructor.name === 'Option'
+function isOption(obj: Argument | Option | Command): obj is Option {
+  return obj.constructor.name === 'Option'
+}
+
+function isCommand(obj: Argument | Option | Command): obj is Command {
+  return obj.constructor.name === 'Command'
 }
 
 export function command<T = {}>(command: string, description?: string) {
@@ -50,7 +52,7 @@ export function command<T = {}>(command: string, description?: string) {
 export class Command<T = {}> {
   private command: string
   private description?: string
-  private args: (Argument | Option)[] = []
+  private args: (Argument | Option | Command)[] = []
   private handler?: HandlerFn<T>
 
   constructor(command: string, description?: string) {
@@ -100,19 +102,22 @@ export class Command<T = {}> {
    * This is the base method for adding arguments and options, but it doesn't provide
    * type hints. Use .argument() and .option() instead.
    */
-  add(argOrOption: Argument | Option) {
-    if (isArgument(argOrOption)) {
+  add(obj: Argument | Option | Command) {
+    if (isArgument(obj)) {
       // If last argument is variadic, we should not add more arguments. See
       // https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments
       const allArguments = this.getArguments()
       const lastArgument = allArguments[allArguments.length - 1]
+
       if (lastArgument && lastArgument.isVariadic()) {
         throw new Error("Can't add more arguments.")
       }
 
-      this.args.push(argOrOption)
-    } else if (isOption(argOrOption)) {
-      this.args.push(argOrOption)
+      this.args.push(obj)
+    } else if (isOption(obj)) {
+      this.args.push(obj)
+    } else if (isCommand(obj)) {
+      this.args.push(obj)
     } else {
       throw new Error('Not implemented.')
     }
@@ -138,11 +143,15 @@ export class Command<T = {}> {
     return this.args.filter(isOption)
   }
 
+  getCommands() {
+    return this.args.filter(isCommand)
+  }
+
   /**
-   * Returns a command module.
+   * Calls the command() method on the passed in yargs instance and returns it.
    * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
    */
-  toYargs() {
+  toYargs(yargs: Argv) {
     const module: CommandModule<{}, T> = {
       command: this.getCommand(),
       aliases: [],
@@ -150,7 +159,7 @@ export class Command<T = {}> {
       builder: this.getBuilder(),
       handler: this.getHandler()
     }
-    return module
+    return yargs.command(module)
   }
 
   /**
@@ -174,11 +183,17 @@ export class Command<T = {}> {
    */
   private getBuilder() {
     return (yargs: Argv) => {
-      // Call toYargs on each argument or option to add it to the command.
-      return this.args.reduce(
+      // Call toYargs on each argument and option to add it to the command.
+      yargs = [...this.getArguments(), ...this.getOptions()].reduce(
         (yargs, arg) => arg.toYargs(yargs),
-        yargs as Argv<T>
+        yargs
       )
+      // Call toYargs on each subcommand to add it to the command.
+      yargs = this.getCommands().reduce(
+        (yargs, cmd) => cmd.toYargs(yargs),
+        yargs
+      )
+      return yargs as Argv<T>
     }
   }
 
@@ -187,61 +202,56 @@ export class Command<T = {}> {
    */
   private getHandler() {
     return (argv: Arguments<T>) => {
-      if (!this.handler) {
-        throw new Error('No handler defined for this command.')
-      }
-
-      // Handler is async if:
-      // 1. We need to prompt for questions
-      // 2. The handler return value is a promise
-
-      console.log('in handler')
-
       const { _, $0, ...rest } = argv
       const questions = this.getQuestions(rest)
-      let promise
-
-      console.log('questions?', !!questions.length)
+      let chain = Promise.resolve(rest)
 
       if (questions.length) {
-        promise = this.prompt(questions).then()
-      } else {
-        const handlerRetVal = this.hand
+        chain = chain.then(this.prompt(questions))
       }
 
-      console.log('before await prompt')
+      chain = chain.then(args => {
+        if (!this.handler) {
+          throw new Error('No handler defined for this command.')
+        }
 
-      const args = await this.prompt(rest)
-      // const args = rest
+        return this.handler(args)
+      })
 
-      console.log('after await promp')
+      // Save promise chain on argv instance, so we can access it in parse
+      // callback.
+      argv.__promise = chain
 
-      argv.__handlerRetVal = this.handler(args)
-
-      console.log('__handlerRetVal set', argv)
+      return chain
     }
   }
 
   private getQuestions<T = {}>(args: T) {
     // If we need to prompt for things, fill questions array
-    return this.args.reduce((questions, arg) => {
-      const name = arg.getName()
-      const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
-      if (!presentInArgs && arg.isPromptable()) {
-        questions.push({
-          name,
-          message: arg.getPrompt()
-        })
-      }
+    return [...this.getArguments(), ...this.getOptions()].reduce(
+      (questions, arg) => {
+        const name = arg.getName()
+        const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
+        if (!presentInArgs && arg.isPromptable()) {
+          questions.push({
+            name,
+            message: arg.getPrompt()
+          })
+        }
 
-      return questions
-    }, [] as Question[])
+        return questions
+      },
+      [] as Question[]
+    )
   }
 
-  private async prompt<T = {}, Q = Question[]>(args: T, questions: Q) {
-    // Ask questions and add to args
-    const answers = await prompt(questions)
-
-    return { ...args, ...answers }
+  /**
+   * Ask questions and merge with passed in args
+   */
+  private prompt = <Q = Question[]>(questions: Q) => <T = {}>(args: T) => {
+    return prompt<{}>(questions).then(answers => ({
+      ...args,
+      ...answers
+    }))
   }
 }

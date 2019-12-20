@@ -1,32 +1,47 @@
+import { Argv } from 'yargs'
 import yargs from 'yargs/yargs'
-import { prompt } from 'inquirer'
+import { red } from 'ansi-colors'
 import { Command } from '.'
 import { Repl } from './repl'
-import { command } from './command'
+import { command, Arguments } from './command'
+import { isPromise } from './utils'
 
 export function program(description?: string) {
   return new Program(description)
 }
 
+type FailFn = (msg: string, err: Error, yargs: Argv) => void
+
 export class Program {
   private yargs = yargs(process.argv.slice(2))
-  private description: string | undefined
   private promptPrefix: string | undefined
-  private help = false
-  private version = false
-  private exit = false
+  private failFn?: FailFn
+  private replInstance?: Repl
 
   constructor(description?: string) {
-    this.description = description
+    if (description) {
+      this.yargs.usage(description)
+    }
+
+    // Some defaults
+    this.yargs.help(false)
+    this.yargs.version(false)
+    this.yargs.recommendCommands()
+    this.yargs.strict()
+    this.yargs.demandCommand()
+
+    // Custom fail function.
+    // TODO current yargs types doesn't include the third parameter.
+    this.yargs.fail(this.failHandler.bind(this) as any)
   }
 
   add<T>(command: Command<T>) {
-    this.yargs.command(command.toYargs())
+    command.toYargs(this.yargs)
     return this
   }
 
   default<T>(command: Command<T>) {
-    this.yargs.command(command.default().toYargs())
+    command.default().toYargs(this.yargs)
     return this
   }
 
@@ -36,57 +51,34 @@ export class Program {
   }
 
   withHelp() {
-    this.help = true
+    this.yargs.help(true)
     return this
   }
 
   withVersion() {
-    this.version = true
+    this.yargs.version()
     return this
   }
 
-  withExit() {
-    this.exit = true
+  fail(fn: FailFn) {
+    this.failFn = fn
     return this
-  }
-
-  repl() {
-    const repl = new Repl(this, this.promptPrefix)
-
-    this.setupYargs()
-
-    // Don't exit on errors
-    this.yargs.exitProcess(false)
-
-    // Add exit command if needed
-    if (this.exit) {
-      this.add(
-        command('exit', 'Exit the application').action(() => {
-          process.exit()
-        })
-      )
-    }
-
-    repl.run()
   }
 
   /**
    * If invoked with a command, this is used instead of process.argv.
    */
   run(command?: string | ReadonlyArray<string>) {
-    this.setupYargs()
-
     const cmd = command || process.argv.slice(2)
 
-    // Return the promise returned from the handler.
+    // Return promise resolving to the return value of the command handler.
     return new Promise((resolve, reject) => {
-      this.yargs.parse(cmd, {}, (err, argv, output) => {
-        console.log('in parse callback')
-        console.log('argv', argv)
-        console.log('argv.__promise', typeof argv.__handlerRetVal)
-        const promise = argv.__promise as Promise<any> | undefined
-        if (promise && promise.then && typeof promise.then === 'function') {
-          promise.then(resolve)
+      this.yargs.parse(cmd, {}, (err, argv: Arguments, output) => {
+        if (output) {
+          console.log(output)
+        }
+        if (isPromise(argv.__promise)) {
+          argv.__promise.then(resolve)
         } else {
           resolve()
         }
@@ -95,33 +87,50 @@ export class Program {
   }
 
   /**
-   * Prepare our instance of yargs with program properties.
+   * Run event loop which reads command from stdin.
    */
-  private setupYargs() {
-    if (this.description) {
-      this.yargs.usage(this.description)
-    }
+  repl() {
+    this.replInstance = new Repl(this, this.promptPrefix)
 
-    // Enable help command
-    this.yargs.help(this.help)
+    // Don't exit on errors.
+    this.yargs.exitProcess(false)
 
-    // Enable version command
-    if (this.version === true) {
-      this.yargs.version()
+    // Add exit command
+    this.add(
+      command('exit', 'Exit the application').action(() => {
+        process.exit()
+      })
+    )
+
+    this.replInstance.loop()
+  }
+
+  /**
+   * Allow tweaking the underlaying yargs instance.
+   */
+  yargsInstance() {
+    return this.yargs
+  }
+
+  private failHandler(msg: string, err: Error, yargs: Argv) {
+    if (this.failFn) {
+      this.failFn(msg, err, yargs)
+    } else if (this.replInstance) {
+      if (msg) {
+        this.replInstance.setError(msg)
+      } else if (err) {
+        this.replInstance.setError(err.stack ?? err.message)
+      }
     } else {
-      this.yargs.version(false)
+      if (msg) {
+        console.error(red(msg))
+      } else if (err) {
+        console.error(red(err.stack ?? err.message))
+      }
+      console.error('')
+      console.error(yargs.help())
+
+      process.exit(1)
     }
-
-    // Provide suggestions if no matching command is found.
-    this.yargs.recommendCommands()
-
-    // This will make sure to display help when an invalid command is provided.
-    this.yargs.strict()
-
-    // This will make sure to display help when no command is provided.
-    this.yargs.demandCommand()
-
-    // Maximize the width of yargs usage instructions.
-    this.yargs.wrap(this.yargs.terminalWidth())
   }
 }

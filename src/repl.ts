@@ -1,10 +1,12 @@
 import { createPromptModule, PromptModule } from 'inquirer'
 import { Program } from './program'
+import { red } from 'ansi-colors'
 
 export class Repl {
   private program: Program
   private prefix: string
   private prompt: PromptModule
+  private lastError: string | null = null
 
   constructor(program: Program, prefix: string = '>') {
     this.program = program
@@ -12,9 +14,22 @@ export class Repl {
     this.prompt = createPromptModule()
   }
 
-  async run() {
+  async loop() {
+    await this.tick()
+    await this.loop()
+  }
+
+  setError(err: string) {
+    // Only display one error per tick
+    if (!this.lastError) {
+      this.lastError = err
+      console.error(red(err))
+    }
+  }
+
+  private async tick() {
     const stdin = await this.read()
-    console.log('received stdin', stdin)
+    this.lastError = null
     await this.eval(stdin)
   }
 
@@ -36,11 +51,11 @@ export class Repl {
     return answers.stdin as string
   }
 
-  private eval(stdin: string) {
+  private async eval(stdin: string) {
     return this.program.run(stdin)
   }
 
-  private print() {}
-
-  private loop() {}
+  private async print() {
+    // Here just for completeness.
+  }
 }
