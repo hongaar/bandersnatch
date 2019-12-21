@@ -3,6 +3,9 @@
   "description": "",
   "version": "1.0.0-alpha.1",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "prepublishOnly": "yarn build",
     "build": "tsc",
