@@ -2,9 +2,10 @@ import { Argv } from 'yargs'
 import yargs from 'yargs/yargs'
 import { red } from 'ansi-colors'
 import { Command } from '.'
-import { Repl } from './repl'
+import { Repl, repl } from './repl'
 import { command, Arguments } from './command'
 import { isPromise } from './utils'
+import { container } from './container'
 
 export function program(description?: string) {
   return new Program(description)
@@ -12,8 +13,13 @@ export function program(description?: string) {
 
 type FailFn = (msg: string, err: Error, yargs: Argv) => void
 
+type ChainablePromise = Promise<any> & {
+  print: () => any
+}
+
 export class Program {
-  private yargs = yargs(process.argv.slice(2))
+  private yargs = yargs()
+  private container = container().bind('printer', () => import('./printer'))
   private promptPrefix: string | undefined
   private failFn?: FailFn
   private replInstance?: Repl
@@ -72,7 +78,7 @@ export class Program {
     const cmd = command || process.argv.slice(2)
 
     // Return promise resolving to the return value of the command handler.
-    return new Promise((resolve, reject) => {
+    const promise = (new Promise((resolve, reject) => {
       this.yargs.parse(cmd, {}, (err, argv: Arguments, output) => {
         if (output) {
           console.log(output)
@@ -83,14 +89,27 @@ export class Program {
           resolve()
         }
       })
-    })
+    }) as unknown) as ChainablePromise
+
+    // Add print property to promise.
+    promise.print = () => {
+      promise.then(async (stdout: unknown) => {
+        if (typeof stdout === 'string') {
+          const { printer } = await this.container.resolve('printer')
+
+          printer().write(stdout)
+        }
+      })
+    }
+
+    return promise
   }
 
   /**
    * Run event loop which reads command from stdin.
    */
   repl() {
-    this.replInstance = new Repl(this, this.promptPrefix)
+    this.replInstance = repl(this, this.promptPrefix)
 
     // Don't exit on errors.
     this.yargs.exitProcess(false)

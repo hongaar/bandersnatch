@@ -1,28 +1,8 @@
-import {
-  Argv,
-  CommandModule,
-  InferredOptionType,
-  Arguments as BaseArguments,
-  Options,
-  PositionalOptions
-} from 'yargs'
+import { Argv, CommandModule, Arguments as BaseArguments } from 'yargs'
 import { prompt, Question } from 'inquirer'
 import { Argument, ArgumentOptions } from './argument'
 import { Option, OptionOptions } from './option'
-
-type InferT<O extends Options | PositionalOptions, D = unknown> = O extends {
-  variadic: true
-  type: 'number'
-} // Add support for numeric variadic arguments
-  ? Array<number>
-  : O extends {
-      variadic: true
-      type: 'string'
-    } // Add support for string variadic arguments
-  ? Array<string>
-  : unknown extends InferredOptionType<O> // Allow default type
-  ? D
-  : InferredOptionType<O>
+import { InferArgType } from './baseArg'
 
 export type Arguments<T = {}> = T &
   BaseArguments<T> & {
@@ -76,7 +56,9 @@ export class Command<T = {}> {
 
     this.add(new Argument(name, descriptionOrOptions, options))
 
-    return (this as unknown) as Command<T & { [key in K]: InferT<O, string> }>
+    return (this as unknown) as Command<
+      T & { [key in K]: InferArgType<O, string> }
+    >
   }
 
   /*
@@ -95,7 +77,7 @@ export class Command<T = {}> {
 
     this.add(new Option(name, descriptionOrOptions, options))
 
-    return (this as unknown) as Command<T & { [key in K]: InferT<O> }>
+    return (this as unknown) as Command<T & { [key in K]: InferArgType<O> }>
   }
 
   /**

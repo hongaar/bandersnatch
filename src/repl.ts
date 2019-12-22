@@ -2,6 +2,10 @@ import { createPromptModule, PromptModule } from 'inquirer'
 import { Program } from './program'
 import { red } from 'ansi-colors'
 
+export function repl(program: Program, prefix: string = '>') {
+  return new Repl(program, prefix)
+}
+
 export class Repl {
   private program: Program
   private prefix: string

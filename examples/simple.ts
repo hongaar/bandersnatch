@@ -1,16 +1,10 @@
 import { program, command } from '../src'
 
-const say = command('say', 'Say something to the terminal')
-  .argument('word', 'The word to say')
-  .argument('any', 'Maybe another', { optional: true })
-  .argument('some', 'Say some words', { variadic: true, type: 'number' })
-  .option('cache', 'Use cache', { type: 'boolean' })
-  .action(function(args) {
-    console.log(args)
-  })
+const echo = command('echo', 'Echo something in the terminal')
+  .argument('words', 'Say some kind words', { variadic: true })
+  .action(args => args.words.join(' '))
 
-program('simple cli app')
-  .add(say)
-  .withHelp()
-  .withVersion()
+program()
+  .add(echo)
   .run()
+  .print()
