@@ -1,11 +1,7 @@
-import { Container, DefaultResolvers } from './container'
-import { Printer } from './printer'
+import { Printer, printer as createPrinter } from './printer'
 
-export function runner<C extends Container<DefaultResolvers>, T = unknown>(
-  executor: Executor<T>,
-  container: C
-) {
-  return new Runner(executor, container)
+export function runner<T = unknown>(executor: Executor<T>) {
+  return new Runner(executor)
 }
 
 type Executor<T> = (
@@ -13,12 +9,15 @@ type Executor<T> = (
   reject: (reason?: any) => void
 ) => void
 
-export class Runner<C extends Container<DefaultResolvers>, T = unknown> {
+export class Runner<T = unknown> {
   private ref: Promise<any>;
 
   readonly [Symbol.toStringTag]: string
 
-  constructor(private executor: Executor<T>, private container: C) {
+  constructor(
+    private executor: Executor<T>,
+    private printer: Printer = createPrinter()
+  ) {
     this.ref = Promise.resolve()
   }
 
@@ -44,7 +43,7 @@ export class Runner<C extends Container<DefaultResolvers>, T = unknown> {
 
   print(printer?: Printer) {
     if (printer) {
-      this.container.bind('printer', async () => printer)
+      this.printer = printer
     }
 
     return this.then(this.onfulfilled.bind(this), this.onrejected.bind(this))
@@ -59,22 +58,10 @@ export class Runner<C extends Container<DefaultResolvers>, T = unknown> {
   }
 
   private async onfulfilled(stdout: unknown) {
-    if (this.container.has('printer')) {
-      const printer = await this.container.resolve('printer')
-
-      printer.write(stdout)
-    } else {
-      throw new Error("Can't resolve printer.")
-    }
+    this.printer.write(stdout)
   }
 
   private async onrejected(stderr: unknown) {
-    if (this.container.has('printer')) {
-      const printer = await this.container.resolve('printer')
-
-      printer.error(stderr)
-    } else {
-      throw new Error("Can't resolve printer.")
-    }
+    this.printer.error(stderr)
   }
 }

@@ -1,16 +1,10 @@
 import { Argv } from 'yargs'
 import yargs from 'yargs/yargs'
 import { red } from 'ansi-colors'
-import { Command } from '.'
+import { Command, command } from './command'
 import { Repl, repl } from './repl'
-import { command, Arguments } from './command'
+import { Arguments } from './command'
 import { isPromise } from './utils'
-import {
-  container,
-  Container,
-  ResolverMap,
-  DefaultResolvers
-} from './container'
 import { runner, Runner } from './runner'
 
 export function program(description?: string) {
@@ -19,13 +13,12 @@ export function program(description?: string) {
 
 type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
 
-export class Program<M extends DefaultResolvers = DefaultResolvers> {
+export class Program {
   private yargs = yargs()
-  private container: Container<M>
   private promptPrefix: string | undefined
   private failFn?: FailFn
   private replInstance?: Repl
-  private runnerInstance?: Runner<Container<M>>
+  private runnerInstance?: Runner
 
   constructor(description?: string) {
     if (description) {
@@ -39,21 +32,18 @@ export class Program<M extends DefaultResolvers = DefaultResolvers> {
     this.yargs.strict()
     this.yargs.demandCommand()
 
-    // Bind defaults to container
-    this.container = container().withDefaults() as Container<M>
-
     // Custom fail function.
     // TODO current yargs types doesn't include the third parameter.
     this.yargs.fail(this.failHandler.bind(this) as any)
   }
 
-  add<T>(command: Command<M, T>) {
-    command.toYargs(this.yargs, this.container)
+  add<T>(command: Command<T>) {
+    command.toYargs(this.yargs)
     return this
   }
 
-  default<T>(command: Command<M, T>) {
-    command.default().toYargs(this.yargs, this.container)
+  default<T>(command: Command<T>) {
+    command.default().toYargs(this.yargs)
     return this
   }
 
@@ -75,14 +65,6 @@ export class Program<M extends DefaultResolvers = DefaultResolvers> {
   fail(fn: FailFn) {
     this.failFn = fn
     return this
-  }
-
-  bind<B extends ResolverMap>(map: B) {
-    Object.keys(map).forEach(key => {
-      this.container.bind(key, map[key])
-    })
-
-    return (this as unknown) as Program<M & B>
   }
 
   /**
@@ -114,7 +96,7 @@ export class Program<M extends DefaultResolvers = DefaultResolvers> {
           resolve()
         }
       })
-    }, this.container)
+    })
 
     return this.runnerInstance.eval()
   }
@@ -136,11 +118,11 @@ export class Program<M extends DefaultResolvers = DefaultResolvers> {
     this.yargs.exitProcess(false)
 
     // Add exit command
-    // TODO types
-    // const exit = command('exit', 'Exit the application').action(() => {
-    //   process.exit()
-    // })
-    // this.add(exit)
+    this.add(
+      command('exit', 'Exit the application').action(() => {
+        process.exit()
+      })
+    )
 
     this.replInstance.loop()
   }
