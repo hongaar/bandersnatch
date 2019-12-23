@@ -68,6 +68,7 @@ _Work in progress_
 
 ## Todo
 
+- [ ] Correctly type optional and required args
 - [ ] Autocomplete in repl mode
 - [ ] Remove \$0 from help when in repl mode
 

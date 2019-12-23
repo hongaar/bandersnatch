@@ -5,6 +5,5 @@ const echo = command('echo', 'Echo something in the terminal')
   .action(args => args.words.join(' '))
 
 program()
-  .add(echo)
+  .default(echo)
   .run()
-  .print()

@@ -5,24 +5,22 @@ import { Command } from '.'
 import { Repl, repl } from './repl'
 import { command, Arguments } from './command'
 import { isPromise } from './utils'
-import { container } from './container'
+import { container, Container } from './container'
+import { runner, Runner } from './runner'
 
 export function program(description?: string) {
   return new Program(description)
 }
 
-type FailFn = (msg: string, err: Error, yargs: Argv) => void
-
-type ChainablePromise = Promise<any> & {
-  print: () => any
-}
+type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
 
 export class Program {
   private yargs = yargs()
-  private container = container().bind('printer', () => import('./printer'))
+  private container: ReturnType<Container['withDefaults']>
   private promptPrefix: string | undefined
   private failFn?: FailFn
   private replInstance?: Repl
+  private runnerInstance?: Runner
 
   constructor(description?: string) {
     if (description) {
@@ -35,6 +33,9 @@ export class Program {
     this.yargs.recommendCommands()
     this.yargs.strict()
     this.yargs.demandCommand()
+
+    // Bind defaults to container
+    this.container = container().withDefaults()
 
     // Custom fail function.
     // TODO current yargs types doesn't include the third parameter.
@@ -72,37 +73,44 @@ export class Program {
   }
 
   /**
-   * If invoked with a command, this is used instead of process.argv.
+   * Evaluate command (or process.argv) and return runner instance.
    */
-  run(command?: string | ReadonlyArray<string>) {
+  eval(command?: string | ReadonlyArray<string>) {
     const cmd = command || process.argv.slice(2)
 
-    // Return promise resolving to the return value of the command handler.
-    const promise = (new Promise((resolve, reject) => {
+    // Set executor to promise resolving to the return value of the command
+    // handler.
+    this.runnerInstance = runner((resolve, reject) => {
       this.yargs.parse(cmd, {}, (err, argv: Arguments, output) => {
+        // Output is a string for built-in commands like --version and --help
         if (output) {
           console.log(output)
         }
+
+        // TODO When is err defined?
+        if (err) {
+          console.error(err)
+        }
+
         if (isPromise(argv.__promise)) {
-          argv.__promise.then(resolve)
+          // Delegate resolve/reject to promise returned from handler
+          argv.__promise.then(resolve).catch(reject)
         } else {
+          // Resolve with void if promise is not available, which is the case
+          // e.g. with --version and --help
           resolve()
         }
       })
-    }) as unknown) as ChainablePromise
+    }, this.container)
 
-    // Add print property to promise.
-    promise.print = () => {
-      promise.then(async (stdout: unknown) => {
-        if (typeof stdout === 'string') {
-          const { printer } = await this.container.resolve('printer')
+    return this.runnerInstance.eval()
+  }
 
-          printer().write(stdout)
-        }
-      })
-    }
-
-    return promise
+  /**
+   * Run a command (or process.argv) and print output.
+   */
+  run(command?: string | ReadonlyArray<string>) {
+    return this.eval(command).print()
   }
 
   /**
@@ -132,24 +140,41 @@ export class Program {
   }
 
   private failHandler(msg: string, err: Error, yargs: Argv) {
-    if (this.failFn) {
-      this.failFn(msg, err, yargs)
-    } else if (this.replInstance) {
-      if (msg) {
-        this.replInstance.setError(msg)
-      } else if (err) {
-        this.replInstance.setError(err.stack ?? err.message)
-      }
+    if (this.replInstance) {
+      // In case we're in a REPL session, we don't want to exit the process
+      // when an error occurs.
+      this.replInstance.setError(msg ?? err.stack ?? err.message)
     } else {
-      if (msg) {
-        console.error(red(msg))
-      } else if (err) {
-        console.error(red(err.stack ?? err.message))
+      const args = yargs.argv
+      const usage = (yargs.help() as unknown) as string
+      const cb = () => {
+        if (this.failFn) {
+          // Call custom fail function.
+          this.failFn(msg, err, args, usage)
+        } else {
+          // Call default fail function.
+          this.defaultFailFn(msg, err, args, usage)
+        }
       }
-      console.error('')
-      console.error(yargs.help())
 
-      process.exit(1)
+      // We call the fail function in the runner chain if available, to give
+      // async printer a chance to complete first.
+      this.runnerInstance
+        ? this.runnerInstance.then(cb)
+        : Promise.resolve().then(cb)
     }
+  }
+
+  private defaultFailFn: FailFn = (msg, err, args, usage) => {
+    if (msg) {
+      console.error(red(msg))
+    }
+
+    if (usage) {
+      console.error('')
+      console.error(usage)
+    }
+
+    process.exit(1)
   }
 }
