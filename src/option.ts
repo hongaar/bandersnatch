@@ -1,4 +1,4 @@
-import { Options as BaseOptions, Argv } from 'yargs'
+import { Options as BaseOptions, Argv, Options } from 'yargs'
 import { BaseArgOptions, BaseArg } from './baseArg'
 
 // We ignore some not-so-common use cases from the type to make using this

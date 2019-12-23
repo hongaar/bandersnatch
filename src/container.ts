@@ -2,9 +2,11 @@ type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never
 
 type Resolver = () => Promise<any>
 
-type ResolverMap = {
-  [K: string]: any
-} & Partial<typeof defaultResolvers>
+export type ResolverMap = {
+  [K: string]: Resolver
+}
+
+export type DefaultResolvers = typeof defaultResolvers
 
 const defaultResolvers = {
   printer: async () => {
@@ -17,11 +19,11 @@ export function container() {
   return new Container()
 }
 
-export class Container<M extends ResolverMap = ResolverMap> {
-  private resolvers: M = {} as M
-  private cache: M = {} as M
+export class Container<T extends ResolverMap = {}> {
+  private resolvers: T = {} as T
+  private cache: T = {} as T
 
-  withDefaults(): Container<Required<M>> {
+  withDefaults(): Container<T & typeof defaultResolvers> {
     this.resolvers = {
       ...this.resolvers,
       ...defaultResolvers
@@ -36,20 +38,22 @@ export class Container<M extends ResolverMap = ResolverMap> {
       [key]: resolver
     }
 
-    return (this as unknown) as Container<M & { [key in K]: R }>
+    return (this as unknown) as Container<T & { [key in K]: R }>
   }
 
-  has<K extends keyof M>(
-    key: K
-  ): this is Container<Required<{ [key in K]: M[K] }>> {
+  has<K extends keyof T>(key: K): this is Container<{ [key in K]: T[K] }> {
     return !!this.resolvers[key]
   }
 
-  async resolve<K extends keyof M>(key: K) {
+  async resolve<K extends keyof T>(key: K) {
     if (!this.cache[key]) {
       this.cache[key] = await this.resolvers[key]()
     }
 
-    return this.cache[key] as Unpromise<ReturnType<M[K]>>
+    return this.cache[key] as Unpromise<ReturnType<T[K]>>
+  }
+
+  async resolveAll(): Promise<T> {
+    return this.cache as T
   }
 }

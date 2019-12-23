@@ -1,9 +1,9 @@
-import { Container } from './container'
+import { Container, DefaultResolvers } from './container'
 import { Printer } from './printer'
 
-export function runner<T = unknown>(
+export function runner<C extends Container<DefaultResolvers>, T = unknown>(
   executor: Executor<T>,
-  container: Container
+  container: C
 ) {
   return new Runner(executor, container)
 }
@@ -13,16 +13,12 @@ type Executor<T> = (
   reject: (reason?: any) => void
 ) => void
 
-export class Runner<T = unknown> {
-  private container: Container
-  private executor: Executor<T>
+export class Runner<C extends Container<DefaultResolvers>, T = unknown> {
   private ref: Promise<any>;
 
   readonly [Symbol.toStringTag]: string
 
-  constructor(executor: Executor<T>, container: Container) {
-    this.container = container
-    this.executor = executor
+  constructor(private executor: Executor<T>, private container: C) {
     this.ref = Promise.resolve()
   }
 

@@ -3,14 +3,15 @@ import { prompt, Question } from 'inquirer'
 import { Argument, ArgumentOptions } from './argument'
 import { Option, OptionOptions } from './option'
 import { InferArgType } from './baseArg'
+import { ResolverMap, Container, DefaultResolvers } from './container'
 
 export type Arguments<T = {}> = T &
   BaseArguments<T> & {
     __promise?: Promise<any>
   }
 
-export interface HandlerFn<T = {}> {
-  (args: Omit<T, '_' | '$0'>): Promise<any> | any
+export interface HandlerFn<T, M extends ResolverMap> {
+  (args?: Omit<T, '_' | '$0'>, modules?: M): Promise<any> | any
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {
@@ -25,15 +26,18 @@ function isCommand(obj: Argument | Option | Command): obj is Command {
   return obj.constructor.name === 'Command'
 }
 
-export function command<T = {}>(command: string, description?: string) {
-  return new Command<T>(command, description)
+export function command<M extends ResolverMap = {}, T = {}>(
+  command: string,
+  description?: string
+) {
+  return new Command<M & DefaultResolvers, T>(command, description)
 }
 
-export class Command<T = {}> {
+export class Command<M extends ResolverMap = {}, T = {}> {
   private command: string
   private description?: string
   private args: (Argument | Option | Command)[] = []
-  private handler?: HandlerFn<T>
+  private handler?: HandlerFn<T, M>
 
   constructor(command: string, description?: string) {
     this.command = command
@@ -57,6 +61,7 @@ export class Command<T = {}> {
     this.add(new Argument(name, descriptionOrOptions, options))
 
     return (this as unknown) as Command<
+      M,
       T & { [key in K]: InferArgType<O, string> }
     >
   }
@@ -77,7 +82,7 @@ export class Command<T = {}> {
 
     this.add(new Option(name, descriptionOrOptions, options))
 
-    return (this as unknown) as Command<T & { [key in K]: InferArgType<O> }>
+    return (this as unknown) as Command<M, T & { [key in K]: InferArgType<O> }>
   }
 
   /**
@@ -112,7 +117,7 @@ export class Command<T = {}> {
     return this
   }
 
-  action(fn: HandlerFn<T>) {
+  action(fn: HandlerFn<T, M>) {
     this.handler = fn
     return this
   }
@@ -133,13 +138,13 @@ export class Command<T = {}> {
    * Calls the command() method on the passed in yargs instance and returns it.
    * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
    */
-  toYargs(yargs: Argv) {
+  toYargs(yargs: Argv, container: Container<M>) {
     const module: CommandModule<{}, T> = {
       command: this.getCommand(),
       aliases: [],
       describe: this.description,
-      builder: this.getBuilder(),
-      handler: this.getHandler()
+      builder: this.getBuilder(container),
+      handler: this.getHandler(container)
     }
     return yargs.command(module)
   }
@@ -163,7 +168,7 @@ export class Command<T = {}> {
   /**
    * Returns the builder function to be used with yargs.command().
    */
-  private getBuilder() {
+  private getBuilder(container: Container<M>) {
     return (yargs: Argv) => {
       // Call toYargs on each argument and option to add it to the command.
       yargs = [...this.getArguments(), ...this.getOptions()].reduce(
@@ -172,7 +177,7 @@ export class Command<T = {}> {
       )
       // Call toYargs on each subcommand to add it to the command.
       yargs = this.getCommands().reduce(
-        (yargs, cmd) => cmd.toYargs(yargs),
+        (yargs, cmd) => cmd.toYargs(yargs, container),
         yargs
       )
       return yargs as Argv<T>
@@ -182,7 +187,7 @@ export class Command<T = {}> {
   /**
    * Returns the command handler
    */
-  private getHandler() {
+  private getHandler(container: Container<M>) {
     return (argv: Arguments<T>) => {
       const { _, $0, ...rest } = argv
       const questions = this.getQuestions(rest)
@@ -192,12 +197,15 @@ export class Command<T = {}> {
         chain = chain.then(this.prompt(questions))
       }
 
-      chain = chain.then(args => {
+      chain = chain.then(async args => {
         if (!this.handler) {
           throw new Error('No handler defined for this command.')
         }
 
-        return this.handler(args)
+        const modules = await container.resolveAll()
+
+        // TODO any
+        return this.handler(args, modules)
       })
 
       // Save promise chain on argv instance, so we can access it in parse

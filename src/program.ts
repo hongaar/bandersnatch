@@ -5,7 +5,12 @@ import { Command } from '.'
 import { Repl, repl } from './repl'
 import { command, Arguments } from './command'
 import { isPromise } from './utils'
-import { container, Container } from './container'
+import {
+  container,
+  Container,
+  ResolverMap,
+  DefaultResolvers
+} from './container'
 import { runner, Runner } from './runner'
 
 export function program(description?: string) {
@@ -14,13 +19,13 @@ export function program(description?: string) {
 
 type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
 
-export class Program {
+export class Program<M extends DefaultResolvers = DefaultResolvers> {
   private yargs = yargs()
-  private container: ReturnType<Container['withDefaults']>
+  private container: Container<M>
   private promptPrefix: string | undefined
   private failFn?: FailFn
   private replInstance?: Repl
-  private runnerInstance?: Runner
+  private runnerInstance?: Runner<Container<M>>
 
   constructor(description?: string) {
     if (description) {
@@ -35,20 +40,20 @@ export class Program {
     this.yargs.demandCommand()
 
     // Bind defaults to container
-    this.container = container().withDefaults()
+    this.container = container().withDefaults() as Container<M>
 
     // Custom fail function.
     // TODO current yargs types doesn't include the third parameter.
     this.yargs.fail(this.failHandler.bind(this) as any)
   }
 
-  add<T>(command: Command<T>) {
-    command.toYargs(this.yargs)
+  add<T>(command: Command<M, T>) {
+    command.toYargs(this.yargs, this.container)
     return this
   }
 
-  default<T>(command: Command<T>) {
-    command.default().toYargs(this.yargs)
+  default<T>(command: Command<M, T>) {
+    command.default().toYargs(this.yargs, this.container)
     return this
   }
 
@@ -70,6 +75,14 @@ export class Program {
   fail(fn: FailFn) {
     this.failFn = fn
     return this
+  }
+
+  bind<B extends ResolverMap>(map: B) {
+    Object.keys(map).forEach(key => {
+      this.container.bind(key, map[key])
+    })
+
+    return (this as unknown) as Program<M & B>
   }
 
   /**
@@ -123,11 +136,11 @@ export class Program {
     this.yargs.exitProcess(false)
 
     // Add exit command
-    this.add(
-      command('exit', 'Exit the application').action(() => {
-        process.exit()
-      })
-    )
+    // TODO types
+    // const exit = command('exit', 'Exit the application').action(() => {
+    //   process.exit()
+    // })
+    // this.add(exit)
 
     this.replInstance.loop()
   }
