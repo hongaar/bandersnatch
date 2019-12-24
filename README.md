@@ -209,8 +209,9 @@ To create a binary (your app with Node.js bundled), add this script to
 
 _👆 Omit `-t host` to create binaries for all platforms._
 
-You can now run `./echo`. Deploy to GitHub, S3, etc. using your
-preferred CD method if needed.
+Run `yarn bundle` and then `./echo --help`. 💪
+
+Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
 ## Development
 
