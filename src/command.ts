@@ -10,7 +10,7 @@ export type Arguments<T = {}> = T &
   }
 
 export interface HandlerFn<T> {
-  (args?: Omit<T, '_' | '$0'>): Promise<any> | any
+  (args: Omit<T, '_' | '$0'>): Promise<any> | any
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {

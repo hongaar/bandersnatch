@@ -2455,6 +2455,11 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mock-argv@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/mock-argv/-/mock-argv-1.1.2.tgz#18466ca6c14a08b861391dfe444fc9ac06080bb9"
+  integrity sha512-SCYOA+vhXYbp2L2c8Npi2LREW3TGZHaXzOrjYz15wbnkWCb6lZXq2I/i0dKNsR3HFpPzFhlpSOzGUCuwU65/cg==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
