@@ -39,16 +39,178 @@ import { program, command } from 'bandersnatch'
 
 const echo = command('echo', 'Echo something in the terminal')
   .argument('words', 'Say some kind words', { variadic: true })
-  .action(function(args) {
-    console.log(args.words.join(' '))
-  })
+  .action(args => args.words.join(' '))
 
 program()
   .add(echo)
   .run()
 ```
 
-More examples in https://github.com/hongaar/bandersnatch/tree/master/examples
+And run with:
+
+```bash
+ts-node echo.ts
+```
+
+_👆 Assuming you have `ts-node` installed._
+
+ℹ More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples) directory.
+
+## API
+
+_Work in progress_
+
+## Bundle
+
+There are many options to bundle your application for distribution. We'll
+discuss a common pattern.
+
+ℹ An example can be found in the [examples/bundle](https://github.com/hongaar/bandersnatch/tree/alpha/examples/bundle) directory.
+
+Init a `package.json` if needed:
+
+```bash
+mkdir echo && cd echo
+yarn init
+```
+
+Install dependencies:
+
+```bash
+yarn add bandersnatch
+yarn add typescript pkg --dev
+```
+
+And create an example app in `src/cli.ts`:
+
+```ts
+import { program, command } from 'bandersnatch'
+
+export default program()
+  .withHelp()
+  .default(
+    command('echo', 'Echo something in the terminal')
+      .argument('words', 'Say some kind words', { variadic: true })
+      .action(console.log)
+  )
+```
+
+Building your app with TypeScript is very powerful, but runtime compilation is
+slow so we compile the code ahead of time.
+
+Add a `tsconfig.json`, similar to:
+
+```json
+{
+  "include": ["./src"],
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["es2017"],
+    "declaration": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  }
+}
+```
+
+Add these scripts to your `package.json`:
+
+```diff
+ {
+   "name": "echo",
+   "version": "1.0.0",
+   "main": "index.js",
+   "license": "MIT",
++  "scripts": {
++    "prepublishOnly": "yarn build",
++    "build": "tsc",
++  },
+   "dependencies": {
+     "bandersnatch": "^1.0.0-alpha.2"
+   },
+   "devDependencies": {
+     "pkg": "^4.4.2",
+     "typescript": "^3.7.3"
+   }
+ }
+```
+
+And compile now by running `yarn build`.
+
+Next, we need to create a simple entrypoint `echo.js`, which can be run with
+node:
+
+```bash
+#!/usr/bin/env node
+
+require('./lib/cli').default.run()
+```
+
+To run your app, users may want to run `yarn global add [app-name]`. For this to
+work, we need to make a small adjustment to `package.json`:
+
+```diff
+ {
+   "name": "[app-name]",
+   "version": "1.0.0",
+-  "main": "index.js",
++  "bin": "bin.js",
++  "files": [
++    "lib"
++  ],
+   "license": "MIT",
+   "scripts": {
+     "prepublishOnly": "yarn build",
+     "build": "tsc",
+   },
+   "dependencies": {
+     "bandersnatch": "^1.0.0-alpha.2"
+   },
+   "devDependencies": {
+     "pkg": "^4.4.2",
+     "typescript": "^3.7.3"
+   }
+ }
+```
+
+You can now `npm publish`.
+
+To create a binary (your app with Node.js bundled), add this script to
+`package.json`:
+
+```diff
+ {
+   "name": "[app-name]",
+   "version": "1.0.0",
+   "bin": "bin.js",
+   "files": [
+     "lib"
+   ],
+   "license": "MIT",
+   "scripts": {
+     "prepublishOnly": "yarn build",
+     "build": "tsc",
++    "bundle": "yarn build && pkg -t host ."
+   },
+   "dependencies": {
+     "bandersnatch": "^1.0.0-alpha.2"
+   },
+   "devDependencies": {
+     "pkg": "^4.4.2",
+     "typescript": "^3.7.3"
+   }
+ }
+```
+
+_👆 Omit `-t host` to create binaries for all platforms._
+
+You can now run `./echo`. Deploy to GitHub, S3, etc. using your
+preferred CD method if needed.
 
 ## Development
 
@@ -61,10 +223,6 @@ yarn
 # Run an example
 yarn start examples/simple.ts
 ```
-
-## API
-
-_Work in progress_
 
 ## Todo
 
