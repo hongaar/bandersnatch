@@ -25,17 +25,17 @@ function isCommand(obj: Argument | Option | Command): obj is Command {
   return obj.constructor.name === 'Command'
 }
 
-export function command<T = {}>(command: string, description?: string) {
+export function command<T = {}>(command?: string, description?: string) {
   return new Command<T>(command, description)
 }
 
 export class Command<T = {}> {
-  private command: string
+  private command?: string
   private description?: string
   private args: (Argument | Option | Command)[] = []
   private handler?: HandlerFn<T>
 
-  constructor(command: string, description?: string) {
+  constructor(command?: string, description?: string) {
     this.command = command
     this.description = description
   }
@@ -149,6 +149,10 @@ export class Command<T = {}> {
    * of yargs.
    */
   private getCommand() {
+    if (!this.command) {
+      throw new Error('Command name must be set')
+    }
+
     const args = this.getArguments()
       .map(arg => arg.toCommand())
       .join(' ')

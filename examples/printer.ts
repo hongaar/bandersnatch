@@ -2,7 +2,7 @@ import { program, command } from '../src'
 import { blue, bgMagenta } from 'ansi-colors'
 
 // All failures vanish into the void
-const blackhole = () => {}
+const failWithMeaning = () => process.exit(42)
 
 // We print errors in blue
 const printer = {
@@ -17,10 +17,10 @@ const printer = {
 
 program()
   .default(
-    command('test').action(() => {
+    command().action(() => {
       throw new Error('Test throwing errors')
     })
   )
-  .fail(blackhole)
+  .fail(failWithMeaning)
   .eval()
   .print(printer)

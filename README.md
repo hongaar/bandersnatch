@@ -8,15 +8,15 @@
 
 > Super lightweight and friendly CLI framework for Node.js.
 
-**🚧 but not quite yet**
+**🚧 alpha version**
 
 ## Features
 
-- Built-in REPL
-- Prompts for missing arguments
-- Autocompletes arguments, options and values
-- Fully typed
-- Uses the power of `yargs` & `inquirer`
+- ➰ Built-in REPL
+- 💬 Prompts for missing arguments
+- ➡ Autocompletes arguments, options and values
+- 🤯 Fully typed
+- ⚡ Uses the power of `yargs` & `inquirer`
 
 It's built in TypeScript and while it's of course possible to write your app
 with JavaScript, you're missing out on some very handy type hints.
@@ -58,7 +58,49 @@ _👆 Assuming you have `ts-node` installed._
 
 ## API
 
-_Work in progress_
+All methods are chainable unless the docs mention otherwise.
+
+### `program(description)`
+
+Creates a new program.
+
+- Description (string, optional) is used in --help output.
+
+Methods:
+
+- [.add](#program-add)
+- [.default](#program-default)
+
+#### `program.add(command)`
+
+Adds a command to the program.
+
+```ts
+program().add(command)
+```
+
+#### `program.default(command)`
+
+Adds a default command to the program. Default commands are executed immediately
+and don't require a name.
+
+```ts
+program().default(command)
+```
+
+### `command(name, description)`
+
+Creates a new command.
+
+- Name (string, optional) is used to invoke a command. When
+  not used as default command, name is required.
+- Description (string, optional) is used in --help output.
+
+Methods:
+
+- [.argument](#command-argument)
+- [.option](#command-option)
+- [.command](#command-command)
 
 ## Bundle
 
@@ -213,7 +255,7 @@ Run `yarn bundle` and then `./echo --help`. 💪
 
 Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
-## Development
+## Contributing
 
 ```bash
 # Clone and install
@@ -225,12 +267,10 @@ yarn
 yarn start examples/simple.ts
 ```
 
-## Todo
+## License
 
-- [ ] Correctly type optional and required args
-- [ ] Autocomplete in repl mode
-- [ ] Remove \$0 from help when in repl mode
+Copyright (c) 2019 Joram van den Boezem. Licensed under the MIT license.
 
 ---
 
-Inspired by Vorpal
+Inspired by [vorpal](https://vorpal.js.org/)
