@@ -151,15 +151,15 @@ node:
 require('./lib/cli').default.run()
 ```
 
-To run your app, users may want to run `yarn global add [app-name]`. For this to
+To run your app, users may want to run `yarn global add echo`. For this to
 work, we need to make a small adjustment to `package.json`:
 
 ```diff
  {
-   "name": "[app-name]",
+   "name": "echo",
    "version": "1.0.0",
 -  "main": "index.js",
-+  "bin": "bin.js",
++  "bin": "echo.js",
 +  "files": [
 +    "lib"
 +  ],
@@ -185,9 +185,9 @@ To create a binary (your app with Node.js bundled), add this script to
 
 ```diff
  {
-   "name": "[app-name]",
+   "name": "echo",
    "version": "1.0.0",
-   "bin": "bin.js",
+   "bin": "echo.js",
    "files": [
      "lib"
    ],
