@@ -1,6 +1,6 @@
 import { Argv } from 'yargs'
 import yargs from 'yargs/yargs'
-import { red } from 'ansi-colors'
+import { yellow } from 'ansi-colors'
 import { Command, command } from './command'
 import { Repl, repl } from './repl'
 import { Arguments } from './command'
@@ -162,7 +162,7 @@ export class Program {
 
   private defaultFailFn: FailFn = (msg, err, args, usage) => {
     if (msg) {
-      console.error(red(msg))
+      console.error(yellow(msg))
     }
 
     if (usage) {

@@ -36,7 +36,29 @@ intuitive to work with.
   - [`program(description)`](#programdescription)
     - [`program.add(command)`](#programaddcommand)
     - [`program.default(command)`](#programdefaultcommand)
+    - [`program.prompt(prompt)`](#programpromptprompt)
+    - [`program.withHelp()`](#programwithhelp)
+    - [`program.withVersion()`](#programwithversion)
+    - [`program.fail(function)`](#programfailfunction)
+    - [`program.eval(command)`](#programevalcommand)
+    - [`program.run(command)`](#programruncommand)
+    - [`program.repl()`](#programrepl)
+    - [`program.yargsInstance()`](#programyargsinstance)
   - [`command(name, description)`](#commandname-description)
+    - [`command.argument(name, description, options)`](#commandargumentname-description-options)
+    - [`command.option(name, description, options)`](#commandoptionname-description-options)
+    - [`command.command(command)`](#commandcommandcommand)
+    - [`command.default()`](#commanddefault)
+    - [`command.action(function)`](#commandactionfunction)
+  - [`runner`](#runner)
+    - [`runner.then(function)`](#runnerthenfunction)
+    - [`runner.catch(function)`](#runnercatchfunction)
+    - [`runner.print(printer)`](#runnerprintprinter)
+  - [`printer`](#printer)
+    - [`printer.write(string)`](#printerwritestring)
+    - [`printer.error(Error)`](#printererrorerror)
+  - [`ArgumentOptions`](#argumentoptions)
+  - [`OptionOptions`](#optionoptions)
 - [Bundle](#bundle)
 - [Contributing](#contributing)
 - [License](#license)
@@ -89,17 +111,67 @@ Creates a new program.
 Adds a command to the program.
 
 ```ts
-program().add(command)
+program().add(command(...))
 ```
 
 #### `program.default(command)`
 
-Adds a default command to the program. Default commands are executed immediately
-and don't require a name.
+Adds a default command to the program. Shorthand for:
 
 ```ts
-program().default(command)
+program().add(command(...).default())
 ```
+
+#### `program.prompt(prompt)`
+
+Use this prompt prefix (string, required) when in REPL mode.
+
+#### `program.withHelp()`
+
+Adds `help` and `--help` to program which displays program usage information.
+
+#### `program.withVersion()`
+
+Adds `version` and `--version` to program which displays program version from
+package.json.
+
+#### `program.fail(function)`
+
+Use custom error handler. Function will be called with 4 arguments:
+
+- Message (string) will contain internal message about e.g. missing arguments
+- Error (Error) is only set when an error was explicitly thrown
+- Args (array) contains program arguments
+- Usage (string) contains usage information from --help
+
+#### `program.eval(command)`
+
+Uses process.argv or passed in command (string, optional) to match and execute
+command. Returns runner instance.
+
+```ts
+program()
+  .add(command(...))
+  .eval()
+```
+
+#### `program.run(command)`
+
+Shorthand for `eval().print()`.
+
+```ts
+program()
+  .add(command(...))
+  .run()
+```
+
+#### `program.repl()`
+
+Start a read-eval-print loop.
+
+#### `program.yargsInstance()`
+
+Returns internal `yargs` instance. Use with caution.
 
 ### `command(name, description)`
 
@@ -108,6 +180,80 @@ Creates a new command.
 - Name (string, optional) is used to invoke a command. When
   not used as default command, name is required.
 - Description (string, optional) is used in --help output.
+
+#### `command.argument(name, description, options)`
+
+Adds a positional argument to the command.
+
+- Name (string, required) is used to identify the argument.
+- Description (string, optional) is used in --help output.
+- Options (ArgumentOptions) can be provided to change the behaviour of the
+  argument.
+
+#### `command.option(name, description, options)`
+
+Adds an option to the command.
+
+- Name (string, required) is used to identify the option.
+- Description (string, optional) is used in --help output.
+- Options (OptionOptions) can be provided to change the behaviour of the
+  option.
+
+#### `command.command(command)`
+
+Adds a sub-command to the command.
+
+#### `command.default()`
+
+Mark command as default. Default commands are executed immediately and don't require a name.
+
+#### `command.action(function)`
+
+Function to execute when command is invoked. Is called with one argument: an
+object containing key/value pairs of parsed arguments and options.
+
+### `runner`
+
+Returned from `program().eval()`, can't be invoked directly.
+
+#### `runner.then(function)`
+
+Function is invoked when command handler resolves.
+
+#### `runner.catch(function)`
+
+Function is invoked when command handler rejects.
+
+#### `runner.print(printer)`
+
+Attaches a printer to the runner. Uses a default printer unless called with a
+custom printer argument.
+
+### `printer`
+
+Used by runner, can't be invoked directly.
+
+#### `printer.write(string)`
+
+Handles output. Prints to stdout by default.
+
+#### `printer.error(Error)`
+
+Handles errors. Prints stack trace to stderr by default.
+
+### `ArgumentOptions`
+
+Object with any of these keys:
+
+- `optional` (boolean) makes this argument optional.
+- `variadic` (boolean) eagerly take all remaining arguments and parse as array.
+  Only valid for last argument.
+- ...
+
+### `OptionOptions`
+
+- `alias` (string or array of strings) alias(es) for the option key.
+- ...
 
 ## Bundle
 

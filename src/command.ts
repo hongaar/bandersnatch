@@ -117,15 +117,15 @@ export class Command<T = {}> {
     return this
   }
 
-  getArguments() {
+  private getArguments() {
     return this.args.filter(isArgument)
   }
 
-  getOptions() {
+  private getOptions() {
     return this.args.filter(isOption)
   }
 
-  getCommands() {
+  private getCommands() {
     return this.args.filter(isCommand)
   }
 
