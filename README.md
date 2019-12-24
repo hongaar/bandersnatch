@@ -25,6 +25,24 @@ We don't have a generator, auto-updater and we don't make any decisions for you
 (apart from using inquirer for prompts). This makes bandersnatch pretty easy and
 intuitive to work with.
 
+## Table of contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Getting started](#getting-started)
+- [API](#api)
+  - [`program(description)`](#programdescription)
+    - [`program.add(command)`](#programaddcommand)
+    - [`program.default(command)`](#programdefaultcommand)
+  - [`command(name, description)`](#commandname-description)
+- [Bundle](#bundle)
+- [Contributing](#contributing)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Getting started
 
 ```bash
@@ -66,11 +84,6 @@ Creates a new program.
 
 - Description (string, optional) is used in --help output.
 
-Methods:
-
-- [.add](#program-add)
-- [.default](#program-default)
-
 #### `program.add(command)`
 
 Adds a command to the program.
@@ -95,12 +108,6 @@ Creates a new command.
 - Name (string, optional) is used to invoke a command. When
   not used as default command, name is required.
 - Description (string, optional) is used in --help output.
-
-Methods:
-
-- [.argument](#command-argument)
-- [.option](#command-option)
-- [.command](#command-command)
 
 ## Bundle
 
