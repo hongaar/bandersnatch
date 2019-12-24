@@ -1,8 +1,9 @@
 {
   "include": ["./src"],
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2017",
     "module": "commonjs",
+    "lib": ["es2017"],
     "declaration": true,
     "outDir": "lib",
     "rootDir": "src",
