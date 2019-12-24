@@ -1,7 +1,12 @@
 // @ts-ignore
+import { shim } from 'promise.prototype.finally'
+// @ts-ignore
 import mockArgv from 'mock-argv'
 import { program, Program } from '../src/program'
 import { command } from '../src/command'
+
+// Needed for node 8
+shim()
 
 test('program should return new Program object', () => {
   expect(program()).toBeInstanceOf(Program)
