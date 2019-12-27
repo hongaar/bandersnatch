@@ -1,5 +1,4 @@
-// @ts-ignore
-import { printer as createPrinter } from '../src/printer'
+import { printer as createPrinter } from '../src'
 
 test('printer writes to stdout', async () => {
   const spy = jest.spyOn(console, 'log').mockImplementation(() => {})

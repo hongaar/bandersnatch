@@ -51,4 +51,8 @@ export class BaseArg {
   getDescription() {
     return this.description
   }
+
+  getOptions() {
+    return this.options
+  }
 }

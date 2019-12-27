@@ -1,30 +1,17 @@
-import { command, Command } from '../src/command'
-import { program } from '../src/program'
+import { command, Command, program } from '../src'
+
+let output: jest.MockInstance<any, any>
+
+beforeEach(() => {
+  output = jest.spyOn(console, 'log') //.mockImplementation(() => {})
+})
+
+afterEach(() => {
+  output.mockRestore()
+})
 
 test('command should return new Command object', () => {
   expect(command('test')).toBeInstanceOf(Command)
-})
-
-test('single argument', done => {
-  const cmd = command('test')
-    .argument('foo')
-    .action(args => {
-      expect(args.foo).toBe('bar')
-      done()
-    })
-  const app = program().add(cmd)
-  app.run('test bar')
-})
-
-test('single option', done => {
-  const cmd = command('test')
-    .option('foo')
-    .action(args => {
-      expect(args.foo).toBe('bar')
-      done()
-    })
-  const app = program().add(cmd)
-  app.run('test --foo bar')
 })
 
 test('variadic argument must be last', () => {
@@ -52,13 +39,36 @@ test('async handler should be executed', async () => {
   expect(handled).toBeTruthy()
 })
 
-test('argument is passed in command handler', async () => {
-  const app = program().add(
-    command('test')
-      .argument('foo')
-      .action(args => {
-        expect(args.foo).toBe('bar')
-      })
-  )
-  await app.eval('test bar')
+// Argument tests
+test('default argument', async () => {
+  const cmd = command('test')
+    .argument('foo')
+    .action(args => {
+      expect(args.foo).toBe('bar')
+    })
+  await program()
+    .add(cmd)
+    .run('test bar')
+})
+
+// Argument tests
+test.skip('argument with description', async () => {
+  const cmd = command('test').argument('foo', 'foo description')
+  await program()
+    .add(cmd)
+    .withHelp()
+    .run('help')
+  expect(output.mock.calls).toContain('foo description')
+})
+
+// Option tests
+test('single option', done => {
+  const cmd = command('test')
+    .option('foo')
+    .action(args => {
+      expect(args.foo).toBe('bar')
+      done()
+    })
+  const app = program().add(cmd)
+  app.run('test --foo bar')
 })
