@@ -1,6 +1,5 @@
 import { command, Command } from '../src/command'
 import { program } from '../src/program'
-import { argument } from '../src/argument'
 
 test('command should return new Command object', () => {
   expect(command('test')).toBeInstanceOf(Command)
@@ -29,10 +28,9 @@ test('single option', done => {
 })
 
 test('variadic argument must be last', () => {
-  const cmd = command('test')
-  cmd.add(argument('var').configure({ variadic: true }))
+  const cmd = command('test').argument('var', { variadic: true })
   expect(() => {
-    cmd.add(argument('reg'))
+    cmd.argument('reg')
   }).toThrowErrorMatchingSnapshot()
 })
 
@@ -52,4 +50,15 @@ test('async handler should be executed', async () => {
   const app = program().add(cmd)
   await app.run('test')
   expect(handled).toBeTruthy()
+})
+
+test('argument is passed in command handler', async () => {
+  const app = program().add(
+    command('test')
+      .argument('foo')
+      .action(args => {
+        expect(args.foo).toBe('bar')
+      })
+  )
+  await app.eval('test bar')
 })

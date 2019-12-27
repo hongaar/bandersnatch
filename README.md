@@ -57,8 +57,6 @@ intuitive to work with.
   - [`printer`](#printer)
     - [`printer.write(string)`](#printerwritestring)
     - [`printer.error(Error)`](#printererrorerror)
-  - [`ArgumentOptions`](#argumentoptions)
-  - [`OptionOptions`](#optionoptions)
 - [Bundle](#bundle)
 - [Contributing](#contributing)
 - [License](#license)
@@ -187,8 +185,12 @@ Adds a positional argument to the command.
 
 - Name (string, required) is used to identify the argument.
 - Description (string, optional) is used in --help output.
-- Options (ArgumentOptions) can be provided to change the behaviour of the
-  argument.
+- Options can be provided to change the behaviour of the
+  argument. Object with any of these keys:
+  - `optional` (boolean) makes this argument optional.
+  - `variadic` (boolean) eagerly take all remaining arguments and parse as array.
+    Only valid for last argument.
+  - ...
 
 #### `command.option(name, description, options)`
 
@@ -197,7 +199,9 @@ Adds an option to the command.
 - Name (string, required) is used to identify the option.
 - Description (string, optional) is used in --help output.
 - Options (OptionOptions) can be provided to change the behaviour of the
-  option.
+  option. Object with any of these keys:
+  - `alias` (string or array of strings) alias(es) for the option key.
+  - ...
 
 #### `command.command(command)`
 
@@ -240,20 +244,6 @@ Handles output. Prints to stdout by default.
 #### `printer.error(Error)`
 
 Handles errors. Prints stack trace to stderr by default.
-
-### `ArgumentOptions`
-
-Object with any of these keys:
-
-- `optional` (boolean) makes this argument optional.
-- `variadic` (boolean) eagerly take all remaining arguments and parse as array.
-  Only valid for last argument.
-- ...
-
-### `OptionOptions`
-
-- `alias` (string or array of strings) alias(es) for the option key.
-- ...
 
 ## Bundle
 

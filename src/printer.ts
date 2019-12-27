@@ -1,5 +1,4 @@
 import { red } from 'ansi-colors'
-import { Argv } from 'yargs'
 
 export function printer() {
   return new Printer()
