@@ -129,19 +129,23 @@ export class Command<T = {}> {
     return this.args.filter(isCommand)
   }
 
+  private toModule() {
+    const module: CommandModule<{}, T> = {
+      command: this.getCommand(),
+      aliases: [],
+      describe: this.description || '',
+      builder: this.getBuilder(),
+      handler: this.getHandler()
+    }
+    return module
+  }
+
   /**
    * Calls the command() method on the passed in yargs instance and returns it.
    * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
    */
   toYargs(yargs: Argv) {
-    const module: CommandModule<{}, T> = {
-      command: this.getCommand(),
-      aliases: [],
-      describe: this.description,
-      builder: this.getBuilder(),
-      handler: this.getHandler()
-    }
-    return yargs.command(module)
+    return yargs.command(this.toModule())
   }
 
   /**

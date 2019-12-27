@@ -1,17 +1,35 @@
 import { command, Command, program } from '../src'
+import inquirer = require('inquirer')
 
-let output: jest.MockInstance<any, any>
+const prompt = jest.fn()
+
+let outputSpy: jest.MockInstance<any, any>
+let errorSpy: jest.MockInstance<any, any>
+let promptSpy: jest.MockInstance<any, any>
 
 beforeEach(() => {
-  output = jest.spyOn(console, 'log') //.mockImplementation(() => {})
+  outputSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+  errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  promptSpy = jest.spyOn(inquirer, 'prompt').mockImplementation(prompt)
 })
 
 afterEach(() => {
-  output.mockRestore()
+  outputSpy.mockRestore()
+  errorSpy.mockRestore()
+  promptSpy.mockRestore()
 })
 
 test('command should return new Command object', () => {
   expect(command('test')).toBeInstanceOf(Command)
+})
+
+test('with description', async () => {
+  const cmd = command('test', 'foo description')
+  await program()
+    .add(cmd)
+    .withHelp()
+    .run('help')
+  expect(outputSpy.mock.calls[0][0]).toContain('foo description')
 })
 
 test('variadic argument must be last', () => {
@@ -19,6 +37,19 @@ test('variadic argument must be last', () => {
   expect(() => {
     cmd.argument('reg')
   }).toThrowErrorMatchingSnapshot()
+})
+
+test('handler is required', async () => {
+  let error
+  try {
+    await program()
+      .fail(() => {}) // Custom fail function to prevent exiting
+      .add(command('test'))
+      .eval('test')
+  } catch (err) {
+    error = err
+  }
+  expect(error).toMatchSnapshot()
 })
 
 test('sync handler should be executed', done => {
@@ -51,24 +82,57 @@ test('default argument', async () => {
     .run('test bar')
 })
 
-// Argument tests
-test.skip('argument with description', async () => {
-  const cmd = command('test').argument('foo', 'foo description')
+test('argument with description', async () => {
+  const cmd = command('test').argument('foo', 'bar description')
   await program()
     .add(cmd)
     .withHelp()
-    .run('help')
-  expect(output.mock.calls).toContain('foo description')
+    .run('test --help')
+  expect(outputSpy.mock.calls[0][0]).toContain('bar description')
+})
+
+test('prompt for argument', async () => {
+  prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
+  const cmd = command('test')
+    .argument('foo', { prompt: true })
+    .action(args => {
+      expect(args.foo).toBe('bar')
+    })
+  await program()
+    .add(cmd)
+    .run('test')
+  expect(prompt).toHaveBeenCalled()
 })
 
 // Option tests
-test('single option', done => {
+test('default option', async () => {
   const cmd = command('test')
     .option('foo')
     .action(args => {
       expect(args.foo).toBe('bar')
-      done()
     })
-  const app = program().add(cmd)
-  app.run('test --foo bar')
+  await program()
+    .add(cmd)
+    .run('test --foo bar')
+})
+
+test('option with description', async () => {
+  const cmd = command('test').option('foo', 'bar description')
+  await program()
+    .add(cmd)
+    .withHelp()
+    .run('test --help')
+})
+
+test('prompt for option', async () => {
+  prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
+  const cmd = command('test')
+    .option('foo', { prompt: true })
+    .action(args => {
+      expect(args.foo).toBe('bar')
+    })
+  await program()
+    .add(cmd)
+    .run('test')
+  expect(prompt).toHaveBeenCalled()
 })

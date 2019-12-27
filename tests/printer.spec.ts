@@ -8,7 +8,15 @@ test('printer writes to stdout', async () => {
   spy.mockRestore()
 })
 
-test('printer writes to stderr', async () => {
+test('printer writes to stderr (string)', async () => {
+  const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  const printer = createPrinter()
+  printer.error('test')
+  expect(spy.mock.calls[0][0]).toContain('test')
+  spy.mockRestore()
+})
+
+test('printer writes to stderr (Error)', async () => {
   const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
   const printer = createPrinter()
   printer.error(new Error('test'))

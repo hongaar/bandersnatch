@@ -53,7 +53,7 @@ export class Runner<T = unknown> {
    * Retrieve the tail of the promise chain. Note that this isn't guaranteed to
    * be the 'real' tail, just the tail trackable from the Runners perspective.
    */
-  private promise() {
+  promise() {
     return this.ref
   }
 

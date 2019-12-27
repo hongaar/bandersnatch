@@ -92,7 +92,7 @@ export class Program {
           argv.__promise.then(resolve).catch(reject)
         } else {
           // Resolve with void if promise is not available, which is the case
-          // e.g. with --version and --help
+          // with e.g. --version and --help
           resolve()
         }
       })

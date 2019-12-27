@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`handler is required 1`] = `[Error: No handler defined for this command.]`;
+
 exports[`variadic argument must be last 1`] = `"Can't add more arguments."`;
