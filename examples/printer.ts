@@ -1,5 +1,5 @@
 import { program, command } from '../src'
-import { blue, bgMagenta } from 'ansi-colors'
+import { red, bgRed } from 'ansi-colors'
 
 // All failures vanish into the void
 const failWithMeaning = () => process.exit(42)
@@ -10,7 +10,7 @@ const printer = {
     str && console.log(str)
   },
   error(error: any) {
-    const str = `${bgMagenta('Oh noes!')}\n${blue(error)}`
+    const str = `${red('‼')} ${bgRed(error)}`
     console.error(str)
   }
 }

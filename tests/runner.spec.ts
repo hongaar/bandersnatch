@@ -1,7 +1,5 @@
 import { runner as createRunner } from '../src'
 
-// TODO runner seems to be broken
-
 test('eval (resolves)', () => {
   expect(
     createRunner(resolve => {
@@ -42,15 +40,18 @@ test('catch', () => {
   ).resolves.toBe('bar')
 })
 
-test('finally', () => {
-  expect(
-    createRunner(resolve => {
-      resolve('test')
+test('finally', async () => {
+  let counter = 0
+  const result = await createRunner(resolve => {
+    resolve('test')
+  })
+    .eval()
+    .finally(() => {
+      counter++
     })
-      .eval()
-      .finally(() => 'foo')
-      .promise()
-  ).resolves.toBe('foo')
+    .promise()
+  expect(result).toBe('test')
+  expect(counter).toBe(1)
 })
 
 test('uses custom printer (resolves)', async () => {

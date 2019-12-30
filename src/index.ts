@@ -1,4 +1,5 @@
 export * from './argument'
+export * from './autocompleter'
 export * from './command'
 export * from './option'
 export * from './printer'

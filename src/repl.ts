@@ -1,65 +1,65 @@
-import { createPromptModule, PromptModule } from 'inquirer'
-import { Program } from './program'
+import nodeRepl, { REPLServer } from 'repl'
+import { CompleterResult } from 'readline'
+import { Context } from 'vm'
+import { parseArgsStringToArgv } from 'string-argv'
 import { red } from 'ansi-colors'
+import { Program } from './program'
+import { autocompleter, Autocompleter } from './autocompleter'
 
-export function repl(program: Program, prefix: string = '>') {
+export function repl(program: Program, prefix: string = '> ') {
   return new Repl(program, prefix)
 }
 
 export class Repl {
-  private program: Program
-  private prefix: string
-  private prompt: PromptModule
+  private server?: REPLServer
   private lastError: string | null = null
+  private autocompleter: Autocompleter
 
-  constructor(program: Program, prefix: string = '>') {
-    this.program = program
-    this.prefix = prefix
-    this.prompt = createPromptModule()
+  constructor(private program: Program, private prompt: string = '> ') {
+    this.autocompleter = autocompleter(program)
   }
 
-  async loop() {
-    await this.tick()
-    await this.loop()
+  async start() {
+    this.server = nodeRepl.start({
+      prompt: this.prompt,
+      eval: this.eval.bind(this),
+      completer: this.completer.bind(this),
+      ignoreUndefined: true
+    })
   }
 
   setError(err: string) {
-    // Only display one error per tick
-    if (!this.lastError) {
-      this.lastError = err
-      console.error(red(err))
-    }
+    this.lastError = err
   }
 
-  private async tick() {
-    const stdin = await this.read()
+  private async completer(
+    line: string,
+    cb: (err?: null | Error, result?: CompleterResult) => void
+  ) {
+    const argv = parseArgsStringToArgv(line)
+    const current = argv.slice(-1).toString()
+    const completions = await this.autocompleter.completions(argv)
+    let hits = completions.filter(completion => completion.startsWith(current))
+
+    // Add trailing space to each hit
+    hits = hits.map(hit => `${hit} `)
+
+    // Show all completions if none found
+    cb(null, [hits.length ? hits : completions, current])
+  }
+
+  private async eval(
+    line: string,
+    context: Context,
+    file: string,
+    cb: (err: Error | null, result: any) => void
+  ) {
     this.lastError = null
-    await this.eval(stdin)
-  }
+    const result = await this.program.run(line.trim())
+    if (this.lastError) {
+      console.error(red(this.lastError))
+    }
 
-  /**
-   * Prompt the user for a command.
-   */
-  private async read() {
-    // Inquirers default behaviour is to prefix the message with a space.
-    // See https://github.com/SBoudrias/Inquirer.js/issues/677
-    const answers = await this.prompt([
-      {
-        type: 'input',
-        name: 'stdin',
-        message: this.prefix,
-        prefix: '',
-        suffix: ''
-      }
-    ])
-    return answers.stdin as string
-  }
-
-  private async eval(stdin: string) {
-    return this.program.run(stdin)
-  }
-
-  private async print() {
-    // Here just for completeness.
+    cb(null, result)
   }
 }

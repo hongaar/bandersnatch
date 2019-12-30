@@ -43,7 +43,6 @@ intuitive to work with.
     - [`program.eval(command)`](#programevalcommand)
     - [`program.run(command)`](#programruncommand)
     - [`program.repl()`](#programrepl)
-    - [`program.yargsInstance()`](#programyargsinstance)
   - [`command(name, description)`](#commandname-description)
     - [`command.argument(name, description, options)`](#commandargumentname-description-options)
     - [`command.option(name, description, options)`](#commandoptionname-description-options)
@@ -51,13 +50,15 @@ intuitive to work with.
     - [`command.default()`](#commanddefault)
     - [`command.action(function)`](#commandactionfunction)
   - [`runner`](#runner)
+    - [`runner.print(printer)`](#runnerprintprinter)
     - [`runner.then(function)`](#runnerthenfunction)
     - [`runner.catch(function)`](#runnercatchfunction)
-    - [`runner.print(printer)`](#runnerprintprinter)
+    - [`runner.print(printer)`](#runnerprintprinter-1)
   - [`printer`](#printer)
     - [`printer.write(string)`](#printerwritestring)
     - [`printer.error(Error)`](#printererrorerror)
 - [Bundle](#bundle)
+- [Todo](#todo)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -77,20 +78,60 @@ import { program, command } from 'bandersnatch'
 
 const echo = command('echo', 'Echo something in the terminal')
   .argument('words', 'Say some kind words', { variadic: true })
-  .action(args => args.words.join(' '))
+  .action(args => args.words.map(word => `${word}!`).join(' '))
 
 program()
-  .add(echo)
+  .default(echo)
   .run()
 ```
 
 And run with:
 
 ```bash
-ts-node echo.ts
+$ ts-node echo.ts Hello world
+Hello! world!
 ```
 
 _👆 Assuming you have `ts-node` installed._
+
+Let's dive right into some more features. This simple app has a single default
+command which pretty prints JSON input. When invoked without input, it'll show
+an interactive prompt:
+
+```ts
+import { program, command } from '../src'
+
+const app = program('JSON pretty printer').default(
+  command()
+    .argument('json', 'Raw JSON input as string')
+    .option('color', 'Enables colorized output', { type: 'boolean' })
+    .action(async args => {
+      const json = JSON.parse(args.json)
+      args.color
+        ? console.dir(json)
+        : console.log(JSON.stringify(json, undefined, 4))
+    })
+)
+
+process.argv.slice(2).length ? app.run() : app.repl()
+```
+
+And run with:
+
+```bash
+$ ts-node pretty.ts
+> [0,1,1,2,3,5]
+[
+    0,
+    1,
+    1,
+    2,
+    3,
+    5
+]
+```
+
+Now, try typing `[0,1,1,2,3,5] --c` and then hit `TAB`. 😊
 
 ℹ More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples) directory.
 
@@ -167,23 +208,26 @@ program()
 
 Start a read-eval-print loop.
 
-#### `program.yargsInstance()`
-
-Returns internal `yargs` instance. Use with caution.
+```ts
+program()
+  .add(command(...))
+  .repl()
+```
 
 ### `command(name, description)`
 
 Creates a new command.
 
-- Name (string, optional) is used to invoke a command. When
-  not used as default command, name is required.
+- Name (string, optional) is used to invoke a command. When not used as default
+  command, name is required.
 - Description (string, optional) is used in --help output.
 
 #### `command.argument(name, description, options)`
 
 Adds a positional argument to the command.
 
-- Name (string, required) is used to identify the argument.
+- Name (string, required) is used to identify the argument. Can also be an array
+  of strings, in which case subsequent items will be treated as command aliases.
 - Description (string, optional) is used in --help output.
 - Options can be provided to change the behaviour of the
   argument. Object with any of these keys:
@@ -219,6 +263,30 @@ object containing key/value pairs of parsed arguments and options.
 ### `runner`
 
 Returned from `program().eval()`, can't be invoked directly.
+
+#### `runner.print(printer)`
+
+Prints resolved and rejected command executions to the terminal. Uses the
+built-in printer if invoked without arguments.
+
+```ts
+const runner = program()
+  .default(
+    command().action(() => {
+      throw new Error('Test customer printer')
+    })
+  )
+  .eval()
+
+runner.print({
+  write(str: any) {
+    str && console.log(str)
+  },
+  error(error: any) {
+    console.error(`${red('‼')} ${bgRed(error)}`)
+  }
+})
+```
 
 #### `runner.then(function)`
 
@@ -398,7 +466,15 @@ Run `yarn bundle` and then `./echo --help`. 💪
 
 Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
+## Todo
+
+- [ ] Better code coverage
+- [ ] Choices autocompletion in REPL mode
+
 ## Contributing
+
+Contributions are very welcome. Please note this project is in a very early
+stage and the roadmap is a bit foggy still...
 
 ```bash
 # Clone and install
@@ -409,6 +485,8 @@ yarn
 # Run an example
 yarn start examples/simple.ts
 ```
+
+Please use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## License
 

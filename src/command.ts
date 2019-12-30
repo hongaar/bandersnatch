@@ -25,20 +25,21 @@ function isCommand(obj: Argument | Option | Command): obj is Command {
   return obj.constructor.name === 'Command'
 }
 
-export function command<T = {}>(command?: string, description?: string) {
+export function command<T = {}>(
+  command?: string | string[],
+  description?: string
+) {
   return new Command<T>(command, description)
 }
 
 export class Command<T = {}> {
-  private command?: string
-  private description?: string
   private args: (Argument | Option | Command)[] = []
   private handler?: HandlerFn<T>
 
-  constructor(command?: string, description?: string) {
-    this.command = command
-    this.description = description
-  }
+  constructor(
+    private command?: string | string[],
+    private description?: string
+  ) {}
 
   /*
    * This is shorthand for .add(argument(...))
@@ -162,7 +163,9 @@ export class Command<T = {}> {
       .join(' ')
 
     if (args !== '') {
-      return `${this.command} ${args}`
+      return Array.isArray(this.command)
+        ? [`${this.command[0]} ${args}`, ...this.command.slice(1)]
+        : `${this.command} ${args}`
     }
 
     return this.command

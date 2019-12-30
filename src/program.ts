@@ -1,5 +1,5 @@
 import { Argv } from 'yargs'
-import yargs from 'yargs/yargs'
+import createYargs from 'yargs/yargs'
 import { yellow } from 'ansi-colors'
 import { Command, command } from './command'
 import { Repl, repl } from './repl'
@@ -7,63 +7,94 @@ import { Arguments } from './command'
 import { isPromise } from './utils'
 import { runner, Runner } from './runner'
 
-export function program(description?: string) {
-  return new Program(description)
-}
-
 type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
 
+type ProgramOptions = {
+  help?: boolean
+  version?: boolean
+  fail?: FailFn
+  prompt?: string
+  exitOnError?: boolean
+}
+
+export function program(description?: string, options: ProgramOptions = {}) {
+  return new Program(description, options)
+}
+
 export class Program {
-  private yargs = yargs()
-  private promptPrefix: string | undefined
-  private failFn?: FailFn
+  private commands: Command<any>[] = []
   private replInstance?: Repl
   private runnerInstance?: Runner
 
-  constructor(description?: string) {
-    if (description) {
-      this.yargs.usage(description)
-    }
+  constructor(
+    private description?: string,
+    private options: ProgramOptions = {}
+  ) {}
 
-    // Some defaults
-    this.yargs.help(false)
-    this.yargs.version(false)
-    this.yargs.recommendCommands()
-    this.yargs.strict()
-    this.yargs.demandCommand()
+  /**
+   * Create a new yargs instance. Not intended for public use.
+   */
+  createYargsInstance() {
+    const yargs = createYargs()
+
+    this.description && yargs.usage(this.description)
+
+    // Help accepts boolean
+    yargs.help(!!this.options.help)
+
+    // Version must be false or undefined
+    !!this.options.version ? yargs.version() : yargs.version(false)
+
+    // Non-configurable options
+    yargs.recommendCommands()
+    yargs.strict()
+    yargs.demandCommand()
+
+    // Hidden completion command
+    yargs.completion('completion', false)
 
     // Custom fail function.
     // TODO current yargs types doesn't include the third parameter.
-    this.yargs.fail(this.failHandler.bind(this) as any)
+    yargs.fail(this.failHandler.bind(this) as any)
+
+    // Exit on errors?
+    yargs.exitProcess(!!this.options.exitOnError)
+
+    // Add commands
+    this.commands.forEach(command => {
+      command.toYargs(yargs)
+    })
+
+    return yargs
   }
 
   add<T>(command: Command<T>) {
-    command.toYargs(this.yargs)
+    this.commands.push(command)
     return this
   }
 
   default<T>(command: Command<T>) {
-    command.default().toYargs(this.yargs)
+    this.commands.push(command.default())
     return this
   }
 
   prompt(prompt: string) {
-    this.promptPrefix = prompt
+    this.options.prompt = prompt
     return this
   }
 
   withHelp() {
-    this.yargs.help(true)
+    this.options.help = true
     return this
   }
 
   withVersion() {
-    this.yargs.version()
+    this.options.version = true
     return this
   }
 
   fail(fn: FailFn) {
-    this.failFn = fn
+    this.options.fail = fn
     return this
   }
 
@@ -76,26 +107,30 @@ export class Program {
     // Set executor to promise resolving to the return value of the command
     // handler.
     this.runnerInstance = runner((resolve, reject) => {
-      this.yargs.parse(cmd, {}, (err, argv: Arguments, output) => {
-        // Output is a string for built-in commands like --version and --help
-        if (output) {
-          console.log(output)
-        }
+      this.createYargsInstance().parse(
+        cmd,
+        {},
+        (err, argv: Arguments, output) => {
+          // Output is a string for built-in commands like --version and --help
+          if (output) {
+            console.log(output)
+          }
 
-        // TODO When is err defined?
-        if (err) {
-          console.error(err)
-        }
+          // TODO when is err defined?
+          if (err) {
+            console.error(err)
+          }
 
-        if (isPromise(argv.__promise)) {
-          // Delegate resolve/reject to promise returned from handler
-          argv.__promise.then(resolve).catch(reject)
-        } else {
-          // Resolve with void if promise is not available, which is the case
-          // with e.g. --version and --help
-          resolve()
+          if (isPromise(argv.__promise)) {
+            // Delegate resolve/reject to promise returned from handler
+            argv.__promise.then(resolve).catch(reject)
+          } else {
+            // Resolve with void if promise is not available, which is the case
+            // with e.g. --version and --help
+            resolve()
+          }
         }
-      })
+      )
     })
 
     return this.runnerInstance.eval()
@@ -112,10 +147,10 @@ export class Program {
    * Run event loop which reads command from stdin.
    */
   repl() {
-    this.replInstance = repl(this, this.promptPrefix)
+    this.replInstance = repl(this, this.options.prompt)
 
     // Don't exit on errors.
-    this.yargs.exitProcess(false)
+    this.options.exitOnError = false
 
     // Add exit command
     this.add(
@@ -124,28 +159,24 @@ export class Program {
       })
     )
 
-    this.replInstance.loop()
-  }
-
-  /**
-   * Allow tweaking the underlaying yargs instance.
-   */
-  yargsInstance() {
-    return this.yargs
+    this.replInstance.start()
   }
 
   private failHandler(msg: string, err: Error, yargs: Argv) {
+    // TODO needs more use-cases: only do something when msg is set, and have
+    // errors always handled in the runner?
+
     if (this.replInstance) {
-      // In case we're in a REPL session, we don't want to exit the process
-      // when an error occurs.
-      this.replInstance.setError(msg ?? err.stack ?? err.message)
+      // In case we're in a REPL session, forward the message which may
+      // originate from yargs. Errors are handled in the runner.
+      msg && this.replInstance.setError(msg)
     } else {
       const args = yargs.argv
       const usage = (yargs.help() as unknown) as string
       const cb = () => {
-        if (this.failFn) {
+        if (this.options.fail) {
           // Call custom fail function.
-          this.failFn(msg, err, args, usage)
+          this.options.fail(msg, err, args, usage)
         } else {
           // Call default fail function.
           this.defaultFailFn(msg, err, args, usage)
