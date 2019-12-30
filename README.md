@@ -32,6 +32,10 @@ intuitive to work with.
 
 
 - [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [Simple](#simple)
+  - [REPL](#repl)
+  - [Prompt](#prompt)
 - [API](#api)
   - [`program(description)`](#programdescription)
     - [`program.add(command)`](#programaddcommand)
@@ -66,10 +70,14 @@ intuitive to work with.
 
 ## Getting started
 
+### Installation
+
 ```bash
 # Add dependency
 yarn add bandersnatch
 ```
+
+### Simple
 
 Now create a simple app `echo.ts`:
 
@@ -94,12 +102,14 @@ Hello! world!
 
 _👆 Assuming you have `ts-node` installed._
 
+### REPL
+
 Let's dive right into some more features. This simple app has a single default
 command which pretty prints JSON input. When invoked without input, it'll show
 an interactive prompt:
 
 ```ts
-import { program, command } from '../src'
+import { program, command } from 'bandersnatch'
 
 const app = program('JSON pretty printer').default(
   command()
@@ -132,6 +142,40 @@ $ ts-node pretty.ts
 ```
 
 Now, try typing `[0,1,1,2,3,5] --c` and then hit `TAB`. 😊
+
+### Prompt
+
+Bandersnatch can also ask a user for input if arguments were not provided on the
+command line:
+
+```ts
+import { program, command } from 'bandersnatch'
+
+const cmd = command()
+  .argument('name', "What's your name?", {
+    prompt: true
+  })
+  .argument('question', "What's your question?", {
+    prompt: true
+  })
+  .action(args => `Hi ${args.name}, the answer to "${args.question}" is 42.`)
+
+program('Ask me anything')
+  .default(cmd)
+  .run()
+```
+
+And run with:
+
+```bash
+$ ts-node ama.ts --name Joram
+? What's your question? What is everything in ASCII?
+Hi Joram, the answer to "What is everything in ASCII?" is 42.
+```
+
+When you omit the `--name` part, the program will also prompt for it.
+
+---
 
 ℹ More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples) directory.
 

@@ -1,19 +1,14 @@
 import { program, command } from '../src'
 
-const cmd = command('run', 'Take a survey')
-  .argument('question1', 'First question', {
+const cmd = command()
+  .argument('name', "What's your name?", {
     prompt: true
   })
-  .argument('question2', 'Second question', {
-    prompt: "What's your favourite food?"
+  .argument('question', "What's your question?", {
+    prompt: true
   })
-  .action(args => {
-    console.log(args)
-  })
+  .action(args => `Hi ${args.name}, the answer to "${args.question}" is 42.`)
 
-program('A survey')
+program('Ask me anything')
   .default(cmd)
   .run()
-  .then(() => {
-    console.log('Bye!')
-  })
