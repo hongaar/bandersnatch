@@ -18,12 +18,11 @@
 - 🤯 Fully typed
 - ⚡ Uses the power of `yargs` & `inquirer`
 
-It's built in TypeScript and while it's of course possible to write your app
-with JavaScript, you're missing out on some very handy type hints.
+It's built-in TypeScript to provide you with some very handy type hints.
 
-We don't have a generator, auto-updater and we don't make any decisions for you
-(apart from using inquirer for prompts). This makes bandersnatch pretty easy and
-intuitive to work with.
+Bandersnatch is not designed to be used as a full CLI framework like oclif,
+and tries to minimize the assumptions made about your program to make
+bandersnatch easy and intuitive to work with.
 
 ## Table of contents
 
@@ -36,6 +35,8 @@ intuitive to work with.
   - [Simple](#simple)
   - [REPL](#repl)
   - [Prompt](#prompt)
+- [Principles](#principles)
+  - [Output](#output)
 - [API](#api)
   - [`program(description)`](#programdescription)
     - [`program.add(command)`](#programaddcommand)
@@ -179,6 +180,23 @@ When you omit the `--name` part, the program will also prompt for it.
 
 ℹ More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples) directory.
 
+## Principles
+
+In general, bandersnatch is designed to create [twelve-factor apps](https://12factor.net/).
+
+### Output
+
+Programs are encouraged to use the following conventions with regards to output,
+based on the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdin.html).
+
+- When a program is designed to be used in a scripting environment and its
+  output should be available as stdin for other programs, use stdout for
+  printing output and stderr for diagnostic output (e.g. progress and/or error
+  messages).
+- When a program is designed to be used as a service (twelve-factor app), use
+  stdout/stderr as a logging mechanism for informative messages/error and
+  diagnostic messages.
+
 ## API
 
 All methods are chainable unless the docs mention otherwise.
@@ -211,18 +229,18 @@ Use this prompt prefix (string, required) when in REPL mode.
 
 #### `program.withHelp()`
 
-Adds `help` and `--help` to program which displays program usage information.
+Adds `help` and `--help` to the program which displays program usage information.
 
 #### `program.withVersion()`
 
-Adds `version` and `--version` to program which displays program version from
+Adds `version` and `--version` to the program which displays program version from
 package.json.
 
 #### `program.fail(function)`
 
-Use custom error handler. Function will be called with 4 arguments:
+Use a custom error handler. The function will be called with 4 arguments:
 
-- Message (string) will contain internal message about e.g. missing arguments
+- Message (string) will contain an internal message about e.g. missing arguments
 - Error (Error) is only set when an error was explicitly thrown
 - Args (array) contains program arguments
 - Usage (string) contains usage information from --help
@@ -262,8 +280,8 @@ program()
 
 Creates a new command.
 
-- Name (string, optional) is used to invoke a command. When not used as default
-  command, name is required.
+- Name (string, optional) is used to invoke a command. When not used as the
+  default command, a name is required.
 - Description (string, optional) is used in --help output.
 
 #### `command.argument(name, description, options)`
@@ -273,11 +291,11 @@ Adds a positional argument to the command.
 - Name (string, required) is used to identify the argument. Can also be an array
   of strings, in which case subsequent items will be treated as command aliases.
 - Description (string, optional) is used in --help output.
-- Options can be provided to change the behaviour of the
+- Options can be provided to change the behavior of the
   argument. Object with any of these keys:
   - `optional` (boolean) makes this argument optional.
-  - `variadic` (boolean) eagerly take all remaining arguments and parse as array.
-    Only valid for last argument.
+  - `variadic` (boolean) eagerly take all remaining arguments and parse as an array.
+    Only valid for the last argument.
   - ...
 
 #### `command.option(name, description, options)`
@@ -286,7 +304,7 @@ Adds an option to the command.
 
 - Name (string, required) is used to identify the option.
 - Description (string, optional) is used in --help output.
-- Options (OptionOptions) can be provided to change the behaviour of the
+- Options (OptionOptions) can be provided to change the behavior of the
   option. Object with any of these keys:
   - `alias` (string or array of strings) alias(es) for the option key.
   - ...
@@ -301,7 +319,7 @@ Mark command as default. Default commands are executed immediately and don't req
 
 #### `command.action(function)`
 
-Function to execute when command is invoked. Is called with one argument: an
+Function to execute when the command is invoked. Is called with one argument: an
 object containing key/value pairs of parsed arguments and options.
 
 ### `runner`
@@ -334,11 +352,11 @@ runner.print({
 
 #### `runner.then(function)`
 
-Function is invoked when command handler resolves.
+Function is invoked when the command handler resolves.
 
 #### `runner.catch(function)`
 
-Function is invoked when command handler rejects.
+Function is invoked when the command handler rejects.
 
 #### `runner.print(printer)`
 
@@ -439,7 +457,7 @@ Add these scripts to your `package.json`:
 
 And compile now by running `yarn build`.
 
-Next, we need to create a simple entrypoint `echo.js`, which can be run with
+Next, we need to create a simple entry point `echo.js`, which can be run with
 node:
 
 ```bash

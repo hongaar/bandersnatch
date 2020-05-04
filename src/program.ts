@@ -6,17 +6,53 @@ import { Repl, repl } from './repl'
 import { Arguments } from './command'
 import { isPromise } from './utils'
 import { runner, Runner } from './runner'
+import { Printer } from './printer'
 
-type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
+type ErrorHandler = (error: Error | unknown, args: Arguments) => void
+
+type SuccessHandler = (resolved: unknown) => void
 
 type ProgramOptions = {
+  /**
+   * Whether or not to add a global help command that displays an overview of
+   * commands. Can also be enabled by calling `program().withHelp()`.
+   *
+   * Defaults to `false`.
+   */
   help?: boolean
+
+  /**
+   * Whether or not to add a global version command that displays the version as
+   * specified in the package.json file. Can also be enabled by calling
+   * `program().withVersion()`.
+   *
+   * Defaults to `false`.
+   */
   version?: boolean
-  fail?: FailFn
+
+  /**
+   * Specifies a custom error handler. Can also be set by calling
+   * `program().onError()`.
+   */
+  errorHandler?: ErrorHandler
+
+  /**
+   * Specifies a custom success handler. Can also be set by calling
+   * `program().onSuccess()`.
+   */
+  successHandler?: SuccessHandler
+
+  /**
+   * Sets a custom REPL prompt.
+   *
+   * Defaults to `>`.
+   */
   prompt?: string
-  exitOnError?: boolean
 }
 
+/**
+ * Creates a new bandersnatch program.
+ */
 export function program(description?: string, options: ProgramOptions = {}) {
   return new Program(description, options)
 }
@@ -32,9 +68,12 @@ export class Program {
   ) {}
 
   /**
-   * Create a new yargs instance. Not intended for public use.
+   * Create a new yargs instance. This method may change at any time, not
+   * intended for public use.
+   *
+   * @private
    */
-  createYargsInstance() {
+  public createYargsInstance() {
     const yargs = createYargs()
 
     this.description && yargs.usage(this.description)
@@ -54,11 +93,10 @@ export class Program {
     yargs.completion('completion', false)
 
     // Custom fail function.
-    // TODO current yargs types doesn't include the third parameter.
-    yargs.fail(this.failHandler.bind(this) as any)
+    yargs.fail(this.failHandler.bind(this))
 
-    // Exit on errors?
-    yargs.exitProcess(!!this.options.exitOnError)
+    // In case we're in a REPL session, do not exit on errors.
+    yargs.exitProcess(!this.replInstance)
 
     // Add commands
     this.commands.forEach(command => {
@@ -68,40 +106,67 @@ export class Program {
     return yargs
   }
 
-  add<T>(command: Command<T>) {
+  /**
+   * Adds a new command to the program.
+   */
+  public add<T>(command: Command<T>) {
     this.commands.push(command)
     return this
   }
 
-  default<T>(command: Command<T>) {
+  /**
+   * Adds a new command to the program and marks it as the default command.
+   */
+  public default<T>(command: Command<T>) {
     this.commands.push(command.default())
     return this
   }
 
-  prompt(prompt: string) {
-    this.options.prompt = prompt
-    return this
-  }
-
-  withHelp() {
+  /**
+   * Adds a global help command that displays an overview of commands.
+   */
+  public withHelp() {
     this.options.help = true
     return this
   }
 
-  withVersion() {
+  /**
+   * Adds a global version command that displays the version as specified in the
+   * package.json file.
+   */
+  public withVersion() {
     this.options.version = true
     return this
   }
 
-  fail(fn: FailFn) {
-    this.options.fail = fn
+  /**
+   * Sets a custom REPL prompt.
+   */
+  public prompt(prompt: string) {
+    this.options.prompt = prompt
+    return this
+  }
+
+  /**
+   * Specifies a custom error handler.
+   */
+  public onError(fn: ErrorHandler) {
+    this.options.errorHandler = fn
+    return this
+  }
+
+  /**
+   * Specifies a custom success handler.
+   */
+  public onSuccess(fn: SuccessHandler) {
+    this.options.successHandler = fn
     return this
   }
 
   /**
    * Evaluate command (or process.argv) and return runner instance.
    */
-  eval(command?: string | ReadonlyArray<string>) {
+  public eval(command?: string | ReadonlyArray<string>) {
     const cmd = command || process.argv.slice(2)
 
     // Set executor to promise resolving to the return value of the command
@@ -111,12 +176,24 @@ export class Program {
         cmd,
         {},
         (err, argv: Arguments, output) => {
-          // Output is a string for built-in commands like --version and --help
+          /**
+           * From the yargs docs:
+           * > any text that would have been output by yargs to the terminal,
+           * > had a callback not been provided.
+           * http://yargs.js.org/docs/#api-parseargs-context-parsecallback
+           *
+           * Seems that this is primarily used for built-in commands like
+           * --version and --help.
+           */
           if (output) {
             console.log(output)
           }
 
-          // TODO when is err defined?
+          /**
+           * From the yargs docs:
+           * > Populated if any validation errors raised while parsing.
+           * http://yargs.js.org/docs/#api-parseargs-context-parsecallback
+           */
           if (err) {
             console.error(err)
           }
@@ -133,24 +210,34 @@ export class Program {
       )
     })
 
+    // Execute the runner.
     return this.runnerInstance.eval()
   }
 
   /**
    * Run a command (or process.argv) and print output.
    */
-  run(command?: string | ReadonlyArray<string>) {
-    return this.eval(command).print()
+  public run(
+    commandOrPrinter?: string | string[] | Printer,
+    printer?: Printer
+  ) {
+    // Shift arguments
+    if (
+      typeof commandOrPrinter !== 'string' &&
+      !Array.isArray(commandOrPrinter)
+    ) {
+      printer = commandOrPrinter
+      commandOrPrinter = undefined
+    }
+
+    return this.eval(commandOrPrinter).print(printer)
   }
 
   /**
    * Run event loop which reads command from stdin.
    */
-  repl() {
+  public repl() {
     this.replInstance = repl(this, this.options.prompt)
-
-    // Don't exit on errors.
-    this.options.exitOnError = false
 
     // Add exit command
     this.add(
@@ -160,6 +247,13 @@ export class Program {
     )
 
     this.replInstance.start()
+  }
+
+  /**
+   * When invoked with arguments, run the program, otherwise start repl loop.
+   */
+  public runOrRepl() {
+    process.argv.slice(2).length ? this.run() : this.repl()
   }
 
   private failHandler(msg: string, err: Error, yargs: Argv) {
@@ -174,12 +268,12 @@ export class Program {
       const args = yargs.argv
       const usage = (yargs.help() as unknown) as string
       const cb = () => {
-        if (this.options.fail) {
+        if (this.options.errorHandler) {
           // Call custom fail function.
-          this.options.fail(msg, err, args, usage)
+          this.options.errorHandler(msg, err, args, usage)
         } else {
           // Call default fail function.
-          this.defaultFailFn(msg, err, args, usage)
+          this.errorHandler(msg, err, args, usage)
         }
       }
 
@@ -191,7 +285,7 @@ export class Program {
     }
   }
 
-  private defaultFailFn: FailFn = (msg, err, args, usage) => {
+  private errorHandler: ErrorHandler = (error, args) => {
     if (msg) {
       console.error(yellow(msg))
     }

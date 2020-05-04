@@ -36,13 +36,13 @@ export class Repl {
     line: string,
     cb: (err?: null | Error, result?: CompleterResult) => void
   ) {
+    const addSpace = (str: string) => `${str} `
     const argv = parseArgsStringToArgv(line)
     const current = argv.slice(-1).toString()
-    const completions = await this.autocompleter.completions(argv)
+    const completions = (await this.autocompleter.completions(argv)).map(
+      addSpace
+    )
     let hits = completions.filter(completion => completion.startsWith(current))
-
-    // Add trailing space to each hit
-    hits = hits.map(hit => `${hit} `)
 
     // Show all completions if none found
     cb(null, [hits.length ? hits : completions, current])

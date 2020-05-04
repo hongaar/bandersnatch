@@ -82,8 +82,8 @@ export class Command<T = {}> {
   }
 
   /**
-   * This is the base method for adding arguments and options, but it doesn't provide
-   * type hints. Use .argument() and .option() instead.
+   * This is the base method for adding arguments, options and commands, but it
+   * doesn't provide type hints. Use .argument() and .option() instead.
    */
   add(obj: Argument | Option | Command) {
     if (isArgument(obj)) {
@@ -130,6 +130,14 @@ export class Command<T = {}> {
     return this.args.filter(isCommand)
   }
 
+  /**
+   * Calls the command() method on the passed in yargs instance and returns it.
+   * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
+   */
+  public toYargs(yargs: Argv) {
+    return yargs.command(this.toModule())
+  }
+
   private toModule() {
     const module: CommandModule<{}, T> = {
       command: this.getCommand(),
@@ -139,14 +147,6 @@ export class Command<T = {}> {
       handler: this.getHandler()
     }
     return module
-  }
-
-  /**
-   * Calls the command() method on the passed in yargs instance and returns it.
-   * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
-   */
-  toYargs(yargs: Argv) {
-    return yargs.command(this.toModule())
   }
 
   /**
@@ -191,7 +191,7 @@ export class Command<T = {}> {
   }
 
   /**
-   * Returns the command handler
+   * Wraps the actual command handler to insert prompt and async handler logic.
    */
   private getHandler() {
     return (argv: Arguments<T>) => {
@@ -204,6 +204,8 @@ export class Command<T = {}> {
       }
 
       chain = chain.then(async args => {
+        // @todo check if command has sub-commands, and if so, do not throw an
+        // error but maybe show help instead?
         if (!this.handler) {
           throw new Error('No handler defined for this command.')
         }
@@ -219,12 +221,18 @@ export class Command<T = {}> {
     }
   }
 
+  /**
+   * Returns an array of arguments and options which should be prompted, because
+   * they are promptable (isPromptable() returned true) and they are not
+   * provided in the args passed in to this function.
+   */
   private getQuestions<T = {}>(args: T) {
     // If we need to prompt for things, fill questions array
     return [...this.getArguments(), ...this.getOptions()].reduce(
       (questions, arg) => {
         const name = arg.getName()
         const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
+        // @todo How can we force prompting when default was used?
         if (!presentInArgs && arg.isPromptable()) {
           questions.push({
             name,
