@@ -45,24 +45,15 @@ bandersnatch easy and intuitive to work with.
     - [`program.prompt(prompt)`](#programpromptprompt)
     - [`program.withHelp()`](#programwithhelp)
     - [`program.withVersion()`](#programwithversion)
-    - [`program.fail(function)`](#programfailfunction)
-    - [`program.eval(command)`](#programevalcommand)
     - [`program.run(command)`](#programruncommand)
     - [`program.repl()`](#programrepl)
+    - [`program.runOrRepl()`](#programrunorrepl)
   - [`command(name, description)`](#commandname-description)
     - [`command.argument(name, description, options)`](#commandargumentname-description-options)
     - [`command.option(name, description, options)`](#commandoptionname-description-options)
     - [`command.command(command)`](#commandcommandcommand)
     - [`command.default()`](#commanddefault)
     - [`command.action(function)`](#commandactionfunction)
-  - [`runner`](#runner)
-    - [`runner.print(printer)`](#runnerprintprinter)
-    - [`runner.then(function)`](#runnerthenfunction)
-    - [`runner.catch(function)`](#runnercatchfunction)
-    - [`runner.print(printer)`](#runnerprintprinter-1)
-  - [`printer`](#printer)
-    - [`printer.write(string)`](#printerwritestring)
-    - [`printer.error(Error)`](#printererrorerror)
 - [Bundle](#bundle)
 - [Todo](#todo)
 - [Contributing](#contributing)
@@ -81,25 +72,23 @@ yarn add bandersnatch
 
 ### Simple
 
-Now create a simple app `echo.ts`:
+Now create a simple app `concat.ts`:
 
 ```ts
 import { program, command } from 'bandersnatch'
 
-const echo = command('echo', 'Echo something in the terminal')
-  .argument('words', 'Say some kind words', { variadic: true })
-  .action(args => args.words.map(word => `${word}!`).join(' '))
+const concat = command('concat', 'Concatenate input)
+  .argument('input', 'List of inputs to concatenate', { variadic: true })
+  .action((args) => console.log(args.input.join(', '))
 
-program()
-  .default(echo)
-  .run()
+program().default(concat).run()
 ```
 
 And run with:
 
 ```bash
-$ ts-node echo.ts Hello world
-Hello! world!
+$ ts-node concat.ts Hello world
+Hello, world
 ```
 
 _👆 Assuming you have `ts-node` installed._
@@ -117,7 +106,7 @@ const app = program('JSON pretty printer').default(
   command()
     .argument('json', 'Raw JSON input as string')
     .option('color', 'Enables colorized output', { type: 'boolean' })
-    .action(async args => {
+    .action(async (args) => {
       const json = JSON.parse(args.json)
       args.color
         ? console.dir(json)
@@ -125,7 +114,7 @@ const app = program('JSON pretty printer').default(
     })
 )
 
-process.argv.slice(2).length ? app.run() : app.repl()
+app.runOrRepl()
 ```
 
 And run with:
@@ -155,24 +144,24 @@ import { program, command } from 'bandersnatch'
 
 const cmd = command()
   .argument('name', "What's your name?", {
-    prompt: true
+    prompt: true,
   })
   .argument('question', "What's your question?", {
-    prompt: true
+    prompt: true,
   })
-  .action(args => `Hi ${args.name}, the answer to "${args.question}" is 42.`)
+  .action((args) => {
+    console.log(`Hi ${args.name}, the answer to "${args.question}" is 42.`)
+  })
 
-program('Ask me anything')
-  .default(cmd)
-  .run()
+program('Ask me anything').default(cmd).run()
 ```
 
 And run with:
 
 ```bash
 $ ts-node ama.ts --name Joram
-? What's your question? What is everything in ASCII?
-Hi Joram, the answer to "What is everything in ASCII?" is 42.
+? What's your question? What is the meaning of life?
+Hi Joram, the answer to "What is the meaning of life?" is 42.
 ```
 
 When you omit the `--name` part, the program will also prompt for it.
@@ -240,29 +229,10 @@ Adds `help` and `--help` to the program which displays program usage information
 Adds `version` and `--version` to the program which displays program version from
 package.json.
 
-#### `program.fail(function)`
-
-Use a custom error handler. The function will be called with 4 arguments:
-
-- Message (string) will contain an internal message about e.g. missing arguments
-- Error (Error) is only set when an error was explicitly thrown
-- Args (array) contains program arguments
-- Usage (string) contains usage information from --help
-
-#### `program.eval(command)`
-
-Uses process.argv or passed in command (string, optional) to match and execute
-command. Returns runner instance.
-
-```ts
-program()
-  .add(command(...))
-  .eval()
-```
-
 #### `program.run(command)`
 
-Shorthand for `eval().print()`.
+Uses process.argv or passed in command (string, optional) to match and execute
+command. Returns promise.
 
 ```ts
 program()
@@ -278,6 +248,16 @@ Start a read-eval-print loop.
 program()
   .add(command(...))
   .repl()
+```
+
+#### `program.runOrRepl()`
+
+Invokes `run()` if arguments are passed in, `repl()` otherwise.
+
+```ts
+program()
+  .add(command(...))
+  .runOrRepl()
 ```
 
 ### `command(name, description)`
@@ -325,59 +305,6 @@ Mark command as default. Default commands are executed immediately and don't req
 
 Function to execute when the command is invoked. Is called with one argument: an
 object containing key/value pairs of parsed arguments and options.
-
-### `runner`
-
-Returned from `program().eval()`, can't be invoked directly.
-
-#### `runner.print(printer)`
-
-Prints resolved and rejected command executions to the terminal. Uses the
-built-in printer if invoked without arguments.
-
-```ts
-const runner = program()
-  .default(
-    command().action(() => {
-      throw new Error('Test customer printer')
-    })
-  )
-  .eval()
-
-runner.print({
-  write(str: any) {
-    str && console.log(str)
-  },
-  error(error: any) {
-    console.error(`${red('‼')} ${bgRed(error)}`)
-  }
-})
-```
-
-#### `runner.then(function)`
-
-Function is invoked when the command handler resolves.
-
-#### `runner.catch(function)`
-
-Function is invoked when the command handler rejects.
-
-#### `runner.print(printer)`
-
-Attaches a printer to the runner. Uses a default printer unless called with a
-custom printer argument.
-
-### `printer`
-
-Used by runner, can't be invoked directly.
-
-#### `printer.write(string)`
-
-Handles output. Prints to stdout by default.
-
-#### `printer.error(Error)`
-
-Handles errors. Prints stack trace to stderr by default.
 
 ## Bundle
 
