@@ -25,10 +25,7 @@ test('command should return new Command object', () => {
 
 test('with description', async () => {
   const cmd = command('test', 'foo description')
-  await program()
-    .add(cmd)
-    .withHelp()
-    .run('help')
+  await program().add(cmd).withHelp().run('help')
   expect(outputSpy.mock.calls[0][0]).toContain('foo description')
 })
 
@@ -42,17 +39,14 @@ test('variadic argument must be last', () => {
 test('handler is required', async () => {
   let error
   try {
-    await program()
-      .fail(() => {}) // Custom fail function to prevent exiting
-      .add(command('test'))
-      .eval('test')
+    await program().add(command('test')).run('test')
   } catch (err) {
     error = err
   }
   expect(error).toMatchSnapshot()
 })
 
-test('sync handler should be executed', done => {
+test('sync handler should be executed', (done) => {
   const cmd = command('test').action(() => {
     done()
   })
@@ -74,20 +68,15 @@ test('async handler should be executed', async () => {
 test('default argument', async () => {
   const cmd = command('test')
     .argument('foo')
-    .action(args => {
+    .action((args) => {
       expect(args.foo).toBe('bar')
     })
-  await program()
-    .add(cmd)
-    .run('test bar')
+  await program().add(cmd).run('test bar')
 })
 
 test('argument with description', async () => {
   const cmd = command('test').argument('foo', 'bar description')
-  await program()
-    .add(cmd)
-    .withHelp()
-    .run('test --help')
+  await program().add(cmd).withHelp().run('test --help')
   expect(outputSpy.mock.calls[0][0]).toContain('bar description')
 })
 
@@ -95,12 +84,10 @@ test('prompt for argument', async () => {
   prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
   const cmd = command('test')
     .argument('foo', { prompt: true })
-    .action(args => {
+    .action((args) => {
       expect(args.foo).toBe('bar')
     })
-  await program()
-    .add(cmd)
-    .run('test')
+  await program().add(cmd).run('test')
   expect(prompt).toHaveBeenCalled()
 })
 
@@ -108,31 +95,24 @@ test('prompt for argument', async () => {
 test('default option', async () => {
   const cmd = command('test')
     .option('foo')
-    .action(args => {
+    .action((args) => {
       expect(args.foo).toBe('bar')
     })
-  await program()
-    .add(cmd)
-    .run('test --foo bar')
+  await program().add(cmd).run('test --foo bar')
 })
 
 test('option with description', async () => {
   const cmd = command('test').option('foo', 'bar description')
-  await program()
-    .add(cmd)
-    .withHelp()
-    .run('test --help')
+  await program().add(cmd).withHelp().run('test --help')
 })
 
 test('prompt for option', async () => {
   prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
   const cmd = command('test')
     .option('foo', { prompt: true })
-    .action(args => {
+    .action((args) => {
       expect(args.foo).toBe('bar')
     })
-  await program()
-    .add(cmd)
-    .run('test')
+  await program().add(cmd).run('test')
   expect(prompt).toHaveBeenCalled()
 })
