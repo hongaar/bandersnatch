@@ -1,30 +1,50 @@
 import { Argv } from 'yargs'
 import createYargs from 'yargs/yargs'
-import { yellow } from 'ansi-colors'
 import { Command, command } from './command'
 import { Repl, repl } from './repl'
 import { Arguments } from './command'
 import { isPromise } from './utils'
-import { runner, Runner } from './runner'
-
-type FailFn = (msg: string, err: Error, args: Arguments, usage?: string) => void
 
 type ProgramOptions = {
+  /**
+   * Whether or not to add a global help command that displays an overview of
+   * commands. Can also be enabled by calling `program().withHelp()`.
+   *
+   * Defaults to `false`.
+   */
   help?: boolean
+
+  /**
+   * Whether or not to add a global version command that displays the version as
+   * specified in the package.json file. Can also be enabled by calling
+   * `program().withVersion()`.
+   *
+   * Defaults to `false`.
+   */
   version?: boolean
-  fail?: FailFn
+
+  /**
+   * Sets a custom REPL prompt.
+   *
+   * Defaults to `>`.
+   */
   prompt?: string
-  exitOnError?: boolean
 }
 
+/**
+ * Creates a new bandersnatch program.
+ */
 export function program(description?: string, options: ProgramOptions = {}) {
   return new Program(description, options)
+}
+
+function extractCommandFromProcess() {
+  return process.argv.slice(2)
 }
 
 export class Program {
   private commands: Command<any>[] = []
   private replInstance?: Repl
-  private runnerInstance?: Runner
 
   constructor(
     private description?: string,
@@ -32,9 +52,12 @@ export class Program {
   ) {}
 
   /**
-   * Create a new yargs instance. Not intended for public use.
+   * Create a new yargs instance. This method may change at any time, not
+   * intended for public use.
+   *
+   * @private
    */
-  createYargsInstance() {
+  public createYargsInstance() {
     const yargs = createYargs()
 
     this.description && yargs.usage(this.description)
@@ -54,69 +77,91 @@ export class Program {
     yargs.completion('completion', false)
 
     // Custom fail function.
-    // TODO current yargs types doesn't include the third parameter.
-    yargs.fail(this.failHandler.bind(this) as any)
+    yargs.fail(this.failHandler.bind(this))
 
-    // Exit on errors?
-    yargs.exitProcess(!!this.options.exitOnError)
+    // In case we're in a REPL session, do not exit on errors.
+    yargs.exitProcess(!this.replInstance)
 
     // Add commands
-    this.commands.forEach(command => {
+    this.commands.forEach((command) => {
       command.toYargs(yargs)
     })
 
     return yargs
   }
 
-  add<T>(command: Command<T>) {
+  /**
+   * Adds a new command to the program.
+   */
+  public add<T>(command: Command<T>) {
     this.commands.push(command)
     return this
   }
 
-  default<T>(command: Command<T>) {
+  /**
+   * Adds a new command to the program and marks it as the default command.
+   */
+  public default<T>(command: Command<T>) {
     this.commands.push(command.default())
     return this
   }
 
-  prompt(prompt: string) {
-    this.options.prompt = prompt
-    return this
-  }
-
-  withHelp() {
+  /**
+   * Adds a global help command that displays an overview of commands.
+   */
+  public withHelp() {
     this.options.help = true
     return this
   }
 
-  withVersion() {
+  /**
+   * Adds a global version command that displays the version as specified in the
+   * package.json file.
+   */
+  public withVersion() {
     this.options.version = true
     return this
   }
 
-  fail(fn: FailFn) {
-    this.options.fail = fn
+  /**
+   * Sets a custom REPL prompt.
+   */
+  public prompt(prompt: string) {
+    this.options.prompt = prompt
     return this
   }
 
   /**
-   * Evaluate command (or process.argv) and return runner instance.
+   * Evaluate command (or process.argv) and return promise.
    */
-  eval(command?: string | ReadonlyArray<string>) {
-    const cmd = command || process.argv.slice(2)
+  public run(command?: string | ReadonlyArray<string>) {
+    const cmd = command || extractCommandFromProcess()
 
-    // Set executor to promise resolving to the return value of the command
+    // Return promise resolving to the return value of the command
     // handler.
-    this.runnerInstance = runner((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.createYargsInstance().parse(
         cmd,
         {},
         (err, argv: Arguments, output) => {
-          // Output is a string for built-in commands like --version and --help
+          /**
+           * From the yargs docs:
+           * > any text that would have been output by yargs to the terminal,
+           * > had a callback not been provided.
+           * http://yargs.js.org/docs/#api-parseargs-context-parsecallback
+           *
+           * Seems that this is primarily used for built-in commands like
+           * --version and --help.
+           */
           if (output) {
             console.log(output)
           }
 
-          // TODO when is err defined?
+          /**
+           * From the yargs docs:
+           * > Populated if any validation errors raised while parsing.
+           * http://yargs.js.org/docs/#api-parseargs-context-parsecallback
+           */
           if (err) {
             console.error(err)
           }
@@ -132,25 +177,13 @@ export class Program {
         }
       )
     })
-
-    return this.runnerInstance.eval()
-  }
-
-  /**
-   * Run a command (or process.argv) and print output.
-   */
-  run(command?: string | ReadonlyArray<string>) {
-    return this.eval(command).print()
   }
 
   /**
    * Run event loop which reads command from stdin.
    */
-  repl() {
+  public repl() {
     this.replInstance = repl(this, this.options.prompt)
-
-    // Don't exit on errors.
-    this.options.exitOnError = false
 
     // Add exit command
     this.add(
@@ -160,47 +193,41 @@ export class Program {
     )
 
     this.replInstance.start()
+
+    return this.replInstance
   }
 
+  /**
+   * When argv is set, run the program, otherwise start repl loop.
+   */
+  public runOrRepl() {
+    return extractCommandFromProcess().length ? this.run() : this.repl()
+  }
+
+  /**
+   * Method to execute when a failure occurs, rather than printing the failure
+   * message.
+   *
+   * Called with the failure message that would have been printed, the Error
+   * instance originally thrown and yargs state when the failure occured.
+   */
   private failHandler(msg: string, err: Error, yargs: Argv) {
     // TODO needs more use-cases: only do something when msg is set, and have
     // errors always handled in the runner?
 
-    if (this.replInstance) {
-      // In case we're in a REPL session, forward the message which may
-      // originate from yargs. Errors are handled in the runner.
-      msg && this.replInstance.setError(msg)
-    } else {
-      const args = yargs.argv
-      const usage = (yargs.help() as unknown) as string
-      const cb = () => {
-        if (this.options.fail) {
-          // Call custom fail function.
-          this.options.fail(msg, err, args, usage)
-        } else {
-          // Call default fail function.
-          this.defaultFailFn(msg, err, args, usage)
-        }
-      }
-
-      // We call the fail function in the runner chain if available, to give
-      // async printer a chance to complete first.
-      this.runnerInstance
-        ? this.runnerInstance.then(cb)
-        : Promise.resolve().then(cb)
-    }
-  }
-
-  private defaultFailFn: FailFn = (msg, err, args, usage) => {
     if (msg) {
-      console.error(yellow(msg))
-    }
+      // If msg is set, it's probably a validation error from yargs we want to
+      // print.
+      console.error(msg)
 
-    if (usage) {
-      console.error('')
-      console.error(usage)
+      if (this.replInstance) {
+        // In case we're in a REPL session, indicate we printed a message, so we
+        // can prevent the program resolve handler to execute.
+        this.replInstance.gotYargsMsg()
+      } else {
+        // In other cases, exit with status of 1.
+        process.exit(1)
+      }
     }
-
-    process.exit(1)
   }
 }

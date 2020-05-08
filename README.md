@@ -12,18 +12,18 @@
 
 ## Features
 
-- ➰ Built-in REPL
+- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax
+- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop)
 - 💬 Prompts for missing arguments
 - ➡ Autocompletes arguments, options and values
 - 🤯 Fully typed
-- ⚡ Uses the power of `yargs` & `inquirer`
+- ⚡ Uses the power of `yargs` and `inquirer`
 
-It's built in TypeScript and while it's of course possible to write your app
-with JavaScript, you're missing out on some very handy type hints.
+It's built-in TypeScript to provide you with some very handy type hints.
 
-We don't have a generator, auto-updater and we don't make any decisions for you
-(apart from using inquirer for prompts). This makes bandersnatch pretty easy and
-intuitive to work with.
+Bandersnatch is not designed to be used as a full CLI framework like oclif,
+and tries to minimize the assumptions made about your program to make
+bandersnatch easy and intuitive to work with.
 
 ## Table of contents
 
@@ -36,6 +36,8 @@ intuitive to work with.
   - [Simple](#simple)
   - [REPL](#repl)
   - [Prompt](#prompt)
+- [Principles](#principles)
+  - [Output](#output)
 - [API](#api)
   - [`program(description)`](#programdescription)
     - [`program.add(command)`](#programaddcommand)
@@ -43,24 +45,15 @@ intuitive to work with.
     - [`program.prompt(prompt)`](#programpromptprompt)
     - [`program.withHelp()`](#programwithhelp)
     - [`program.withVersion()`](#programwithversion)
-    - [`program.fail(function)`](#programfailfunction)
-    - [`program.eval(command)`](#programevalcommand)
     - [`program.run(command)`](#programruncommand)
     - [`program.repl()`](#programrepl)
+    - [`program.runOrRepl()`](#programrunorrepl)
   - [`command(name, description)`](#commandname-description)
     - [`command.argument(name, description, options)`](#commandargumentname-description-options)
     - [`command.option(name, description, options)`](#commandoptionname-description-options)
     - [`command.command(command)`](#commandcommandcommand)
     - [`command.default()`](#commanddefault)
     - [`command.action(function)`](#commandactionfunction)
-  - [`runner`](#runner)
-    - [`runner.print(printer)`](#runnerprintprinter)
-    - [`runner.then(function)`](#runnerthenfunction)
-    - [`runner.catch(function)`](#runnercatchfunction)
-    - [`runner.print(printer)`](#runnerprintprinter-1)
-  - [`printer`](#printer)
-    - [`printer.write(string)`](#printerwritestring)
-    - [`printer.error(Error)`](#printererrorerror)
 - [Bundle](#bundle)
 - [Todo](#todo)
 - [Contributing](#contributing)
@@ -79,25 +72,23 @@ yarn add bandersnatch
 
 ### Simple
 
-Now create a simple app `echo.ts`:
+Now create a simple app `concat.ts`:
 
 ```ts
 import { program, command } from 'bandersnatch'
 
-const echo = command('echo', 'Echo something in the terminal')
-  .argument('words', 'Say some kind words', { variadic: true })
-  .action(args => args.words.map(word => `${word}!`).join(' '))
+const concat = command('concat', 'Concatenate input)
+  .argument('input', 'List of inputs to concatenate', { variadic: true })
+  .action((args) => console.log(args.input.join(', '))
 
-program()
-  .default(echo)
-  .run()
+program().default(concat).run()
 ```
 
 And run with:
 
 ```bash
-$ ts-node echo.ts Hello world
-Hello! world!
+$ ts-node concat.ts Hello world
+Hello, world
 ```
 
 _👆 Assuming you have `ts-node` installed._
@@ -115,7 +106,7 @@ const app = program('JSON pretty printer').default(
   command()
     .argument('json', 'Raw JSON input as string')
     .option('color', 'Enables colorized output', { type: 'boolean' })
-    .action(async args => {
+    .action(async (args) => {
       const json = JSON.parse(args.json)
       args.color
         ? console.dir(json)
@@ -123,7 +114,7 @@ const app = program('JSON pretty printer').default(
     })
 )
 
-process.argv.slice(2).length ? app.run() : app.repl()
+app.runOrRepl()
 ```
 
 And run with:
@@ -153,24 +144,24 @@ import { program, command } from 'bandersnatch'
 
 const cmd = command()
   .argument('name', "What's your name?", {
-    prompt: true
+    prompt: true,
   })
   .argument('question', "What's your question?", {
-    prompt: true
+    prompt: true,
   })
-  .action(args => `Hi ${args.name}, the answer to "${args.question}" is 42.`)
+  .action((args) => {
+    console.log(`Hi ${args.name}, the answer to "${args.question}" is 42.`)
+  })
 
-program('Ask me anything')
-  .default(cmd)
-  .run()
+program('Ask me anything').default(cmd).run()
 ```
 
 And run with:
 
 ```bash
 $ ts-node ama.ts --name Joram
-? What's your question? What is everything in ASCII?
-Hi Joram, the answer to "What is everything in ASCII?" is 42.
+? What's your question? What is the meaning of life?
+Hi Joram, the answer to "What is the meaning of life?" is 42.
 ```
 
 When you omit the `--name` part, the program will also prompt for it.
@@ -178,6 +169,26 @@ When you omit the `--name` part, the program will also prompt for it.
 ---
 
 ℹ More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples) directory.
+
+## Principles
+
+In general, bandersnatch is designed to create [twelve-factor apps](https://12factor.net/).
+
+### Output
+
+Programs are encouraged to use the following conventions with regards to output,
+based on the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdin.html).
+
+- When a program is designed to be used in a scripting environment and its
+  output should be available as stdin for other programs, use stdout for
+  printing output and stderr for diagnostic output (e.g. progress and/or error
+  messages).
+- When a program is designed to be used as a service (twelve-factor app), use
+  stdout/stderr as a logging mechanism for informative messages/error and
+  diagnostic messages.
+
+Bandersnatch has no built-in method for writing to stdout/stderr. Node.js
+provides [everything you need](https://nodejs.org/api/console.html).
 
 ## API
 
@@ -211,36 +222,17 @@ Use this prompt prefix (string, required) when in REPL mode.
 
 #### `program.withHelp()`
 
-Adds `help` and `--help` to program which displays program usage information.
+Adds `help` and `--help` to the program which displays program usage information.
 
 #### `program.withVersion()`
 
-Adds `version` and `--version` to program which displays program version from
+Adds `version` and `--version` to the program which displays program version from
 package.json.
-
-#### `program.fail(function)`
-
-Use custom error handler. Function will be called with 4 arguments:
-
-- Message (string) will contain internal message about e.g. missing arguments
-- Error (Error) is only set when an error was explicitly thrown
-- Args (array) contains program arguments
-- Usage (string) contains usage information from --help
-
-#### `program.eval(command)`
-
-Uses process.argv or passed in command (string, optional) to match and execute
-command. Returns runner instance.
-
-```ts
-program()
-  .add(command(...))
-  .eval()
-```
 
 #### `program.run(command)`
 
-Shorthand for `eval().print()`.
+Uses process.argv or passed in command (string, optional) to match and execute
+command. Returns promise.
 
 ```ts
 program()
@@ -258,12 +250,22 @@ program()
   .repl()
 ```
 
+#### `program.runOrRepl()`
+
+Invokes `run()` if arguments are passed in, `repl()` otherwise.
+
+```ts
+program()
+  .add(command(...))
+  .runOrRepl()
+```
+
 ### `command(name, description)`
 
 Creates a new command.
 
-- Name (string, optional) is used to invoke a command. When not used as default
-  command, name is required.
+- Name (string, optional) is used to invoke a command. When not used as the
+  default command, a name is required.
 - Description (string, optional) is used in --help output.
 
 #### `command.argument(name, description, options)`
@@ -273,11 +275,11 @@ Adds a positional argument to the command.
 - Name (string, required) is used to identify the argument. Can also be an array
   of strings, in which case subsequent items will be treated as command aliases.
 - Description (string, optional) is used in --help output.
-- Options can be provided to change the behaviour of the
+- Options can be provided to change the behavior of the
   argument. Object with any of these keys:
   - `optional` (boolean) makes this argument optional.
-  - `variadic` (boolean) eagerly take all remaining arguments and parse as array.
-    Only valid for last argument.
+  - `variadic` (boolean) eagerly take all remaining arguments and parse as an array.
+    Only valid for the last argument.
   - ...
 
 #### `command.option(name, description, options)`
@@ -286,7 +288,7 @@ Adds an option to the command.
 
 - Name (string, required) is used to identify the option.
 - Description (string, optional) is used in --help output.
-- Options (OptionOptions) can be provided to change the behaviour of the
+- Options (OptionOptions) can be provided to change the behavior of the
   option. Object with any of these keys:
   - `alias` (string or array of strings) alias(es) for the option key.
   - ...
@@ -301,61 +303,8 @@ Mark command as default. Default commands are executed immediately and don't req
 
 #### `command.action(function)`
 
-Function to execute when command is invoked. Is called with one argument: an
+Function to execute when the command is invoked. Is called with one argument: an
 object containing key/value pairs of parsed arguments and options.
-
-### `runner`
-
-Returned from `program().eval()`, can't be invoked directly.
-
-#### `runner.print(printer)`
-
-Prints resolved and rejected command executions to the terminal. Uses the
-built-in printer if invoked without arguments.
-
-```ts
-const runner = program()
-  .default(
-    command().action(() => {
-      throw new Error('Test customer printer')
-    })
-  )
-  .eval()
-
-runner.print({
-  write(str: any) {
-    str && console.log(str)
-  },
-  error(error: any) {
-    console.error(`${red('‼')} ${bgRed(error)}`)
-  }
-})
-```
-
-#### `runner.then(function)`
-
-Function is invoked when command handler resolves.
-
-#### `runner.catch(function)`
-
-Function is invoked when command handler rejects.
-
-#### `runner.print(printer)`
-
-Attaches a printer to the runner. Uses a default printer unless called with a
-custom printer argument.
-
-### `printer`
-
-Used by runner, can't be invoked directly.
-
-#### `printer.write(string)`
-
-Handles output. Prints to stdout by default.
-
-#### `printer.error(Error)`
-
-Handles errors. Prints stack trace to stderr by default.
 
 ## Bundle
 
@@ -439,7 +388,7 @@ Add these scripts to your `package.json`:
 
 And compile now by running `yarn build`.
 
-Next, we need to create a simple entrypoint `echo.js`, which can be run with
+Next, we need to create a simple entry point `echo.js`, which can be run with
 node:
 
 ```bash
