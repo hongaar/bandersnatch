@@ -14,8 +14,9 @@ export class Repl {
   private autocompleter: Autocompleter
 
   private receivedYargsMsg: boolean = false
-  private successHandler?: (value?: unknown) => void
-  private errorHandler?: (reason?: any) => void
+  private successHandler: (value?: unknown) => void = () => {}
+  private errorHandler: (reason?: any) => void = (reason) =>
+    console.error(reason)
 
   constructor(private program: Program, private prompt: string = '> ') {
     this.autocompleter = autocompleter(program)
@@ -62,7 +63,9 @@ export class Repl {
     line: string,
     cb: (err?: null | Error, result?: CompleterResult) => void
   ) {
-    const addSpace = (str: string) => `${str} `
+    function addSpace(str: string) {
+      return `${str} `
+    }
     const argv = parseArgsStringToArgv(line)
     const current = argv.slice(-1).toString()
     const completions = (await this.autocompleter.completions(argv)).map(
@@ -92,16 +95,9 @@ export class Repl {
 
       // Execute success handler only if we have not received a msg from yargs,
       // which was probably a validation error.
-      if (!this.receivedYargsMsg && this.successHandler) {
-        this.successHandler(result)
-      }
+      this.receivedYargsMsg || this.successHandler(result)
     } catch (error) {
-      if (this.errorHandler) {
-        this.errorHandler(error)
-      } else {
-        // This will emulate a UnhandledPromiseRejectionWarning
-        throw error
-      }
+      this.errorHandler(error)
     }
 
     // The result passed to this function is printed by the Node REPL server,

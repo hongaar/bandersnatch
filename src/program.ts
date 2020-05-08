@@ -201,7 +201,7 @@ export class Program {
    * When argv is set, run the program, otherwise start repl loop.
    */
   public runOrRepl() {
-    extractCommandFromProcess().length ? this.run() : this.repl()
+    return extractCommandFromProcess().length ? this.run() : this.repl()
   }
 
   /**
