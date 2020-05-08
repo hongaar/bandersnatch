@@ -30,7 +30,6 @@ bandersnatch easy and intuitive to work with.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple](#simple)
@@ -77,7 +76,7 @@ Now create a simple app `concat.ts`:
 ```ts
 import { program, command } from 'bandersnatch'
 
-const concat = command('concat', 'Concatenate input)
+const concat = command('concat', 'Concatenate input')
   .argument('input', 'List of inputs to concatenate', { variadic: true })
   .action((args) => console.log(args.input.join(', '))
 
@@ -483,7 +482,7 @@ Please use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/
 
 ## License
 
-Copyright (c) 2019 Joram van den Boezem. Licensed under the MIT license.
+Copyright (c) 2020 Joram van den Boezem. Licensed under the MIT license.
 
 ---
 
