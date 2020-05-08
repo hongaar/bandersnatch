@@ -1,14 +1,9 @@
 import { Argv } from 'yargs'
 import createYargs from 'yargs/yargs'
-import { yellow } from 'ansi-colors'
 import { Command, command } from './command'
 import { Repl, repl } from './repl'
 import { Arguments } from './command'
 import { isPromise } from './utils'
-
-type ErrorHandler = (error: Error | unknown, args: Arguments) => void
-
-type SuccessHandler = (resolved: unknown) => void
 
 type ProgramOptions = {
   /**
@@ -29,18 +24,6 @@ type ProgramOptions = {
   version?: boolean
 
   /**
-   * Specifies a custom error handler. Can also be set by calling
-   * `program().onError()`.
-   */
-  errorHandler?: ErrorHandler
-
-  /**
-   * Specifies a custom success handler. Can also be set by calling
-   * `program().onSuccess()`.
-   */
-  successHandler?: SuccessHandler
-
-  /**
    * Sets a custom REPL prompt.
    *
    * Defaults to `>`.
@@ -53,6 +36,10 @@ type ProgramOptions = {
  */
 export function program(description?: string, options: ProgramOptions = {}) {
   return new Program(description, options)
+}
+
+function extractCommandFromProcess() {
+  return process.argv.slice(2)
 }
 
 export class Program {
@@ -96,7 +83,7 @@ export class Program {
     yargs.exitProcess(!this.replInstance)
 
     // Add commands
-    this.commands.forEach(command => {
+    this.commands.forEach((command) => {
       command.toYargs(yargs)
     })
 
@@ -145,28 +132,12 @@ export class Program {
   }
 
   /**
-   * Specifies a custom error handler.
-   */
-  public onError(fn: ErrorHandler) {
-    this.options.errorHandler = fn
-    return this
-  }
-
-  /**
-   * Specifies a custom success handler.
-   */
-  public onSuccess(fn: SuccessHandler) {
-    this.options.successHandler = fn
-    return this
-  }
-
-  /**
    * Evaluate command (or process.argv) and return promise.
    */
   public run(command?: string | ReadonlyArray<string>) {
-    const cmd = command || process.argv.slice(2)
+    const cmd = command || extractCommandFromProcess()
 
-    // Set executor to promise resolving to the return value of the command
+    // Return promise resolving to the return value of the command
     // handler.
     return new Promise((resolve, reject) => {
       this.createYargsInstance().parse(
@@ -222,57 +193,41 @@ export class Program {
     )
 
     this.replInstance.start()
+
+    return this.replInstance
   }
 
   /**
-   * When invoked with arguments, run the program, otherwise start repl loop.
+   * When argv is set, run the program, otherwise start repl loop.
    */
   public runOrRepl() {
-    process.argv.slice(2).length ? this.run() : this.repl()
+    extractCommandFromProcess().length ? this.run() : this.repl()
   }
 
   /**
-   * ...
+   * Method to execute when a failure occurs, rather than printing the failure
+   * message.
+   *
+   * Called with the failure message that would have been printed, the Error
+   * instance originally thrown and yargs state when the failure occured.
    */
   private failHandler(msg: string, err: Error, yargs: Argv) {
     // TODO needs more use-cases: only do something when msg is set, and have
     // errors always handled in the runner?
 
-    if (this.replInstance) {
-      // In case we're in a REPL session, forward the message which may
-      // originate from yargs. Errors are handled in the runner.
-      msg && this.replInstance.setError(msg)
-    } else {
-      const args = yargs.argv
-      const usage = (yargs.help() as unknown) as string
-      const cb = () => {
-        if (this.options.errorHandler) {
-          // Call custom fail function.
-          this.options.errorHandler(msg, err, args, usage)
-        } else {
-          // Call default fail function.
-          this.errorHandler(msg, err, args, usage)
-        }
-      }
-
-      // We call the fail function in the runner chain if available, to give
-      // async printer a chance to complete first.
-      this.runnerInstance
-        ? this.runnerInstance.then(cb)
-        : Promise.resolve().then(cb)
-    }
-  }
-
-  private errorHandler: ErrorHandler = (error, args) => {
     if (msg) {
-      console.error(yellow(msg))
-    }
+      // If msg is set, it's probably a validation error from yargs we want to
+      // print.
+      console.error(msg)
 
-    if (usage) {
-      console.error('')
-      console.error(usage)
+      if (this.replInstance) {
+        // In case we're in a REPL session, indicate we printed a message, so we
+        // can prevent the program resolve handler to execute.
+        this.replInstance.gotYargsMsg()
+      } else {
+        // In other cases, exit with status of 1.
+        process.exit(1)
+      }
     }
-
-    process.exit(1)
   }
 }
