@@ -12,11 +12,12 @@
 
 ## Features
 
-- ➰ Built-in REPL
+- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax
+- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop)
 - 💬 Prompts for missing arguments
 - ➡ Autocompletes arguments, options and values
 - 🤯 Fully typed
-- ⚡ Uses the power of `yargs` & `inquirer`
+- ⚡ Uses the power of `yargs` and `inquirer`
 
 It's built-in TypeScript to provide you with some very handy type hints.
 
@@ -28,7 +29,6 @@ bandersnatch easy and intuitive to work with.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Getting started](#getting-started)
   - [Installation](#installation)
@@ -196,6 +196,9 @@ based on the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/f
 - When a program is designed to be used as a service (twelve-factor app), use
   stdout/stderr as a logging mechanism for informative messages/error and
   diagnostic messages.
+
+Bandersnatch has no built-in method for writing to stdout/stderr. Node.js
+provides [everything you need](https://nodejs.org/api/console.html).
 
 ## API
 

@@ -5,8 +5,6 @@ import { Command, command } from './command'
 import { Repl, repl } from './repl'
 import { Arguments } from './command'
 import { isPromise } from './utils'
-import { runner, Runner } from './runner'
-import { Printer } from './printer'
 
 type ErrorHandler = (error: Error | unknown, args: Arguments) => void
 
@@ -60,7 +58,6 @@ export function program(description?: string, options: ProgramOptions = {}) {
 export class Program {
   private commands: Command<any>[] = []
   private replInstance?: Repl
-  private runnerInstance?: Runner
 
   constructor(
     private description?: string,
@@ -164,14 +161,14 @@ export class Program {
   }
 
   /**
-   * Evaluate command (or process.argv) and return runner instance.
+   * Evaluate command (or process.argv) and return promise.
    */
-  public eval(command?: string | ReadonlyArray<string>) {
+  public run(command?: string | ReadonlyArray<string>) {
     const cmd = command || process.argv.slice(2)
 
     // Set executor to promise resolving to the return value of the command
     // handler.
-    this.runnerInstance = runner((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.createYargsInstance().parse(
         cmd,
         {},
@@ -209,28 +206,6 @@ export class Program {
         }
       )
     })
-
-    // Execute the runner.
-    return this.runnerInstance.eval()
-  }
-
-  /**
-   * Run a command (or process.argv) and print output.
-   */
-  public run(
-    commandOrPrinter?: string | string[] | Printer,
-    printer?: Printer
-  ) {
-    // Shift arguments
-    if (
-      typeof commandOrPrinter !== 'string' &&
-      !Array.isArray(commandOrPrinter)
-    ) {
-      printer = commandOrPrinter
-      commandOrPrinter = undefined
-    }
-
-    return this.eval(commandOrPrinter).print(printer)
   }
 
   /**
@@ -256,6 +231,9 @@ export class Program {
     process.argv.slice(2).length ? this.run() : this.repl()
   }
 
+  /**
+   * ...
+   */
   private failHandler(msg: string, err: Error, yargs: Argv) {
     // TODO needs more use-cases: only do something when msg is set, and have
     // errors always handled in the runner?

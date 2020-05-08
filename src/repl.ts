@@ -2,7 +2,6 @@ import nodeRepl, { REPLServer } from 'repl'
 import { CompleterResult } from 'readline'
 import { Context } from 'vm'
 import { parseArgsStringToArgv } from 'string-argv'
-import { red } from 'ansi-colors'
 import { Program } from './program'
 import { autocompleter, Autocompleter } from './autocompleter'
 
@@ -57,7 +56,7 @@ export class Repl {
     this.lastError = null
     const result = await this.program.run(line.trim())
     if (this.lastError) {
-      console.error(red(this.lastError))
+      console.error(this.lastError)
     }
 
     cb(null, result)

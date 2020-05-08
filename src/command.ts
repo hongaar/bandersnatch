@@ -41,7 +41,8 @@ export class Command<T = {}> {
     private description?: string
   ) {}
 
-  /*
+  /**
+   * Adds a new positional argument to the command.
    * This is shorthand for .add(argument(...))
    */
   argument<K extends string, O extends ArgumentOptions>(
@@ -62,7 +63,8 @@ export class Command<T = {}> {
     >
   }
 
-  /*
+  /**
+   * Adds a new option to the command.
    * This is shorthand for .add(option(...))
    */
   option<K extends string, O extends OptionOptions>(
@@ -108,11 +110,17 @@ export class Command<T = {}> {
     return this
   }
 
+  /**
+   * Mark as the default command.
+   */
   default() {
     this.command = '$0'
     return this
   }
 
+  /**
+   * Provide a function to execute when this command is invoked.
+   */
   action(fn: HandlerFn<T>) {
     this.handler = fn
     return this
