@@ -1,7 +1,23 @@
 {
   "name": "bandersnatch",
-  "description": "",
-  "version": "1.0.0-alpha.5",
+  "description": "Simple TypeScript CLI / REPL framework",
+  "version": "1.0.0-alpha.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hongaar/bandersnatch.git"
+  },
+  "keywords": [
+    "cli",
+    "args",
+    "argv",
+    "parser",
+    "terminal",
+    "console",
+    "program",
+    "command",
+    "argument",
+    "option"
+  ],
   "main": "lib/index.js",
   "files": [
     "lib"
