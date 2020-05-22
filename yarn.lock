@@ -2826,10 +2826,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-leasot@10.6.0:
-  version "10.6.0"
-  resolved "https://registry.yarnpkg.com/leasot/-/leasot-10.6.0.tgz#38ab5534e11406d0133fbff1cf3a2df695a24184"
-  integrity sha512-7WM1u638uTAzVLo7NEedAdDlsHtV6OJI64TzbhkmN0M5CytLIEKwEj/Xo4kEvuvf7Byhr+BlAb02atV4T+Px8Q==
+leasot@10.7.0:
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/leasot/-/leasot-10.7.0.tgz#a963e8c673ce494ae7dedc48b23434e3f6fb6440"
+  integrity sha512-NmnKu0HWsEb4K7Z09mTcOscQuBbnfq33NV4tNKGUK5iqYmUsTxrRMP3pLE/n4bM0ZH5nP6wxW9IaVrSbANOWIg==
   dependencies:
     async "^3.2.0"
     chalk "^4.0.0"
