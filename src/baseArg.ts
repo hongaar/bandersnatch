@@ -6,21 +6,33 @@ export interface BaseArgOptions {
   prompt?: true | string
 }
 
-export type InferArgType<
-  O extends Options | PositionalOptions,
-  D = unknown
-> = O extends {
-  variadic: true
-  type: 'number'
-} // Add support for numeric variadic arguments
-  ? Array<number>
-  : O extends {
-      variadic: true
-    } // Add support for string variadic arguments
-  ? Array<string>
-  : unknown extends InferredOptionType<O> // Allow default type
-  ? D
-  : InferredOptionType<O>
+export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
+  /**
+   * Add support for numeric variadic arguments
+   */
+  O extends {
+    variadic: true
+    type: 'number'
+  }
+    ? Array<number>
+    : /**
+     * Add support for string variadic arguments
+     */
+    O extends {
+        variadic: true
+      }
+    ? Array<string>
+    : /**
+     * Prefer choices over default
+     */
+    O extends { choices: ReadonlyArray<infer C> }
+    ? C
+    : /**
+     * Allow fallback type
+     */
+    unknown extends InferredOptionType<O>
+    ? F
+    : InferredOptionType<O>
 
 export class BaseArg {
   protected name: string
