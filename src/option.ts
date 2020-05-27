@@ -24,8 +24,8 @@ export function option(name: string) {
 export class Option extends BaseArg {
   protected options: OptionOptions = {}
 
-  constructor(name: string, description?: string, options?: OptionOptions) {
-    super(name, description)
+  constructor(name: string, options?: OptionOptions) {
+    super(name)
 
     this.configure(options || {})
   }
@@ -40,9 +40,6 @@ export class Option extends BaseArg {
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
   toYargs<T>(yargs: Argv<T>) {
-    return yargs.option(this.name, {
-      description: this.description,
-      ...this.options
-    })
+    return yargs.option(this.name, this.options)
   }
 }

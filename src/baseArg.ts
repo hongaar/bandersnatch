@@ -24,12 +24,18 @@ export type InferArgType<
 
 export class BaseArg {
   protected name: string
-  protected description?: string
   protected options: ArgumentOptions | OptionOptions = {}
 
-  constructor(name: string, description?: string) {
+  constructor(name: string) {
     this.name = name
-    this.description = description
+  }
+
+  /**
+   * Set the argument/option description.
+   */
+  public description(description: string) {
+    this.options.description = description
+    return this
   }
 
   /**
@@ -45,8 +51,8 @@ export class BaseArg {
   getPrompt() {
     return typeof this.options.prompt === 'string'
       ? this.options.prompt
-      : this.description
-      ? this.description
+      : this.options.description
+      ? this.options.description
       : this.name
   }
 
@@ -61,7 +67,7 @@ export class BaseArg {
    * Returns the argument/option description.
    */
   getDescription() {
-    return this.description
+    return this.options.description
   }
 
   /**

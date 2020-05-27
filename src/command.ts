@@ -66,18 +66,8 @@ export class Command<T = {}> {
    * Adds a new positional argument to the command.
    * This is shorthand for `.add(argument(...))`
    */
-  argument<K extends string, O extends ArgumentOptions>(
-    name: K,
-    descriptionOrOptions?: string | O,
-    options?: O
-  ) {
-    // Shift arguments
-    if (typeof descriptionOrOptions !== 'string') {
-      options = descriptionOrOptions
-      descriptionOrOptions = undefined
-    }
-
-    this.add(new Argument(name, descriptionOrOptions, options))
+  argument<K extends string, O extends ArgumentOptions>(name: K, options?: O) {
+    this.add(new Argument(name, options))
 
     return (this as unknown) as Command<
       T & { [key in K]: InferArgType<O, string> }
@@ -88,18 +78,8 @@ export class Command<T = {}> {
    * Adds a new option to the command.
    * This is shorthand for `.add(option(...))`
    */
-  option<K extends string, O extends OptionOptions>(
-    name: K,
-    descriptionOrOptions?: string | O,
-    options?: O
-  ) {
-    // Shift arguments
-    if (typeof descriptionOrOptions !== 'string') {
-      options = descriptionOrOptions
-      descriptionOrOptions = undefined
-    }
-
-    this.add(new Option(name, descriptionOrOptions, options))
+  option<K extends string, O extends OptionOptions>(name: K, options?: O) {
+    this.add(new Option(name, options))
 
     return (this as unknown) as Command<T & { [key in K]: InferArgType<O> }>
   }

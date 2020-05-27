@@ -13,12 +13,8 @@ export interface ArgumentOptions
   variadic?: true
 }
 
-export function argument(
-  name: string,
-  description?: string,
-  options?: ArgumentOptions
-) {
-  return new Argument(name, description, options)
+export function argument(name: string, options?: ArgumentOptions) {
+  return new Argument(name, options)
 }
 
 export const defaultOptions: ArgumentOptions = { type: 'string' }
@@ -26,8 +22,8 @@ export const defaultOptions: ArgumentOptions = { type: 'string' }
 export class Argument extends BaseArg {
   protected options: ArgumentOptions = {}
 
-  constructor(name: string, description?: string, options?: ArgumentOptions) {
-    super(name, description)
+  constructor(name: string, options?: ArgumentOptions) {
+    super(name)
 
     this.configure(options || {})
   }
@@ -69,9 +65,6 @@ export class Argument extends BaseArg {
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
   toYargs<T>(yargs: Argv<T>) {
-    return yargs.positional(this.name, {
-      description: this.description,
-      ...this.options
-    })
+    return yargs.positional(this.name, this.options)
   }
 }
