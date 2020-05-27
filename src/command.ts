@@ -9,6 +9,16 @@ export type Arguments<T = {}> = T &
     __promise?: Promise<any>
   }
 
+type CommandOptions = {
+  /**
+   * Command description. Can also be set by calling
+   * `command(...).description(...)`.
+   *
+   * Defaults to `undefined`.
+   */
+  description?: string
+}
+
 export interface HandlerFn<T> {
   (args: Omit<T, '_' | '$0'>): Promise<any> | any
 }
@@ -25,11 +35,14 @@ function isCommand(obj: Argument | Option | Command): obj is Command {
   return obj.constructor.name === 'Command'
 }
 
+/**
+ * Creates a new command, which can be added to a program.
+ */
 export function command<T = {}>(
   command?: string | string[],
-  description?: string
+  options: CommandOptions = {}
 ) {
-  return new Command<T>(command, description)
+  return new Command<T>(command, options)
 }
 
 export class Command<T = {}> {
@@ -38,12 +51,20 @@ export class Command<T = {}> {
 
   constructor(
     private command?: string | string[],
-    private description?: string
+    private options: CommandOptions = {}
   ) {}
 
   /**
+   * Set the command description.
+   */
+  public description(description: string) {
+    this.options.description = description
+    return this
+  }
+
+  /**
    * Adds a new positional argument to the command.
-   * This is shorthand for .add(argument(...))
+   * This is shorthand for `.add(argument(...))`
    */
   argument<K extends string, O extends ArgumentOptions>(
     name: K,
@@ -65,7 +86,7 @@ export class Command<T = {}> {
 
   /**
    * Adds a new option to the command.
-   * This is shorthand for .add(option(...))
+   * This is shorthand for `.add(option(...))`
    */
   option<K extends string, O extends OptionOptions>(
     name: K,
@@ -85,7 +106,7 @@ export class Command<T = {}> {
 
   /**
    * This is the base method for adding arguments, options and commands, but it
-   * doesn't provide type hints. Use .argument() and .option() instead.
+   * doesn't provide type hints. Use `.argument()` and `.option()` instead.
    */
   add(obj: Argument | Option | Command) {
     if (isArgument(obj)) {
@@ -146,19 +167,22 @@ export class Command<T = {}> {
     return yargs.command(this.toModule())
   }
 
+  /**
+   * Returns a yargs module for this command.
+   */
   private toModule() {
     const module: CommandModule<{}, T> = {
       command: this.getCommand(),
       aliases: [],
-      describe: this.description || '',
+      describe: this.options.description || '',
       builder: this.getBuilder(),
-      handler: this.getHandler()
+      handler: this.getHandler(),
     }
     return module
   }
 
   /**
-   * Returns a formatted command which can be used in the command() function
+   * Returns a formatted command which can be used in the `command()` function
    * of yargs.
    */
   private getCommand() {
@@ -167,7 +191,7 @@ export class Command<T = {}> {
     }
 
     const args = this.getArguments()
-      .map(arg => arg.toCommand())
+      .map((arg) => arg.toCommand())
       .join(' ')
 
     if (args !== '') {
@@ -180,7 +204,7 @@ export class Command<T = {}> {
   }
 
   /**
-   * Returns the builder function to be used with yargs.command().
+   * Returns the builder function to be used with `yargs.command()`.
    */
   private getBuilder() {
     return (yargs: Argv) => {
@@ -211,7 +235,7 @@ export class Command<T = {}> {
         chain = chain.then(this.prompt(questions))
       }
 
-      chain = chain.then(async args => {
+      chain = chain.then(async (args) => {
         // @todo check if command has sub-commands, and if so, do not throw an
         // error but maybe show help instead?
         if (!this.handler) {
@@ -231,7 +255,7 @@ export class Command<T = {}> {
 
   /**
    * Returns an array of arguments and options which should be prompted, because
-   * they are promptable (isPromptable() returned true) and they are not
+   * they are promptable (`isPromptable()` returned true) and they are not
    * provided in the args passed in to this function.
    */
   private getQuestions<T = {}>(args: T) {
@@ -244,7 +268,7 @@ export class Command<T = {}> {
         if (!presentInArgs && arg.isPromptable()) {
           questions.push({
             name,
-            message: arg.getPrompt()
+            message: arg.getPrompt(),
           })
         }
 
@@ -255,12 +279,12 @@ export class Command<T = {}> {
   }
 
   /**
-   * Ask questions and merge with passed in args
+   * Ask questions and merge with passed in args.
    */
   private prompt = <Q = Question[]>(questions: Q) => <T = {}>(args: T) => {
-    return prompt<{}>(questions).then(answers => ({
+    return prompt<{}>(questions).then((answers) => ({
       ...args,
-      ...answers
+      ...answers,
     }))
   }
 }

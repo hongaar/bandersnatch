@@ -32,10 +32,16 @@ export class BaseArg {
     this.description = description
   }
 
+  /**
+   * Whether this argument/option can be interactive.
+   */
   isPromptable() {
     return !!this.options.prompt
   }
 
+  /**
+   * Returns the prompt line.
+   */
   getPrompt() {
     return typeof this.options.prompt === 'string'
       ? this.options.prompt
@@ -44,14 +50,23 @@ export class BaseArg {
       : this.name
   }
 
+  /**
+   * Returns the argument/option identifier.
+   */
   getName() {
     return this.name
   }
 
+  /**
+   * Returns the argument/option description.
+   */
   getDescription() {
     return this.description
   }
 
+  /**
+   * Returns the argument/option options.
+   */
   getOptions() {
     return this.options
   }

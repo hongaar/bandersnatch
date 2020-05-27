@@ -7,6 +7,14 @@ import { isPromise } from './utils'
 
 type ProgramOptions = {
   /**
+   * Program description. Can also be set by calling
+   * `program().description(...)`.
+   *
+   * Defaults to `undefined`.
+   */
+  description?: string
+
+  /**
    * Whether or not to add a global help command that displays an overview of
    * commands. Can also be enabled by calling `program().withHelp()`.
    *
@@ -24,7 +32,8 @@ type ProgramOptions = {
   version?: boolean
 
   /**
-   * Sets a custom REPL prompt.
+   * Sets a custom REPL prompt. Can also be set by calling
+   * `program().prompt(...)`.
    *
    * Defaults to `>`.
    */
@@ -34,8 +43,8 @@ type ProgramOptions = {
 /**
  * Creates a new bandersnatch program.
  */
-export function program(description?: string, options: ProgramOptions = {}) {
-  return new Program(description, options)
+export function program(options: ProgramOptions = {}) {
+  return new Program(options)
 }
 
 function extractCommandFromProcess() {
@@ -46,10 +55,40 @@ export class Program {
   private commands: Command<any>[] = []
   private replInstance?: Repl
 
-  constructor(
-    private description?: string,
-    private options: ProgramOptions = {}
-  ) {}
+  constructor(private options: ProgramOptions = {}) {}
+
+  /**
+   * Set the program description.
+   */
+  public description(description: string) {
+    this.options.description = description
+    return this
+  }
+
+  /**
+   * Adds a global help command that displays an overview of commands.
+   */
+  public withHelp() {
+    this.options.help = true
+    return this
+  }
+
+  /**
+   * Adds a global version command that displays the version as specified in the
+   * package.json file.
+   */
+  public withVersion() {
+    this.options.version = true
+    return this
+  }
+
+  /**
+   * Sets a custom REPL prompt.
+   */
+  public prompt(prompt: string) {
+    this.options.prompt = prompt
+    return this
+  }
 
   /**
    * Create a new yargs instance. This method may change at any time, not
@@ -60,7 +99,7 @@ export class Program {
   public createYargsInstance() {
     const yargs = createYargs()
 
-    this.description && yargs.usage(this.description)
+    this.options.description && yargs.usage(this.options.description)
 
     // Help accepts boolean
     yargs.help(!!this.options.help)
@@ -103,31 +142,6 @@ export class Program {
    */
   public default<T>(command: Command<T>) {
     this.commands.push(command.default())
-    return this
-  }
-
-  /**
-   * Adds a global help command that displays an overview of commands.
-   */
-  public withHelp() {
-    this.options.help = true
-    return this
-  }
-
-  /**
-   * Adds a global version command that displays the version as specified in the
-   * package.json file.
-   */
-  public withVersion() {
-    this.options.version = true
-    return this
-  }
-
-  /**
-   * Sets a custom REPL prompt.
-   */
-  public prompt(prompt: string) {
-    this.options.prompt = prompt
     return this
   }
 
@@ -187,9 +201,11 @@ export class Program {
 
     // Add exit command
     this.add(
-      command('exit', 'Exit the application').action(() => {
-        process.exit()
-      })
+      command('exit')
+        .description('Exit the application')
+        .action(() => {
+          process.exit()
+        })
     )
 
     this.replInstance.start()
