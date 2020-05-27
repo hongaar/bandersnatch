@@ -24,7 +24,7 @@ test('command should return new Command object', () => {
 })
 
 test('with description', async () => {
-  const cmd = command('test', 'foo description')
+  const cmd = command('test').description('foo description')
   await program().add(cmd).withHelp().run('help')
   expect(outputSpy.mock.calls[0][0]).toContain('foo description')
 })
