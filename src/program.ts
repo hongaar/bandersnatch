@@ -221,6 +221,13 @@ export class Program {
   }
 
   /**
+   * Returns `true` if program is running a repl loop, `false` otherwise.
+   */
+  public isRepl() {
+    return !!this.replInstance
+  }
+
+  /**
    * Method to execute when a failure occurs, rather than printing the failure
    * message.
    *
@@ -228,22 +235,9 @@ export class Program {
    * instance originally thrown and yargs state when the failure occured.
    */
   private failHandler(msg: string, err: Error, yargs: Argv) {
-    // TODO needs more use-cases: only do something when msg is set, and have
-    // errors always handled in the runner?
-
     if (msg) {
-      // If msg is set, it's probably a validation error from yargs we want to
-      // print.
-      console.error(msg)
-
-      if (this.replInstance) {
-        // In case we're in a REPL session, indicate we printed a message, so we
-        // can prevent the program resolve handler to execute.
-        this.replInstance.gotYargsMsg()
-      } else {
-        // In other cases, exit with status of 1.
-        process.exit(1)
-      }
+      // Simply throw validation messages to reject runner promise
+      throw new Error(msg)
     }
   }
 }

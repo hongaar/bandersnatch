@@ -108,7 +108,7 @@ export class Command<T = {}> {
    * This is the base method for adding arguments, options and commands, but it
    * doesn't provide type hints. Use `.argument()` and `.option()` instead.
    */
-  add(obj: Argument | Option | Command) {
+  add(obj: Argument | Option | Command<any>) {
     if (isArgument(obj)) {
       // If last argument is variadic, we should not add more arguments. See
       // https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments
