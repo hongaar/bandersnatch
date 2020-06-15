@@ -36,7 +36,7 @@
   "dependencies": {
     "@types/inquirer": "6.5.0",
     "@types/yargs": "15.0.5",
-    "inquirer": "7.1.0",
+    "inquirer": "7.2.0",
     "string-argv": "0.3.1",
     "yargs": "15.3.1"
   },
