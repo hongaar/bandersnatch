@@ -5,10 +5,12 @@ import { parseArgsStringToArgv } from 'string-argv'
 import { Program } from './program'
 import { autocompleter, Autocompleter } from './autocompleter'
 
+const DEFAULT_PROMPT = '> '
+
 /**
  * Create new REPL instance.
  */
-export function repl(program: Program, prefix: string = '> ') {
+export function repl(program: Program, prefix: string = DEFAULT_PROMPT) {
   return new Repl(program, prefix)
 }
 
@@ -20,7 +22,10 @@ export class Repl {
   private errorHandler: (reason?: any) => void = (reason) =>
     console.error(reason)
 
-  constructor(private program: Program, private prompt: string = '> ') {
+  constructor(
+    private program: Program,
+    private prompt: string = DEFAULT_PROMPT
+  ) {
     this.autocompleter = autocompleter(program)
   }
 

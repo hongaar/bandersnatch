@@ -15,29 +15,28 @@ type ProgramOptions = {
   description?: string
 
   /**
-   * Whether or not to add a global help command that displays an overview of
-   * commands. Can also be enabled by calling `program().withHelp()`.
+   * Sets a custom REPL prompt. Can also be set by calling
+   * `program().prompt(...)`.
    *
-   * Defaults to `false`.
+   * Defaults to `> `.
+   */
+  prompt?: string
+
+  /**
+   * Whether or not to add a global help command that displays an overview of
+   * commands.
+   *
+   * Defaults to `true`.
    */
   help?: boolean
 
   /**
    * Whether or not to add a global version command that displays the version as
-   * specified in the package.json file. Can also be enabled by calling
-   * `program().withVersion()`.
+   * specified in the package.json file.
    *
-   * Defaults to `false`.
+   * Defaults to `true`.
    */
   version?: boolean
-
-  /**
-   * Sets a custom REPL prompt. Can also be set by calling
-   * `program().prompt(...)`.
-   *
-   * Defaults to `>`.
-   */
-  prompt?: string
 }
 
 /**
@@ -66,23 +65,6 @@ export class Program {
   }
 
   /**
-   * Adds a global help command that displays an overview of commands.
-   */
-  public withHelp() {
-    this.options.help = true
-    return this
-  }
-
-  /**
-   * Adds a global version command that displays the version as specified in the
-   * package.json file.
-   */
-  public withVersion() {
-    this.options.version = true
-    return this
-  }
-
-  /**
    * Sets a custom REPL prompt.
    */
   public prompt(prompt: string) {
@@ -102,10 +84,10 @@ export class Program {
     this.options.description && yargs.usage(this.options.description)
 
     // Help accepts boolean
-    yargs.help(!!this.options.help)
+    yargs.help(this.options.help !== false)
 
     // Version must be false or undefined
-    !!this.options.version ? yargs.version() : yargs.version(false)
+    this.options.version !== false ? yargs.version() : yargs.version(false)
 
     // Non-configurable options
     yargs.recommendCommands()
@@ -123,7 +105,9 @@ export class Program {
 
     // Add commands
     this.commands.forEach((command) => {
-      command.toYargs(yargs)
+      command.toYargs(yargs, (command: string) => {
+        return this.run(command)
+      })
     })
 
     return yargs

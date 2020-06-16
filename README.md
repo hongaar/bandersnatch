@@ -39,18 +39,17 @@ bandersnatch easy and intuitive to work with.
 - [Principles](#principles)
   - [Output](#output)
 - [API](#api)
-  - [`program(description)`](#programdescription)
+  - [`program(options)`](#programoptions)
+    - [`program.description(description)`](#programdescriptiondescription)
+    - [`program.prompt(prompt)`](#programpromptprompt)
     - [`program.add(command)`](#programaddcommand)
     - [`program.default(command)`](#programdefaultcommand)
-    - [`program.prompt(prompt)`](#programpromptprompt)
-    - [`program.withHelp()`](#programwithhelp)
-    - [`program.withVersion()`](#programwithversion)
     - [`program.run(command)`](#programruncommand)
     - [`program.repl()`](#programrepl)
     - [`program.runOrRepl()`](#programrunorrepl)
-  - [`command(name, description)`](#commandname-description)
-    - [`command.argument(name, description, options)`](#commandargumentname-description-options)
-    - [`command.option(name, description, options)`](#commandoptionname-description-options)
+  - [`command(name, options)`](#commandname-options)
+    - [`command.argument(name, options)`](#commandargumentname-options)
+    - [`command.option(name, options)`](#commandoptionname-options)
     - [`command.command(command)`](#commandcommandcommand)
     - [`command.default()`](#commanddefault)
     - [`command.action(function)`](#commandactionfunction)
@@ -194,11 +193,22 @@ provides [everything you need](https://nodejs.org/api/console.html).
 
 All methods are chainable unless the docs mention otherwise.
 
-### `program(description)`
+### `program(options)`
 
-Creates a new program.
+Creates a new program. Options (object, optional) can contain these keys:
 
-- Description (string, optional) is used in --help output.
+- `description` (string, optional) is used in --help output.
+- `prompt` (string, default: `>`) use this prompt prefix when in REPL mode.
+- `help` (boolean, default: true) adds `help` and `--help` to the program which displays program usage information.
+- `version` (boolean, default: true) adds `version` and `--version` to the program which displays program version from package.json.
+
+#### `program.description(description)`
+
+Sets the program description (string, required) used in --help output.
+
+#### `program.prompt(prompt)`
+
+Use this prompt prefix (string, required) when in REPL mode.
 
 #### `program.add(command)`
 
@@ -215,19 +225,6 @@ Adds a default command to the program. Shorthand for:
 ```ts
 program().add(command(...).default())
 ```
-
-#### `program.prompt(prompt)`
-
-Use this prompt prefix (string, required) when in REPL mode.
-
-#### `program.withHelp()`
-
-Adds `help` and `--help` to the program which displays program usage information.
-
-#### `program.withVersion()`
-
-Adds `version` and `--version` to the program which displays program version from
-package.json.
 
 #### `program.run(command)`
 
@@ -252,7 +249,7 @@ program()
 
 #### `program.runOrRepl()`
 
-Invokes `run()` if arguments are passed in, `repl()` otherwise.
+Invokes `run()` if process.argv is set, `repl()` otherwise.
 
 ```ts
 program()
@@ -260,36 +257,33 @@ program()
   .runOrRepl()
 ```
 
-### `command(name, description)`
+### `command(name, options)`
 
 Creates a new command.
 
 - Name (string, optional) is used to invoke a command. When not used as the
   default command, a name is required.
-- Description (string, optional) is used in --help output.
+- Options (object, optional) can contain these keys:
+  - `description` (string, optional) is used in --help output.
 
-#### `command.argument(name, description, options)`
+#### `command.argument(name, options)`
 
 Adds a positional argument to the command.
 
-- Name (string, required) is used to identify the argument. Can also be an array
-  of strings, in which case subsequent items will be treated as command aliases.
-- Description (string, optional) is used in --help output.
-- Options can be provided to change the behavior of the
-  argument. Object with any of these keys:
+- Name (string, required) is used to identify the argument. Can also be an array of strings, in which case subsequent items will be treated as command aliases.
+- Options can be provided to change the behavior of the argument. Object with any of these keys:
+  - `description` (string, optional) is used in --help output.
   - `optional` (boolean) makes this argument optional.
-  - `variadic` (boolean) eagerly take all remaining arguments and parse as an array.
-    Only valid for the last argument.
+  - `variadic` (boolean) eagerly take all remaining arguments and parse as an array. Only valid for the last argument.
   - ...
 
-#### `command.option(name, description, options)`
+#### `command.option(name, options)`
 
 Adds an option to the command.
 
 - Name (string, required) is used to identify the option.
-- Description (string, optional) is used in --help output.
-- Options (OptionOptions) can be provided to change the behavior of the
-  option. Object with any of these keys:
+- Options (object, optional) can be provided to change the behavior of the option. Object with any of these keys:
+  - `description` (string, optional) is used in --help output.
   - `alias` (string or array of strings) alias(es) for the option key.
   - ...
 
@@ -303,8 +297,10 @@ Mark command as default. Default commands are executed immediately and don't req
 
 #### `command.action(function)`
 
-Function to execute when the command is invoked. Is called with one argument: an
-object containing key/value pairs of parsed arguments and options.
+Function which executes when the command is invoked. Is called with these arguments:
+
+1. Args (object) is an object containing key/value pairs of parsed arguments and options.
+2. Command runner (function) can be invoked with one (string) parameter to execute another command.
 
 ## Bundle
 

@@ -19,6 +19,8 @@ type CommandOptions = {
   description?: string
 }
 
+type CommandRunner = (command: string) => Promise<unknown>
+
 export interface HandlerFn<T> {
   (args: Omit<T, '_' | '$0'>): Promise<any> | any
 }
@@ -48,6 +50,7 @@ export function command<T = {}>(
 export class Command<T = {}> {
   private args: (Argument | Option | Command)[] = []
   private handler?: HandlerFn<T>
+  private parent?: Command<any>
 
   constructor(
     private command?: string | string[],
@@ -66,7 +69,10 @@ export class Command<T = {}> {
    * Adds a new positional argument to the command.
    * This is shorthand for `.add(argument(...))`
    */
-  argument<K extends string, O extends ArgumentOptions>(name: K, options?: O) {
+  public argument<K extends string, O extends ArgumentOptions>(
+    name: K,
+    options?: O
+  ) {
     this.add(new Argument(name, options))
 
     return (this as unknown) as Command<
@@ -78,7 +84,10 @@ export class Command<T = {}> {
    * Adds a new option to the command.
    * This is shorthand for `.add(option(...))`
    */
-  option<K extends string, O extends OptionOptions>(name: K, options?: O) {
+  public option<K extends string, O extends OptionOptions>(
+    name: K,
+    options?: O
+  ) {
     this.add(new Option(name, options))
 
     return (this as unknown) as Command<T & { [key in K]: InferArgType<O> }>
@@ -88,7 +97,7 @@ export class Command<T = {}> {
    * This is the base method for adding arguments, options and commands, but it
    * doesn't provide type hints. Use `.argument()` and `.option()` instead.
    */
-  add(obj: Argument | Option | Command<any>) {
+  public add(obj: Argument | Option | Command<any>) {
     if (isArgument(obj)) {
       // If last argument is variadic, we should not add more arguments. See
       // https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments
@@ -103,6 +112,7 @@ export class Command<T = {}> {
     } else if (isOption(obj)) {
       this.args.push(obj)
     } else if (isCommand(obj)) {
+      obj.setParentCommand(this)
       this.args.push(obj)
     } else {
       throw new Error('Not implemented.')
@@ -114,7 +124,7 @@ export class Command<T = {}> {
   /**
    * Mark as the default command.
    */
-  default() {
+  public default() {
     this.command = '$0'
     return this
   }
@@ -122,9 +132,19 @@ export class Command<T = {}> {
   /**
    * Provide a function to execute when this command is invoked.
    */
-  action(fn: HandlerFn<T>) {
+  public action(fn: HandlerFn<T>) {
     this.handler = fn
     return this
+  }
+
+  /**
+   * Set the parent command. This method may change at any time, not
+   * intended for public use.
+   *
+   * @private
+   */
+  public setParentCommand(parentCommand: Command<any>) {
+    this.parent = parentCommand
   }
 
   private getArguments() {
@@ -140,23 +160,42 @@ export class Command<T = {}> {
   }
 
   /**
-   * Calls the command() method on the passed in yargs instance and returns it.
-   * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
+   * Returns a fully qualified command name (including parent command names).
    */
-  public toYargs(yargs: Argv) {
-    return yargs.command(this.toModule())
+  private getFqn(): string {
+    if (!this.command) {
+      throw new Error("Can't get command FQN for default commands.")
+    }
+
+    const command = Array.isArray(this.command) ? this.command[0] : this.command
+
+    if (this.parent) {
+      return `${this.parent.getFqn()} ${command}`
+    }
+
+    return command
   }
 
   /**
-   * Returns a yargs module for this command.
+   * Calls the command() method on the passed in yargs instance and returns it.
+   * Takes command runner.
+   * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
    */
-  private toModule() {
+  public toYargs(yargs: Argv, commandRunner: CommandRunner) {
+    return yargs.command(this.toModule(commandRunner))
+  }
+
+  /**
+   * Returns a yargs module for this command. Takes command runner, which is
+   * passed down to getHandler and getBuilder functions.
+   */
+  private toModule(commandRunner: CommandRunner) {
     const module: CommandModule<{}, T> = {
-      command: this.getCommand(),
+      command: this.toYargsCommand(),
       aliases: [],
       describe: this.options.description || '',
-      builder: this.getBuilder(),
-      handler: this.getHandler(),
+      builder: this.getBuilder(commandRunner),
+      handler: this.getHandler(commandRunner),
     }
     return module
   }
@@ -165,7 +204,7 @@ export class Command<T = {}> {
    * Returns a formatted command which can be used in the `command()` function
    * of yargs.
    */
-  private getCommand() {
+  private toYargsCommand() {
     if (!this.command) {
       throw new Error('Command name must be set')
     }
@@ -184,9 +223,10 @@ export class Command<T = {}> {
   }
 
   /**
-   * Returns the builder function to be used with `yargs.command()`.
+   * Returns the builder function to be used with `yargs.command()`. Takes
+   * command runner.
    */
-  private getBuilder() {
+  private getBuilder(commandRunner: CommandRunner) {
     return (yargs: Argv) => {
       // Call toYargs on each argument and option to add it to the command.
       yargs = [...this.getArguments(), ...this.getOptions()].reduce(
@@ -195,7 +235,7 @@ export class Command<T = {}> {
       )
       // Call toYargs on each subcommand to add it to the command.
       yargs = this.getCommands().reduce(
-        (yargs, cmd) => cmd.toYargs(yargs),
+        (yargs, cmd) => cmd.toYargs(yargs, commandRunner),
         yargs
       )
       return yargs as Argv<T>
@@ -204,8 +244,9 @@ export class Command<T = {}> {
 
   /**
    * Wraps the actual command handler to insert prompt and async handler logic.
+   * Takes command runner.
    */
-  private getHandler() {
+  private getHandler(commandRunner: CommandRunner) {
     return (argv: Arguments<T>) => {
       const { _, $0, ...rest } = argv
       const questions = this.getQuestions(rest)
@@ -215,14 +256,16 @@ export class Command<T = {}> {
         chain = chain.then(this.prompt(questions))
       }
 
-      chain = chain.then(async (args) => {
-        // @todo check if command has sub-commands, and if so, do not throw an
-        // error but maybe show help instead?
-        if (!this.handler) {
-          throw new Error('No handler defined for this command.')
+      chain = chain.then((args) => {
+        if (this.handler) {
+          return this.handler(args)
         }
 
-        return this.handler(args)
+        if (this.getCommands().length) {
+          return commandRunner(`${this.getFqn()} --help`)
+        }
+
+        throw new Error('No handler defined for this command.')
       })
 
       // Save promise chain on argv instance, so we can access it in parse
