@@ -1,19 +1,34 @@
 import { program, command } from '../src'
-import { blue, red, dim } from 'ansi-colors'
 
-const echo = command(['echo', 'say'], 'Echo something to the terminal')
+const red = '\x1b[31m'
+const green = '\x1b[32m'
+const blue = '\x1b[36m'
+const reset = '\x1b[0m'
+
+const echo = command(['echo', 'say'])
+  .description('Echo something to the terminal')
   .argument('words', { variadic: true })
-  .option('blue', { type: 'boolean' })
   .option('red', { type: 'boolean' })
-  .action(async function(args) {
-    const str = args.words.join(' ')
-    console.log(args.blue ? blue(str) : args.red ? red(str) : str)
+  .option('green', { type: 'boolean' })
+  .option('blue', { type: 'boolean' })
+  .action(async function (args) {
+    const msg = args.words.join(' ')
+    console.log(
+      args.red
+        ? `${red}${msg}${reset}`
+        : args.green
+        ? `${green}${msg}${reset}`
+        : args.blue
+        ? `${blue}${msg}${reset}`
+        : msg
+    )
   })
 
-const app = program('simple repl app')
+const app = program()
+  .description('simple repl app')
   .add(echo)
   .withHelp()
   .withVersion()
-  .prompt(`${dim('command')} ${blue('$')} `)
+  .prompt(`${green}command ${blue}$${reset} `)
 
-app.repl()
+app.repl().catch((err) => console.error(`${red}${err.message}${reset}`))
