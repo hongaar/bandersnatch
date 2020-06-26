@@ -25,7 +25,7 @@ test('command should return new Command object', () => {
 
 test('with description', async () => {
   const cmd = command('test').description('foo description')
-  await program().add(cmd).withHelp().run('help')
+  await program().add(cmd).run('help')
   expect(outputSpy.mock.calls[0][0]).toContain('foo description')
 })
 
@@ -76,7 +76,7 @@ test('default argument', async () => {
 
 test('argument with description', async () => {
   const cmd = command('test').argument('foo').description('bar description')
-  await program().add(cmd).withHelp().run('test --help')
+  await program().add(cmd).run('test --help')
   expect(outputSpy.mock.calls[0][0]).toContain('bar description')
 })
 
@@ -103,7 +103,7 @@ test('default option', async () => {
 
 test('option with description', async () => {
   const cmd = command('test').option('foo').description('bar description')
-  await program().add(cmd).withHelp().run('test --help')
+  await program().add(cmd).run('test --help')
 })
 
 test('prompt for option', async () => {

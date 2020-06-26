@@ -1,9 +1,15 @@
+import { EventEmitter } from 'events'
+import TypedEventEmitter from 'typed-emitter'
 import { Argv } from 'yargs'
 import createYargs from 'yargs/yargs'
 import { Command, command } from './command'
 import { Repl, repl } from './repl'
 import { Arguments } from './command'
 import { isPromise } from './utils'
+
+interface Events {
+  run: (command: string | readonly string[]) => void
+}
 
 type ProgramOptions = {
   /**
@@ -50,11 +56,15 @@ function extractCommandFromProcess() {
   return process.argv.slice(2)
 }
 
-export class Program {
+export class Program extends (EventEmitter as new () => TypedEventEmitter<
+  Events
+>) {
   private commands: Command<any>[] = []
   private replInstance?: Repl
 
-  constructor(private options: ProgramOptions = {}) {}
+  constructor(private options: ProgramOptions = {}) {
+    super()
+  }
 
   /**
    * Set the program description.
@@ -132,8 +142,10 @@ export class Program {
   /**
    * Evaluate command (or process.argv) and return promise.
    */
-  public run(command?: string | ReadonlyArray<string>) {
+  public run(command?: string | readonly string[]) {
     const cmd = command || extractCommandFromProcess()
+
+    this.emit('run', cmd)
 
     // Return promise resolving to the return value of the command
     // handler.
