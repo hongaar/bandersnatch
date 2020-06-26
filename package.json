@@ -52,7 +52,7 @@
     "promise.prototype.finally": "3.1.2",
     "ts-jest": "26.1.0",
     "ts-node": "8.10.2",
-    "typed-emitter": "^1.2.0",
+    "typed-emitter": "1.2.0",
     "typescript": "3.9.5"
   },
   "husky": {
