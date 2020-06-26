@@ -4225,7 +4225,7 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-typed-emitter@^1.2.0:
+typed-emitter@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/typed-emitter/-/typed-emitter-1.2.0.tgz#2b2b42ba78b3986ed0f37cc17b14d393022bc1e5"
   integrity sha512-lfkPbyK+/ZasvvSur2bSJ2Wb7GLUcXDMw+UhvkHUH+yd5/bKWkYOaizboa6xCRA3I7Q+97jkQDJgOVWqPJy3Gw==
