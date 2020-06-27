@@ -1030,6 +1030,14 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.0.tgz#4e14870a618d9e2edd97dd8345fd9d9dc315646a"
+  integrity sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 char-regex@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
@@ -1822,10 +1830,10 @@ globals@^11.1.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
-globby@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.0.tgz#56fd0e9f0d4f8fb0c456f1ab0dee96e1380bc154"
-  integrity sha512-iuehFnR3xu5wBBtm4xi0dMe92Ob87ufyu/dHwpDYfbcpYpIbrO5OnS8M1vWvrBhSGEJ3/Ecj7gnX76P8YxpPEg==
+globby@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.1.tgz#9a2bf107a068f3ffeabc49ad702c79ede8cfd357"
+  integrity sha512-iH9RmgwCmUJHi2z5o2l3eTtGBtXek1OYlHrbcxOYugyHLmAsZrPj43OtHThd62Buh/Vv6VyCBD2bdyWcGNQqoQ==
   dependencies:
     array-union "^2.1.0"
     dir-glob "^3.0.1"
@@ -2826,17 +2834,17 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-leasot@11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/leasot/-/leasot-11.0.0.tgz#6f96ea5a2628c01c686d0c19a9d1643206882d97"
-  integrity sha512-wDHIZbIGr4/ragR/TbJLoqtWWvHCe6AMSZbejb2hxbdhslSm/bkEzlFuL2Jdky+rxgm1lNIT9/8HWT4hVKSS4w==
+leasot@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/leasot/-/leasot-11.1.0.tgz#8228b5d3f9bc0cd93f661651101af3aae5f7253b"
+  integrity sha512-sAdNNkxf88HeFclhz36HZIirdTwbQ0CqZpOW/X2zXpuyEFj2CXqE2qp7encNhv1bo/heKUCVQY35FJmCtIOs6g==
   dependencies:
     async "^3.2.0"
-    chalk "^4.0.0"
+    chalk "^4.1.0"
     commander "^5.1.0"
     eol "^0.9.1"
     get-stdin "^8.0.0"
-    globby "^11.0.0"
+    globby "^11.0.1"
     json2xml "^0.1.3"
     lodash "^4.17.15"
     log-symbols "^4.0.0"
