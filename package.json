@@ -45,7 +45,7 @@
     "@types/node": "12.12.35",
     "doctoc": "1.4.0",
     "husky": "4.2.5",
-    "jest": "26.0.1",
+    "jest": "26.1.0",
     "leasot": "11.1.0",
     "mock-argv": "1.1.6",
     "prettier": "2.0.5",
