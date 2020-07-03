@@ -1,7 +1,7 @@
 {
   "name": "bandersnatch",
   "description": "Simple TypeScript CLI / REPL framework",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/hongaar/bandersnatch.git"
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.3",
-    "@types/node": "12.12.35",
+    "@types/node": "14.0.14",
     "doctoc": "1.4.0",
     "husky": "4.2.5",
     "jest": "26.1.0",
