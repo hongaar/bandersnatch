@@ -1,7 +1,7 @@
 {
   "name": "bandersnatch",
   "description": "Simple TypeScript CLI / REPL framework",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/hongaar/bandersnatch.git"
@@ -34,11 +34,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@types/inquirer": "6.5.0",
-    "@types/yargs": "15.0.5",
-    "inquirer": "7.3.0",
-    "string-argv": "0.3.1",
-    "yargs": "15.4.0"
+    "@types/inquirer": "^6.5.0",
+    "@types/yargs": "^15.0.5",
+    "inquirer": "^7.3.0",
+    "string-argv": "^0.3.1",
+    "yargs": "^15.4.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.0",
