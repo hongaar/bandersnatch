@@ -15,22 +15,24 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
     type: 'number'
   }
     ? Array<number>
-      /**
-       * Add support for string variadic arguments
-       */
-    : O extends {
+    : /**
+     * Add support for string variadic arguments
+     */
+    O extends {
         variadic: true
       }
     ? Array<string>
-      /**
-       * Prefer choices over default
-       */
+    : /**
+     * Prefer choices over default
+     */
+    O extends { choices: ReadonlyArray<infer C>; type: 'array' }
+    ? C[]
     : O extends { choices: ReadonlyArray<infer C> }
     ? C
-      /**
-       * Allow fallback type
-       */
-    : unknown extends InferredOptionType<O>
+    : /**
+     * Allow fallback type
+     */
+    unknown extends InferredOptionType<O>
     ? F
     : InferredOptionType<O>
 

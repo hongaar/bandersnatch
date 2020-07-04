@@ -3,25 +3,38 @@ import { program, command } from '../src'
 const cmd = command()
   .argument('name', {
     description: 'Your name',
+    default: 'anonymous',
     prompt: true,
   })
-  .argument('question', {
-    description: 'Your question',
+  .option('size', {
+    description: 'Choose pizza size',
+    choices: ['small', 'medium', 'large'],
+    default: 'medium',
     prompt: true,
   })
-  .option('greeting', {
-    description: 'Use this greeting',
-    choices: ['Hi', 'Hey', 'Hiya'],
-    default: 'Hi',
+  .option('dough', {
+    description: 'Choose pizza dough',
+    choices: ['regular', 'wholegrain', 'veggie'],
+    default: 'regular',
     prompt: true,
   })
-  .option('save', {
-    description: 'Save the message',
+  .option('toppings', {
+    type: 'array',
+    description: 'Choose some toppings',
+    choices: ['mozarella', 'pepperoni', 'veggies'],
+    default: ['mozarella'],
+    prompt: true,
+  })
+  .option('confirm', {
+    description: 'Please confirm you want to order this pizza now',
     type: 'boolean',
     prompt: true,
   })
-  .action((args) => {
-    return `${args.greeting} ${args.name}, the answer to "${args.question}" is 42.`
+  .action(({ name, size, dough, toppings }) => {
+    console.log(
+      `Hi, ${name}, we'll start baking your pizza with the following options:`,
+      { size, dough, toppings }
+    )
   })
 
-program().description('Ask me anything').default(cmd).run().then(console.log)
+program().description('Ask me anything').default(cmd).run()

@@ -51,49 +51,64 @@ export class Prompter<T = {}> {
     // If we need to prompt for things, fill questions array
     return this.baseArgs.reduce((questions, arg) => {
       const name = arg.getName()
+      const defaultValue = arg.getDefault()
+      const isPromptable = arg.isPromptable()
       const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
+      const isDefault =
+        presentInArgs &&
+        typeof defaultValue !== 'undefined' &&
+        defaultValue == (args as any)[name]
 
       // We're going to assume that if an argument/option still has its default
-      // value and it is promptable, it should have a question.
-      const defaultInArgs =
-        presentInArgs &&
-        arg.getDefault() &&
-        arg.getDefault() == (args as any)[name]
-
-      if (arg.isPromptable() && (!presentInArgs || defaultInArgs)) {
+      // value and it is promptable, it should get a prompt.
+      if (isPromptable && (!presentInArgs || isDefault)) {
         // Detect the type of question we need to ask
-        if (arg.getChoices()) {
-          // Use list question type
-          questions.push({
-            name,
-            type: 'list',
-            message: arg.getPrompt(),
-            choices: arg.getChoices() as string[],
-          })
-        } else if (arg.getType() == 'boolean') {
-          // Use list question type
-          questions.push({
-            name,
-            type: 'list',
-            message: arg.getPrompt(),
-            choices: [
-              {
-                value: true,
-                name: 'Yes',
-              },
-              {
-                value: false,
-                name: 'No',
-              },
-            ],
-          })
-        } else {
-          // Default question type is input
-          questions.push({
-            name,
-            type: '',
-            message: arg.getPrompt(),
-          })
+        // @todo add detection of question type based on type of defaultValue
+        switch (true) {
+          case typeof arg.getChoices() !== 'undefined' &&
+            arg.getType() === 'array':
+            // Use checkbox question type
+            questions.push({
+              name,
+              type: 'checkbox',
+              message: arg.getPrompt(),
+              default: defaultValue,
+              // @todo ignoring type error here, probably need another type
+              // than Question[]
+              // @ts-ignore
+              choices: arg.getChoices() as string[],
+            })
+            break
+
+          case typeof arg.getChoices() !== 'undefined':
+            // Use list question type
+            questions.push({
+              name,
+              type: 'list',
+              message: arg.getPrompt(),
+              default: defaultValue,
+              choices: arg.getChoices() as string[],
+            })
+            break
+
+          case arg.getType() == 'boolean':
+            // Use confirm question type
+            questions.push({
+              name,
+              type: 'confirm',
+              message: arg.getPrompt(),
+              default: defaultValue,
+            })
+            break
+
+          default:
+            // Use input question type as default
+            questions.push({
+              name,
+              type: 'input',
+              message: arg.getPrompt(),
+              default: defaultValue,
+            })
         }
       }
 
