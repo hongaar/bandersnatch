@@ -3018,10 +3018,10 @@ mkdirp@1.x:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mock-argv@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/mock-argv/-/mock-argv-1.1.6.tgz#eae5299205864c5ca67643723341aac26a44040b"
-  integrity sha512-kstIt1TsE6W+MnT4XEErVollBXyK0Jxd3aWRT+2JElJs4iJjCYwy5AFo3hbSAO7yfgkkJuAU8PWpuH4XOou4NA==
+mock-argv@1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/mock-argv/-/mock-argv-1.1.7.tgz#f858876851384e52a33fddf47455b1a3833353cb"
+  integrity sha512-+nL2G2acB4K5tSdXgVZ+fXEWRYi9EPjSAwX3l9IpRAFaLmzFQQZAN+A2Qv9TUwk0x2m1oQU+qzSgSwARUKIGOQ==
 
 ms@2.0.0:
   version "2.0.0"
