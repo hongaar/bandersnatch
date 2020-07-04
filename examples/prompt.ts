@@ -25,12 +25,15 @@ const cmd = command()
     default: ['mozarella'],
     prompt: true,
   })
-  .option('confirm', {
+  .option('confirmed', {
     description: 'Please confirm you want to order this pizza now',
     type: 'boolean',
     prompt: true,
   })
-  .action(({ name, size, dough, toppings }) => {
+  .action(({ name, size, dough, toppings, confirmed }) => {
+    if (!confirmed) {
+      return console.log('Hope to see you another time.')
+    }
     console.log(
       `Hi, ${name}, we'll start baking your pizza with the following options:`,
       { size, dough, toppings }
