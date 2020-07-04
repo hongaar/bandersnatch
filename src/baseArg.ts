@@ -1,6 +1,6 @@
-import { InferredOptionType, Options, PositionalOptions } from 'yargs'
-import { ArgumentOptions } from './argument'
-import { OptionOptions } from './option'
+import type { InferredOptionType, Options, PositionalOptions } from 'yargs'
+import type { ArgumentOptions } from './argument'
+import type { OptionOptions } from './option'
 
 export interface BaseArgOptions {
   prompt?: true | string
@@ -15,22 +15,22 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
     type: 'number'
   }
     ? Array<number>
-    : /**
-     * Add support for string variadic arguments
-     */
-    O extends {
+      /**
+       * Add support for string variadic arguments
+       */
+    : O extends {
         variadic: true
       }
     ? Array<string>
-    : /**
-     * Prefer choices over default
-     */
-    O extends { choices: ReadonlyArray<infer C> }
+      /**
+       * Prefer choices over default
+       */
+    : O extends { choices: ReadonlyArray<infer C> }
     ? C
-    : /**
-     * Allow fallback type
-     */
-    unknown extends InferredOptionType<O>
+      /**
+       * Allow fallback type
+       */
+    : unknown extends InferredOptionType<O>
     ? F
     : InferredOptionType<O>
 
@@ -66,6 +66,27 @@ export class BaseArg {
       : this.options.description
       ? this.options.description
       : this.name
+  }
+
+  /**
+   * Get default value, if specified.
+   */
+  getDefault() {
+    return this.options.default
+  }
+
+  /**
+   * Get possible values, is specified.
+   */
+  getChoices() {
+    return this.options.choices
+  }
+
+  /**
+   * Get type, is specified.
+   */
+  getType() {
+    return this.options.type
   }
 
   /**

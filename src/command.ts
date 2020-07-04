@@ -1,8 +1,8 @@
 import { Argv, CommandModule, Arguments as BaseArguments } from 'yargs'
-import { prompt, Question } from 'inquirer'
 import { Argument, ArgumentOptions } from './argument'
 import { Option, OptionOptions } from './option'
 import { InferArgType } from './baseArg'
+import { prompter } from './prompter'
 
 export type Arguments<T = {}> = T &
   BaseArguments<T> & {
@@ -247,20 +247,21 @@ export class Command<T = {}> {
    * Takes command runner.
    */
   private getHandler(commandRunner: CommandRunner) {
-    return (argv: Arguments<T>) => {
+    return async (argv: Arguments<T>) => {
       const { _, $0, ...rest } = argv
-      const questions = this.getQuestions(rest)
-      let chain = Promise.resolve(rest)
+      const prompterInstance = prompter(
+        [...this.getArguments(), ...this.getOptions()],
+        rest
+      )
 
-      if (questions.length) {
-        chain = chain.then(this.prompt(questions))
-      }
+      let promise = prompterInstance.prompt()
 
-      chain = chain.then((args) => {
+      promise = promise.then((args) => {
         if (this.handler) {
           return this.handler(args)
         }
 
+        // Display help this command contains sub-commands
         if (this.getCommands().length) {
           return commandRunner(`${this.getFqn()} --help`)
         }
@@ -270,44 +271,9 @@ export class Command<T = {}> {
 
       // Save promise chain on argv instance, so we can access it in parse
       // callback.
-      argv.__promise = chain
+      argv.__promise = promise
 
-      return chain
+      return promise
     }
-  }
-
-  /**
-   * Returns an array of arguments and options which should be prompted, because
-   * they are promptable (`isPromptable()` returned true) and they are not
-   * provided in the args passed in to this function.
-   */
-  private getQuestions<T = {}>(args: T) {
-    // If we need to prompt for things, fill questions array
-    return [...this.getArguments(), ...this.getOptions()].reduce(
-      (questions, arg) => {
-        const name = arg.getName()
-        const presentInArgs = Object.constructor.hasOwnProperty.call(args, name)
-        // @todo How can we force prompting when default was used?
-        if (!presentInArgs && arg.isPromptable()) {
-          questions.push({
-            name,
-            message: arg.getPrompt(),
-          })
-        }
-
-        return questions
-      },
-      [] as Question[]
-    )
-  }
-
-  /**
-   * Ask questions and merge with passed in args.
-   */
-  private prompt = <Q = Question[]>(questions: Q) => <T = {}>(args: T) => {
-    return prompt<{}>(questions).then((answers) => ({
-      ...args,
-      ...answers,
-    }))
   }
 }
