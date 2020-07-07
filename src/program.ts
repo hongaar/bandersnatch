@@ -154,7 +154,6 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<
         cmd,
         {},
         (err, argv: Arguments, output) => {
-          console.log('program.run')
           /**
            * From the yargs docs:
            * > any text that would have been output by yargs to the terminal,
