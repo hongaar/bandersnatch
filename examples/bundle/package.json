@@ -14,7 +14,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "bandersnatch": "^1.0.0-alpha.2"
+        "bandersnatch": "^1.0.0"
     },
     "devDependencies": {
         "pkg": "^4.4.2",

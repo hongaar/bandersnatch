@@ -8,8 +8,6 @@
 
 > Super lightweight and friendly CLI scaffolding for Node.js programs.
 
-**🚧 alpha version**
-
 ## Features
 
 - 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax
@@ -263,7 +261,7 @@ a value was explicitly passed in or inherited from the default value.
 ---
 
 ℹ More examples in the
-[examples](https://github.com/hongaar/bandersnatch/tree/alpha/examples)
+[examples](https://github.com/hongaar/bandersnatch/tree/master/examples)
 directory.
 
 ## API
@@ -474,19 +472,19 @@ There are many options to bundle your application for distribution. We'll
 discuss a common pattern.
 
 ℹ An example can be found in the
-[examples/bundle](https://github.com/hongaar/bandersnatch/tree/alpha/examples/bundle)
+[examples/bundle](https://github.com/hongaar/bandersnatch/tree/master/examples/bundle)
 directory.
 
 Init a `package.json` if needed:
 
-```bash
+```
 mkdir echo && cd echo
 yarn init
 ```
 
 Install dependencies:
 
-```bash
+```
 yarn add bandersnatch
 yarn add typescript pkg --dev
 ```
@@ -541,7 +539,7 @@ Add these scripts to your `package.json`:
 +    "build": "tsc",
 +  },
    "dependencies": {
-     "bandersnatch": "^1.0.0-alpha.2"
+     "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
      "pkg": "^4.4.2",
@@ -579,7 +577,7 @@ work, we need to make a small adjustment to `package.json`:
      "build": "tsc",
    },
    "dependencies": {
-     "bandersnatch": "^1.0.0-alpha.2"
+     "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
      "pkg": "^4.4.2",
@@ -608,7 +606,7 @@ To create a binary (your app with Node.js bundled), add this script to
 +    "bundle": "yarn build && pkg -t host ."
    },
    "dependencies": {
-     "bandersnatch": "^1.0.0-alpha.2"
+     "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
      "pkg": "^4.4.2",
@@ -617,7 +615,7 @@ To create a binary (your app with Node.js bundled), add this script to
  }
 ```
 
-_👆 Omit `-t host` to create binaries for all platforms._
+_ℹ Omit `-t host` to create binaries for all platforms._
 
 Run `yarn bundle` and then `./echo --help`. 💪
 
@@ -630,8 +628,7 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
 ## Contributing
 
-Contributions are very welcome. Please note this project is in a very early
-stage and the roadmap is a bit foggy still...
+Contributions are very welcome.
 
 ```bash
 # Clone and install
