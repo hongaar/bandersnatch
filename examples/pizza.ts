@@ -11,13 +11,13 @@ const cmd = command()
   })
   .option('size', {
     description: 'Choose pizza size',
-    choices: ['small', 'medium', 'large'],
+    choices: ['small', 'medium', 'large'] as const,
     default: 'medium',
     prompt: true,
   })
   .option('toppings', {
     description: 'Pick some toppings',
-    choices: ['mozzarella', 'pepperoni', 'veggies'],
+    choices: ['mozzarella', 'pepperoni', 'veggies'] as const,
     default: ['mozzarella'],
     prompt: true,
   })

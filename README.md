@@ -28,11 +28,13 @@ intuitive to work with.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
   - [REPL example](#repl-example)
   - [Prompt](#prompt)
+  - [TypeScript](#typescript)
 - [API](#api)
   - [`program(options)`](#programoptions)
     - [`program.description(description)`](#programdescriptiondescription)
@@ -256,6 +258,42 @@ $ ts-node pizza.ts "The Netherlands" --name Joram --confirmed
 it was still being prompted. This is a known issue. In this case, the default
 value was the same as the input, in which case bandersnatch doesn't know whether
 a value was explicitly passed in or inherited from the default value.
+
+### TypeScript
+
+Bandersnatch works perfectly well with non-TypeScript codebases. However, when
+you do use TypeScript the command arguments are fully typed.
+
+Let's slightly improve the example program above to illustrate this:
+
+```diff
+   .option('size', {
+     description: 'Choose pizza size',
+-    choices: ['small', 'medium', 'large'],
++    choices: ['small', 'medium', 'large'] as const,
+     default: 'medium',
+     prompt: true,
+   })
+   .option('toppings', {
+     description: 'Pick some toppings',
+-    choices: ['mozzarella', 'pepperoni', 'veggies'],
++    choices: ['mozzarella', 'pepperoni', 'veggies'] as const,
+     default: ['mozzarella'],
+     prompt: true,
+   })
+```
+
+The first argument passed to the action handler function is now typed like this:
+
+```ts
+type Args = {
+  address: string
+  name: string
+  size: 'small' | 'medium' | 'large'
+  toppings: ('mozzarella' | 'pepperoni' | 'veggies')[]
+  confirmed: boolean
+}
+```
 
 ---
 

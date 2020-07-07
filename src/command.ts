@@ -22,7 +22,7 @@ type CommandOptions = {
 type CommandRunner = (command: string) => Promise<unknown>
 
 export interface HandlerFn<T> {
-  (args: Omit<T, '_' | '$0'>): Promise<any> | any
+  (args: Omit<T, '_' | '$0'>, commandRunner: CommandRunner): Promise<any> | any
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {
@@ -258,7 +258,7 @@ export class Command<T = {}> {
 
       promise = promise.then((args) => {
         if (this.handler) {
-          return this.handler(args)
+          return this.handler(args, commandRunner)
         }
 
         // Display help this command contains sub-commands
