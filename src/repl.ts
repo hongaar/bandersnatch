@@ -30,9 +30,12 @@ export class Repl {
   }
 
   /**
-   * Start the REPL server.
+   * Start the REPL server. This method may change at any time, not
+   * intended for public use.
+   *
+   * @private
    */
-  async start() {
+  public async start() {
     this.server = nodeRepl.start({
       prompt: this.prompt,
       eval: this.eval.bind(this),

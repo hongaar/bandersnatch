@@ -44,4 +44,4 @@ const app = program()
   .add(choices)
   .add(defaultValues)
 
-app.withHelp().runOrRepl()
+app.runOrRepl()

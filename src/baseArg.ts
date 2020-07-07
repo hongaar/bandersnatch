@@ -23,11 +23,19 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
       }
     ? Array<string>
     : /**
-     * Prefer choices over default
-     */
-    O extends { choices: ReadonlyArray<infer C>; type: 'array' }
+     * Choices with array type
+     */ O extends { choices: ReadonlyArray<infer C>; type: 'array' }
     ? C[]
-    : O extends { choices: ReadonlyArray<infer C> }
+    : /**
+     * Choices with array default
+     */ O extends {
+        choices: ReadonlyArray<infer C>
+        default: ReadonlyArray<string>
+      }
+    ? C[]
+    : /**
+     * Prefer choices over default
+     */ O extends { choices: ReadonlyArray<infer C> }
     ? C
     : /**
      * Allow fallback type

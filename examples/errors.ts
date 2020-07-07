@@ -76,7 +76,6 @@ app
       .add(asyncValidation)
   )
   .add(noHandler)
-  .withHelp()
   .runOrRepl()
   .then(success)
   .catch(fail)

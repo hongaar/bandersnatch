@@ -66,7 +66,7 @@ export class Prompter<T = {}> {
         // @todo add detection of question type based on type of defaultValue
         switch (true) {
           case typeof arg.getChoices() !== 'undefined' &&
-            arg.getType() === 'array':
+            (arg.getType() === 'array' || Array.isArray(defaultValue)):
             // Use checkbox question type
             questions.push({
               name,
@@ -91,7 +91,7 @@ export class Prompter<T = {}> {
             })
             break
 
-          case arg.getType() == 'boolean':
+          case arg.getType() === 'boolean' || typeof defaultValue === 'boolean':
             // Use confirm question type
             questions.push({
               name,
