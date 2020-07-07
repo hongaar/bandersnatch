@@ -63,7 +63,6 @@ export class Prompter<T = {}> {
       // value and it is promptable, it should get a prompt.
       if (isPromptable && (!presentInArgs || isDefault)) {
         // Detect the type of question we need to ask
-        // @todo add detection of question type based on type of defaultValue
         switch (true) {
           case typeof arg.getChoices() !== 'undefined' &&
             (arg.getType() === 'array' || Array.isArray(defaultValue)):
