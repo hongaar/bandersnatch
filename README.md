@@ -28,7 +28,6 @@ intuitive to work with.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
@@ -202,8 +201,8 @@ const cmd = command()
   })
   .option('toppings', {
     description: 'Pick some toppings',
-    choices: ['mozarella', 'pepperoni', 'veggies'],
-    default: ['mozarella'],
+    choices: ['mozzarella', 'pepperoni', 'veggies'],
+    default: ['mozzarella'],
     prompt: true,
   })
   .option('confirmed', {

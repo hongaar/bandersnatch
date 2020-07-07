@@ -17,8 +17,8 @@ const cmd = command()
   })
   .option('toppings', {
     description: 'Pick some toppings',
-    choices: ['mozarella', 'pepperoni', 'veggies'],
-    default: ['mozarella'],
+    choices: ['mozzarella', 'pepperoni', 'veggies'],
+    default: ['mozzarella'],
     prompt: true,
   })
   .option('confirmed', {
