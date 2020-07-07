@@ -189,7 +189,7 @@ const cmd = command()
   .argument('address', {
     prompt: 'Your address',
   })
-  .argument('name', {
+  .option('name', {
     description: 'Your name',
     default: 'anonymous',
     prompt: true,
