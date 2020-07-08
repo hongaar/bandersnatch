@@ -661,6 +661,8 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 ## Todo
 
 - [ ] Better code coverage
+- [ ] Consider resolving ambiguity in _prompt_ param/method
+- [ ] Async autocomplete method
 - [ ] Choices autocompletion in REPL mode (open upstream PR in yargs)
 
 ## Contributing
