@@ -34,15 +34,15 @@ export interface HandlerFn<T> {
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {
-  return obj.constructor.name === 'Argument'
+  return obj instanceof Argument
 }
 
 function isOption(obj: Argument | Option | Command): obj is Option {
-  return obj.constructor.name === 'Option'
+  return obj instanceof Option
 }
 
 function isCommand(obj: Argument | Option | Command): obj is Command {
-  return obj.constructor.name === 'Command'
+  return obj instanceof Command
 }
 
 /**
@@ -132,6 +132,7 @@ export class Command<T = {}> {
       obj.setParentCommand(this)
       this.args.push(obj)
     } else {
+      console.log('add', { obj, command: this })
       throw new Error('Not implemented.')
     }
 
