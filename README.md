@@ -47,6 +47,8 @@ intuitive to work with.
     - [`program.isRepl()`](#programisrepl)
     - [`program.on(event, listener)`](#programonevent-listener)
   - [`command(name, options)`](#commandname-options)
+    - [`command.description(description)`](#commanddescriptiondescription)
+    - [`command.hidden()`](#commandhidden)
     - [`command.argument(name, options)`](#commandargumentname-options)
     - [`command.option(name, options)`](#commandoptionname-options)
     - [`command.command(command)`](#commandcommandcommand)
@@ -309,7 +311,7 @@ All methods are chainable unless the docs mention otherwise.
 
 Creates a new program. Options (object, optional) can contain these keys:
 
-- `description` (string, optional) is used in --help output.
+- `description` (string, optional) is used in help output.
 - `prompt` (string, default: `>`) use this prompt prefix when in REPL mode.
 - `help` (boolean, default: true) adds `help` and `--help` to the program which
   displays program usage information.
@@ -318,7 +320,7 @@ Creates a new program. Options (object, optional) can contain these keys:
 
 #### `program.description(description)`
 
-Sets the program description (string, required) used in --help output.
+Sets the program description (string, required) used in help output.
 
 #### `program.prompt(prompt)`
 
@@ -393,7 +395,16 @@ Creates a new command.
 - Name (string, optional) is used to invoke a command. When not used as the
   default command, a name is required.
 - Options (object, optional) can contain these keys:
-  - `description` (string, optional) is used in --help output.
+  - `description` (string) is used in help output.
+  - `hidden` (boolean) hide command from help output and autocomplete.
+
+#### `command.description(description)`
+
+Sets the command description (string, required) used in help output.
+
+#### `command.hidden()`
+
+Hide command from help output and autocomplete.
 
 #### `command.argument(name, options)`
 
@@ -402,7 +413,7 @@ Adds a positional argument to the command.
 - Name (string, required) is used to identify the argument.
 - Options can be provided to change the behavior of the argument. Object with
   any of these keys:
-  - `description` (string) is used in --help output.
+  - `description` (string) is used in help output.
   - `optional` (boolean) makes this argument optional.
   - `variadic` (boolean) eagerly take all remaining arguments and parse as an
     array. Only valid for the last argument.
@@ -424,7 +435,7 @@ Adds an option to the command.
 - Name (string, required) is used to identify the option.
 - Options (object, optional) can be provided to change the behavior of the
   option. Object with any of these keys:
-  - `description` (string, optional) is used in --help output.
+  - `description` (string, optional) is used in help output.
   - `type` (string) one of `"array"|"boolean"|"count"|"number"|"string"` which
     determines the runtime type of the argument. Use count for the number of
     times an option was provided (e.g. verbosity levels).

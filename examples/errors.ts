@@ -9,7 +9,7 @@ const syncOk = command('sync')
   })
 
 const asyncOk = command('async')
-  .description('Print sync message')
+  .description('Print async message')
   .action(async function () {
     console.log('ok/async')
   })

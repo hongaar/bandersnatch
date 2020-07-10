@@ -116,3 +116,9 @@ test('prompt for option', async () => {
   await program().add(cmd).run('test')
   expect(prompt).toHaveBeenCalled()
 })
+
+test('hidden', async () => {
+  const foo = command('foo').hidden()
+  await program().add(foo).run('help')
+  expect(outputSpy.mock.calls[0][0]).not.toContain('foo')
+})

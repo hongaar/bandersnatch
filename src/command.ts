@@ -17,6 +17,14 @@ type CommandOptions = {
    * Defaults to `undefined`.
    */
   description?: string
+
+  /**
+   * When set to true, creates a hidden command not visible in autocomplete or
+   * help output. Can also be set by calling `command(...).hidden()`.
+   *
+   * Default to `false`.
+   */
+  hidden?: boolean
 }
 
 type CommandRunner = (command: string) => Promise<unknown>
@@ -62,6 +70,15 @@ export class Command<T = {}> {
    */
   public description(description: string) {
     this.options.description = description
+    return this
+  }
+
+  /**
+   * Marks the command as hidden, i.e. not visible in autocomplete or help
+   * output.
+   */
+  public hidden() {
+    this.options.hidden = true
     return this
   }
 
@@ -193,7 +210,7 @@ export class Command<T = {}> {
     const module: CommandModule<{}, T> = {
       command: this.toYargsCommand(),
       aliases: [],
-      describe: this.options.description || '',
+      describe: this.options.hidden ? false : this.options.description || '',
       builder: this.getBuilder(commandRunner),
       handler: this.getHandler(commandRunner),
     }
