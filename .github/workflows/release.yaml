@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 12
       - run: yarn install
-      - run: npx semantic-release@beta
+      - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
