@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/hongaar/bandersnatch/compare/v1.2.3...v1.2.4) (2020-07-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency inquirer to v7.3.2 ([#68](https://github.com/hongaar/bandersnatch/issues/68)) ([802f3e4](https://github.com/hongaar/bandersnatch/commit/802f3e4edd453298a408b37ab40dd3a9a8929918))
+
 ## [1.2.3](https://github.com/hongaar/bandersnatch/compare/v1.2.2...v1.2.3) (2020-07-11)
 
 
