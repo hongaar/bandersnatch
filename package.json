@@ -35,7 +35,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@types/inquirer": "^6.5.0",
+    "@types/inquirer": "^7.0.0",
     "@types/yargs": "^15.0.5",
     "inquirer": "^7.3.0",
     "string-argv": "^0.3.1",
