@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/hongaar/bandersnatch/compare/v1.2.6...v1.3.0) (2020-07-28)
+
+
+### Features
+
+* enquirer ([#81](https://github.com/hongaar/bandersnatch/issues/81)) ([7891e70](https://github.com/hongaar/bandersnatch/commit/7891e70f11cdbfbae40a3932c51e4104b810c930))
+
 ## [1.2.6](https://github.com/hongaar/bandersnatch/compare/v1.2.5...v1.2.6) (2020-07-23)
 
 
