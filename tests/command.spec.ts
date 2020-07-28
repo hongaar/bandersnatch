@@ -1,22 +1,22 @@
+import Enquirer from 'enquirer'
 import { command, Command, program } from '../src'
-import inquirer = require('inquirer')
 
-const prompt = jest.fn()
+jest.mock('enquirer')
+
+const prompt = (Enquirer.prompt = jest.fn())
 
 let outputSpy: jest.MockInstance<any, any>
 let errorSpy: jest.MockInstance<any, any>
-let promptSpy: jest.MockInstance<any, any>
 
 beforeEach(() => {
   outputSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
   errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
-  promptSpy = jest.spyOn(inquirer, 'prompt').mockImplementation(prompt)
+  prompt.mockClear()
 })
 
 afterEach(() => {
   outputSpy.mockRestore()
   errorSpy.mockRestore()
-  promptSpy.mockRestore()
 })
 
 test('command should return new Command object', () => {

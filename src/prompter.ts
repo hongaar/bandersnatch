@@ -1,4 +1,4 @@
-import { prompt, Question as BaseQuestion, ListQuestion } from 'inquirer'
+import { prompt } from 'enquirer'
 import { Argument } from './argument'
 import { Option } from './option'
 
@@ -13,7 +13,9 @@ type PromptType =
   | 'password'
   | 'editor'
 
-type Question = BaseQuestion | ListQuestion
+// @todo Wait for upstream change to import types from enquirer
+// @link https://github.com/enquirer/enquirer/pull/258
+type Question = any
 
 /**
  * Creates a new command, which can be added to a program.
@@ -69,9 +71,9 @@ export class Prompter<T = {}> {
             // Use checkbox question type
             questions.push({
               name,
-              type: 'checkbox',
+              type: 'multiselect',
               message: arg.getPrompt(),
-              default: defaultValue,
+              initial: defaultValue,
               // @todo ignoring type error here, probably need another type
               // than Question[]
               // @ts-ignore
@@ -83,9 +85,9 @@ export class Prompter<T = {}> {
             // Use list question type
             questions.push({
               name,
-              type: 'list',
+              type: 'select',
               message: arg.getPrompt(),
-              default: defaultValue,
+              initial: defaultValue,
               choices: arg.getChoices() as string[],
             })
             break
@@ -96,7 +98,7 @@ export class Prompter<T = {}> {
               name,
               type: 'confirm',
               message: arg.getPrompt(),
-              default: defaultValue,
+              initial: defaultValue,
             })
             break
 
@@ -106,7 +108,7 @@ export class Prompter<T = {}> {
               name,
               type: 'input',
               message: arg.getPrompt(),
-              default: defaultValue,
+              initial: defaultValue,
             })
         }
       }
