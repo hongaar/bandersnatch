@@ -16,7 +16,7 @@
 - 💬 Prompts for missing arguments
 - 🔜 Autocompletes arguments
 - 🤯 Fully typed
-- ⚡ Uses the power of `yargs` and `inquirer`
+- ⚡ Uses the power of `yargs` and `enquirer`
 
 It's built in TypeScript and command arguments are fully typed.
 
