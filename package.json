@@ -1,7 +1,7 @@
 {
   "name": "bandersnatch",
   "description": "Simple TypeScript CLI / REPL framework",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/hongaar/bandersnatch.git"
