@@ -4222,9 +4222,9 @@ type-fest@^0.8.1:
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
 typed-emitter@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/typed-emitter/-/typed-emitter-1.3.0.tgz#cb49ce288c9f066afc22ffe236a88879163eb0ee"
-  integrity sha512-sLA7oQv0OUgAbbWeadAm8OpzssufUxXof6O50JaBX6guZrRi2XbhCdKO321TleFN45oL/WdiR1UsKF6eUTwpZg==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/typed-emitter/-/typed-emitter-1.3.1.tgz#c98d71551a99d5f08ba9085ee44b8fc9b2357502"
+  integrity sha512-2h7utWyXgd2R2u2IuL8B4yu1gqMxbgUj2VS/MGVbFhEVQNJKXoQQoS5CBMh+eW31zFeSmDfEQ3qQf4xy5SlPVQ==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
