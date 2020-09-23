@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/hongaar/bandersnatch/compare/v1.3.2...v1.3.3) (2020-09-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/yargs to v15.0.7 ([#118](https://github.com/hongaar/bandersnatch/issues/118)) ([08f289c](https://github.com/hongaar/bandersnatch/commit/08f289c544e872b0d2fb7088adb02add2017a0ef))
+
 ## [1.3.2](https://github.com/hongaar/bandersnatch/compare/v1.3.1...v1.3.2) (2020-09-23)
 
 
