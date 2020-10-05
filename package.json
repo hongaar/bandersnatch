@@ -39,7 +39,7 @@
     "enquirer": "^2.3.6",
     "string-argv": "^0.3.1",
     "typed-emitter": "^1.2.0",
-    "yargs": "^15.4.0"
+    "yargs": "^16.0.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "5.0.1",
