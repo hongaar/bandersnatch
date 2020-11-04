@@ -306,7 +306,7 @@
     jest-util "^26.6.2"
     slash "^3.0.0"
 
-"@jest/core@^26.6.3":
+"@jest/core@^26.6.1", "@jest/core@^26.6.3":
   version "26.6.3"
   resolved "https://registry.yarnpkg.com/@jest/core/-/core-26.6.3.tgz#7639fcb3833d748a4656ada54bde193051e45fad"
   integrity sha512-xvV1kKbhfUqFVuZ8Cyo+JPpipAHHAV3kcDBftiduK8EICXmTFddryy3P7NfZt8Pv37rA9nEJBKCCkglCPt/Xjw==
@@ -1250,10 +1250,10 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
-  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+commander@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.0.tgz#b990bfb8ac030aedc6d11bc04d1488ffef56db75"
+  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
 
 compare-versions@^3.6.0:
   version "3.6.0"
@@ -2450,7 +2450,7 @@ jest-changed-files@^26.6.2:
     execa "^4.0.0"
     throat "^5.0.0"
 
-jest-cli@^26.6.3:
+jest-cli@^26.6.1:
   version "26.6.3"
   resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-26.6.3.tgz#43117cfef24bc4cd691a174a8796a532e135e92a"
   integrity sha512-GF9noBSa9t08pSyl3CY4frMrqp+aQXFGFkf5hEPbh/pIUFYWMK6ZLTfbmadxJVcJrdRoChlWQsA2VkJcDFK8hg==
@@ -2842,14 +2842,14 @@ jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@26.6.3:
-  version "26.6.3"
-  resolved "https://registry.yarnpkg.com/jest/-/jest-26.6.3.tgz#40e8fdbe48f00dfa1f0ce8121ca74b88ac9148ef"
-  integrity sha512-lGS5PXGAzR4RF7V5+XObhqz2KZIDUA1yD0DG6pBVmy10eh0ZIXQImRuzocsI/N2XZ1GrLFwTS27In2i2jlpq1Q==
+jest@26.6.1:
+  version "26.6.1"
+  resolved "https://registry.yarnpkg.com/jest/-/jest-26.6.1.tgz#821e8280d2bdeeed40ac7bc43941dceff0f1b650"
+  integrity sha512-f+ahfqw3Ffy+9vA7sWFGpTmhtKEMsNAZiWBVXDkrpIO73zIz22iimjirnV78kh/eWlylmvLh/0WxHN6fZraZdA==
   dependencies:
-    "@jest/core" "^26.6.3"
+    "@jest/core" "^26.6.1"
     import-local "^3.0.2"
-    jest-cli "^26.6.3"
+    jest-cli "^26.6.1"
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -2986,14 +2986,14 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-leasot@11.3.0:
-  version "11.3.0"
-  resolved "https://registry.yarnpkg.com/leasot/-/leasot-11.3.0.tgz#67fa30f653b8dee2c1968ee681480bd69c377fe2"
-  integrity sha512-LBvhNvUrTgshpNWGTkzT1bHvQ8yfDxS1MGdChNVPP7SHsnoDyJ/i6Ycabi2MXq7y0UaNLusHXW4NzfigRB1aNg==
+leasot@11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/leasot/-/leasot-11.4.0.tgz#658c9f15456adcfe31772d6f84882aa9119ab3ff"
+  integrity sha512-MStC30RpZFCmxdqObZ1i2YrVDJqvFOkxLtAL10sdOKW73zxGNCWy+WribzYhrASpOoL/rqqaoGrHA9hzbiZlSw==
   dependencies:
     async "^3.2.0"
     chalk "^4.1.0"
-    commander "^6.1.0"
+    commander "^6.2.0"
     eol "^0.9.1"
     get-stdin "^8.0.0"
     globby "^11.0.1"
