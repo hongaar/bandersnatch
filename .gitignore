@@ -1,4 +1,19 @@
+# yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# vendor
 node_modules/
+
+# build
 lib/
+
+# test
 coverage/
+
+# logs
 yarn-error.log
