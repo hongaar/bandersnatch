@@ -50,7 +50,7 @@
     "husky": "4.3.5",
     "jest": "26.6.1",
     "leasot": "11.4.0",
-    "mock-argv": "1.1.9",
+    "mock-argv": "1.1.10",
     "prettier": "2.2.1",
     "promise.prototype.finally": "3.1.2",
     "ts-jest": "26.4.4",
