@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/hongaar/bandersnatch/compare/v1.5.0...v1.5.1) (2021-01-30)
+
+
+### Bug Fixes
+
+* bump @types/node ([8672bf5](https://github.com/hongaar/bandersnatch/commit/8672bf5e17a2efe88bfcbb913088bb642db6c40a))
+
 # [1.5.0](https://github.com/hongaar/bandersnatch/compare/v1.4.0...v1.5.0) (2021-01-30)
 
 
