@@ -179,9 +179,11 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<
             // Delegate resolve/reject to promise returned from handler
             argv.__promise.then(resolve).catch(reject)
           } else {
-            // Resolve with void if promise is not available, which is the case
-            // with e.g. --version and --help
-            resolve()
+            // Resolve with undefined if promise is not available, which is the
+            // case with e.g. --version and --help. It should be noted that
+            // this might need to be filtered when e.g. printing resolved values
+            // from command handlers in a .then() function.
+            resolve(undefined)
           }
         }
       )
