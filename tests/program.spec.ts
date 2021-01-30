@@ -16,12 +16,9 @@ jest.mock('../src/repl', () => {
 
 // Repl mock
 const replStartFn = jest.fn()
-const replPauseFn = jest.fn()
-const replResumeFn = jest.fn()
 class MockedRepl {
   start = replStartFn
-  pause = replPauseFn
-  resume = replResumeFn
+  attachHistory = jest.fn()
 }
 
 beforeEach(() => {
