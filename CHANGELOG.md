@@ -1,3 +1,10 @@
+## [1.3.9](https://github.com/hongaar/bandersnatch/compare/v1.3.8...v1.3.9) (2021-01-30)
+
+
+### Bug Fixes
+
+* stop and restart repl to allow enquirer prompt ([#188](https://github.com/hongaar/bandersnatch/issues/188)) ([059461a](https://github.com/hongaar/bandersnatch/commit/059461af748f4a3ca6948549ccf0c5d5b4190a37))
+
 ## [1.3.8](https://github.com/hongaar/bandersnatch/compare/v1.3.7...v1.3.8) (2020-10-16)
 
 
