@@ -15,6 +15,7 @@
 - ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop)
 - 💬 Prompts for missing arguments
 - 🔜 Autocompletes arguments
+- 🔙 Command history
 - 🤯 Fully typed
 - ⚡ Uses the power of `yargs` and `enquirer`
 
@@ -317,11 +318,13 @@ All methods are chainable unless the docs mention otherwise.
 Creates a new program. Options (object, optional) can contain these keys:
 
 - `description` (string, optional) is used in help output.
-- `prompt` (string, default: `>`) use this prompt prefix when in REPL mode.
+- `prompt` (string, default: `> `) use this prompt prefix when in REPL mode.
 - `help` (boolean, default: true) adds `help` and `--help` to the program which
   displays program usage information.
 - `version` (boolean, default: true) adds `version` and `--version` to the
   program which displays program version from package.json.
+- `historyFile` (string, defaults: {homedir}/.bandersnatch_history) is a path to
+  the app history file.
 
 #### `program.description(description)`
 
@@ -360,7 +363,7 @@ program()
 
 #### `program.repl()`
 
-Start a read-eval-print loop. Returns promise-like repl instance.
+Start a read-eval-print loop. Returns promise-like REPL instance.
 
 ```ts
 program()
@@ -371,7 +374,7 @@ program()
 #### `program.runOrRepl()`
 
 Invokes `run()` if process.argv is set, `repl()` otherwise. Returns promise or
-promise-like repl instance.
+promise-like REPL instance.
 
 ```ts
 program()
@@ -381,7 +384,7 @@ program()
 
 #### `program.isRepl()`
 
-Returns `true` if program is running a repl loop, `false` otherwise.
+Returns `true` if program is running a REPL loop, `false` otherwise.
 
 #### `program.on(event, listener)`
 
@@ -677,6 +680,7 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 ## Todo
 
 - [ ] Better code coverage
+- [ ] History file cleanup (retain first x lines only)
 - [ ] Consider resolving ambiguity in _prompt_ param/method
 - [ ] Async autocomplete method
 - [ ] Choices autocompletion in REPL mode (open upstream PR in yargs)

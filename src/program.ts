@@ -1,10 +1,16 @@
 import { EventEmitter } from 'events'
+import os from 'os'
+import path from 'path'
 import TypedEventEmitter from 'typed-emitter'
 import { Argv } from 'yargs'
 import createYargs from 'yargs/yargs'
 import { Arguments, Command, command } from './command'
+import { history, History } from './history'
 import { Repl, repl } from './repl'
 import { isPromise } from './utils'
+
+const DEFAULT_PROMPT = '> '
+const DEFAULT_HISTORY_FILE = '.bandersnatch_history'
 
 interface Events {
   run: (command: string | readonly string[]) => void
@@ -42,6 +48,13 @@ type ProgramOptions = {
    * Defaults to `true`.
    */
   version?: boolean
+
+  /**
+   * Use this history file in REPL mode.
+   *
+   * Defaults to `{homedir}/.bandersnatch_history`.
+   */
+  historyFile?: string
 }
 
 /**
@@ -55,14 +68,25 @@ function extractCommandFromProcess() {
   return process.argv.slice(2)
 }
 
-export class Program extends (EventEmitter as new () => TypedEventEmitter<
-  Events
->) {
+export class Program extends (EventEmitter as new () => TypedEventEmitter<Events>) {
   private commands: Command<any>[] = []
+  private history: History
   private replInstance?: Repl
 
-  constructor(private options: ProgramOptions = {}) {
+  constructor(public options: ProgramOptions = {}) {
     super()
+
+    // Set default prompt
+    if (!this.options.prompt) {
+      this.options.prompt = DEFAULT_PROMPT
+    }
+
+    // Set default historyFile
+    if (!this.options.historyFile) {
+      this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE)
+    }
+
+    this.history = history(this)
   }
 
   /**
@@ -110,7 +134,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<
     yargs.fail(this.failHandler.bind(this))
 
     // In case we're in a REPL session, do not exit on errors.
-    yargs.exitProcess(!this.replInstance)
+    yargs.exitProcess(!this.isRepl())
 
     // Add commands
     this.commands.forEach((command) => {
@@ -194,7 +218,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<
    * Run event loop which reads command from stdin.
    */
   public repl() {
-    this.replInstance = repl(this, this.options.prompt)
+    this.replInstance = repl(this)
 
     // Add exit command
     this.add(
@@ -205,6 +229,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<
         })
     )
 
+    this.replInstance.attachHistory(this.history)
     this.replInstance.start()
 
     return this.replInstance
