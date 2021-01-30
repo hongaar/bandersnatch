@@ -1,9 +1,10 @@
-import nodeRepl, { REPLServer } from 'repl'
+import { Prompt } from 'enquirer'
 import { CompleterResult } from 'readline'
-import { Context } from 'vm'
+import nodeRepl, { REPLServer } from 'repl'
 import { parseArgsStringToArgv } from 'string-argv'
-import { Program } from './program'
+import { Context } from 'vm'
 import { autocompleter, Autocompleter } from './autocompleter'
+import { Program } from './program'
 
 const DEFAULT_PROMPT = '> '
 
@@ -27,6 +28,11 @@ export class Repl {
     private prompt: string = DEFAULT_PROMPT
   ) {
     this.autocompleter = autocompleter(program)
+
+    // Stop the server to avoid eval'ing stdin from prompts
+    this.program.on('run', () => {
+      this.stop()
+    })
   }
 
   /**
@@ -42,6 +48,14 @@ export class Repl {
       completer: this.completer.bind(this),
       ignoreUndefined: true,
     })
+
+    // Fixes bug with hidden cursor after enquirer prompt
+    // @ts-ignore
+    new Prompt().cursorShow()
+  }
+
+  public stop() {
+    this.server?.close()
   }
 
   /**
@@ -100,6 +114,11 @@ export class Repl {
     } catch (error) {
       this.errorHandler(error)
     }
+
+    // Since we stop the server when a command is executed (by listening to the
+    // 'run' event in the constructor), we need to start a new instance when the
+    // command is finished.
+    this.start()
 
     // The result passed to this function is printed by the Node REPL server,
     // but we don't want to use that, so we pass undefined instead.

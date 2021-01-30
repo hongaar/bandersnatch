@@ -18,7 +18,7 @@ type PromptType =
 type Question = any
 
 /**
- * Creates a new command, which can be added to a program.
+ * Creates a new prompter instance
  */
 export function prompter<T = {}>(baseArgs: Array<Argument | Option>, args: T) {
   return new Prompter(baseArgs, args)

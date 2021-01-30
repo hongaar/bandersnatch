@@ -1,7 +1,7 @@
-import { Argv, CommandModule, Arguments as BaseArguments } from 'yargs'
+import { Arguments as BaseArguments, Argv, CommandModule } from 'yargs'
 import { Argument, ArgumentOptions } from './argument'
-import { Option, OptionOptions } from './option'
 import { InferArgType } from './baseArg'
+import { Option, OptionOptions } from './option'
 import { prompter } from './prompter'
 
 export type Arguments<T = {}> = T &
@@ -279,7 +279,7 @@ export class Command<T = {}> {
           return this.handler(args, commandRunner)
         }
 
-        // Display help this command contains sub-commands
+        // Display help if this command contains sub-commands
         if (this.getCommands().length) {
           return commandRunner(`${this.getFqn()} --help`)
         }

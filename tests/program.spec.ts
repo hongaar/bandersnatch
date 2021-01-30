@@ -1,6 +1,33 @@
 // @ts-ignore
 import mockArgv from 'mock-argv'
-import { program, Program, command } from '../src'
+import { mocked } from 'ts-jest/utils'
+import { command, program, Program, Repl } from '../src'
+
+jest.mock('../src/repl', () => {
+  return {
+    repl: jest.fn().mockImplementation(() => {
+      return new MockedRepl()
+    }),
+    Repl: jest.fn().mockImplementation(() => {
+      return MockedRepl
+    }),
+  }
+})
+
+// Repl mock
+const replStartFn = jest.fn()
+const replPauseFn = jest.fn()
+const replResumeFn = jest.fn()
+class MockedRepl {
+  start = replStartFn
+  pause = replPauseFn
+  resume = replResumeFn
+}
+
+beforeEach(() => {
+  const MockedRepl = mocked(Repl, true)
+  MockedRepl.mockClear()
+})
 
 test('program should return new Program object', () => {
   expect(program()).toBeInstanceOf(Program)
@@ -24,4 +51,10 @@ test('program executes argv', async () => {
     )
     await expect(app.run()).resolves.toBe('foo')
   })
+})
+
+test('program starts repl', async () => {
+  const app = program()
+  expect(app.repl()).toBeInstanceOf(MockedRepl)
+  expect(replStartFn).toHaveBeenCalled()
 })

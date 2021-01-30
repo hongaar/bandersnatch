@@ -2,9 +2,8 @@ import { EventEmitter } from 'events'
 import TypedEventEmitter from 'typed-emitter'
 import { Argv } from 'yargs'
 import createYargs from 'yargs/yargs'
-import { Command, command } from './command'
+import { Arguments, Command, command } from './command'
 import { Repl, repl } from './repl'
-import { Arguments } from './command'
 import { isPromise } from './utils'
 
 interface Events {
