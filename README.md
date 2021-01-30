@@ -75,6 +75,10 @@ intuitive to work with.
 yarn|npm add bandersnatch
 ```
 
+_ℹ We recommend using a **Active LTS** or **Maintenance LTS**
+[Node.js version](https://nodejs.org/en/about/releases/). **Current** versions
+are tested, but not guaranteed to work._
+
 ### Simple example
 
 Let's create a simple program `foo.ts`:

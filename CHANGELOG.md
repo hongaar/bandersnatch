@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/hongaar/bandersnatch/compare/v1.3.9...v1.4.0) (2021-01-30)
+
+
+### Features
+
+* bump dependencies ([10dac0f](https://github.com/hongaar/bandersnatch/commit/10dac0f879d8b760d2c74ac94d560250d2d937d8))
+
 ## [1.3.9](https://github.com/hongaar/bandersnatch/compare/v1.3.8...v1.3.9) (2021-01-30)
 
 
