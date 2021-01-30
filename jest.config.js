@@ -8,7 +8,7 @@ module.exports = {
   testMatch: ['**/*.spec.ts'],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.json'
+      tsconfig: 'tsconfig.json'
     }
   },
   setupFiles: ['./jest.setup.js']
