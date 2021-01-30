@@ -4,35 +4,36 @@ import nodeRepl, { REPLServer } from 'repl'
 import { parseArgsStringToArgv } from 'string-argv'
 import { Context } from 'vm'
 import { autocompleter, Autocompleter } from './autocompleter'
+import { History } from './history'
 import { Program } from './program'
-
-const DEFAULT_PROMPT = '> '
 
 /**
  * Create new REPL instance.
  */
-export function repl(program: Program, prefix: string = DEFAULT_PROMPT) {
-  return new Repl(program, prefix)
+export function repl(program: Program) {
+  return new Repl(program)
 }
 
 export class Repl {
   private server?: REPLServer
+  private history?: History
   private autocompleter: Autocompleter
 
   private successHandler: (value?: unknown) => void = () => {}
   private errorHandler: (reason?: any) => void = (reason) =>
     console.error(reason)
 
-  constructor(
-    private program: Program,
-    private prompt: string = DEFAULT_PROMPT
-  ) {
+  constructor(private program: Program) {
     this.autocompleter = autocompleter(program)
 
     // Stop the server to avoid eval'ing stdin from prompts
     this.program.on('run', () => {
       this.stop()
     })
+  }
+
+  attachHistory(history: History) {
+    this.history = history
   }
 
   /**
@@ -43,11 +44,15 @@ export class Repl {
    */
   public async start() {
     this.server = nodeRepl.start({
-      prompt: this.prompt,
+      prompt: this.program.options.prompt,
       eval: this.eval.bind(this),
       completer: this.completer.bind(this),
       ignoreUndefined: true,
     })
+
+    // Setup history 
+    this.history?.hydrateReplServer(this.server)
+
 
     // Fixes bug with hidden cursor after enquirer prompt
     // @ts-ignore
