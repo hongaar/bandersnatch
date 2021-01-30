@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/hongaar/bandersnatch/compare/v1.4.0...v1.5.0) (2021-01-30)
+
+
+### Features
+
+* history file ([#191](https://github.com/hongaar/bandersnatch/issues/191)) ([14b2b0d](https://github.com/hongaar/bandersnatch/commit/14b2b0d02d9cfa8e60b66489172d0aae10545b5d))
+
 # [1.4.0](https://github.com/hongaar/bandersnatch/compare/v1.3.9...v1.4.0) (2021-01-30)
 
 
