@@ -301,7 +301,7 @@ type Args = {
 ---
 
 ℹ More examples in the
-[examples](https://github.com/hongaar/bandersnatch/tree/master/examples)
+[examples](https://github.com/hongaar/bandersnatch/tree/main/examples)
 directory.
 
 ## API
@@ -521,7 +521,7 @@ There are many options to bundle your application for distribution. We'll
 discuss a common pattern.
 
 ℹ An example can be found in the
-[examples/bundle](https://github.com/hongaar/bandersnatch/tree/master/examples/bundle)
+[examples/bundle](https://github.com/hongaar/bandersnatch/tree/main/examples/bundle)
 directory.
 
 Init a `package.json` if needed:
