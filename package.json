@@ -52,7 +52,7 @@
     "doctoc": "2.0.0",
     "husky": "6.0.0",
     "jest": "26.6.3",
-    "leasot": "11.5.0",
+    "leasot": "11.6.0",
     "mock-argv": "1.1.13",
     "prettier": "2.2.1",
     "ts-jest": "26.5.4",
