@@ -42,7 +42,7 @@
     "yargs": "^16.2.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "devDependencies": {
     "@semantic-release/changelog": "5.0.1",
