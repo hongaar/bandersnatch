@@ -1,7 +1,7 @@
 {
   "name": "bandersnatch",
   "description": "Simple TypeScript CLI / REPL framework",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/hongaar/bandersnatch.git"
@@ -42,20 +42,20 @@
     "yargs": "^16.2.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "devDependencies": {
     "@semantic-release/changelog": "5.0.1",
     "@semantic-release/git": "9.0.0",
-    "@types/jest": "26.0.22",
-    "@types/node": "14.14.37",
+    "@types/jest": "26.0.23",
+    "@types/node": "14.14.44",
     "doctoc": "2.0.0",
     "husky": "6.0.0",
     "jest": "26.6.3",
     "leasot": "11.5.0",
-    "mock-argv": "1.1.13",
-    "prettier": "2.2.1",
-    "ts-jest": "26.5.4",
+    "mock-argv": "1.1.15",
+    "prettier": "2.3.0",
+    "ts-jest": "26.5.6",
     "ts-node": "9.1.1",
     "typescript": "4.2.4"
   },

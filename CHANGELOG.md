@@ -1,3 +1,11 @@
+## [1.5.3](https://github.com/hongaar/bandersnatch/compare/v1.5.2...v1.5.3) (2021-05-10)
+
+
+### Bug Fixes
+
+* **deps:** bump hosted-git-info from 2.8.8 to 2.8.9 ([#246](https://github.com/hongaar/bandersnatch/issues/246)) ([9167797](https://github.com/hongaar/bandersnatch/commit/9167797d289c5623d00566599d90620500eaabb2))
+* **deps:** bump lodash from 4.17.19 to 4.17.21 ([#244](https://github.com/hongaar/bandersnatch/issues/244)) ([a0b4b61](https://github.com/hongaar/bandersnatch/commit/a0b4b619edd6d9ad4943799c9a41886c09c30c92))
+
 ## [1.5.2](https://github.com/hongaar/bandersnatch/compare/v1.5.1...v1.5.2) (2021-03-26)
 
 
