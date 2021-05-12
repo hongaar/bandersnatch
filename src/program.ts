@@ -173,10 +173,9 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     // Return promise resolving to the return value of the command
     // handler.
     return new Promise((resolve, reject) => {
-      this.createYargsInstance().parse(
-        cmd,
-        {},
-        (err, argv: Arguments, output) => {
+      // @ts-ignore
+      this.createYargsInstance()
+        .parse(cmd, {}, (err, argv: Arguments, output) => {
           /**
            * From the yargs docs:
            * > any text that would have been output by yargs to the terminal,
@@ -209,8 +208,8 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
             // from command handlers in a .then() function.
             resolve(undefined)
           }
-        }
-      )
+        })
+        .catch(() => {})
     })
   }
 
