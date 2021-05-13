@@ -50,9 +50,8 @@ export class Repl {
       ignoreUndefined: true,
     })
 
-    // Setup history 
+    // Setup history
     this.history?.hydrateReplServer(this.server)
-
 
     // Fixes bug with hidden cursor after enquirer prompt
     // @ts-ignore

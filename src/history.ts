@@ -3,6 +3,8 @@ import os from 'os'
 import { REPLServer } from 'repl'
 import { Program } from './program'
 
+export const HISTSIZE = 500
+
 /**
  * Create new history instance.
  */
@@ -26,6 +28,18 @@ export class History {
     if (Array.isArray(entry)) {
       entry = entry.join(' ')
     }
+
+    // Truncate if needed and if possible
+    try {
+      const historyContents = fs.readFileSync(this.path, 'utf8').split(os.EOL)
+      if (historyContents.length > HISTSIZE) {
+        fs.writeFileSync(
+          this.path,
+          historyContents.slice(historyContents.length - HISTSIZE).join(os.EOL),
+          'utf8'
+        )
+      }
+    } catch (err) {}
 
     fs.appendFileSync(this.path, entry + os.EOL)
   }

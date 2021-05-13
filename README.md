@@ -30,7 +30,6 @@ intuitive to work with.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
@@ -323,8 +322,8 @@ Creates a new program. Options (object, optional) can contain these keys:
   displays program usage information.
 - `version` (boolean, default: true) adds `version` and `--version` to the
   program which displays program version from package.json.
-- `historyFile` (string, defaults: {homedir}/.bandersnatch_history) is a path to
-  the app history file.
+- `historyFile` (string | null, defaults: {homedir}/.bandersnatch_history) is a
+  path to the app history file. Set to NULL to disable.
 
 #### `program.description(description)`
 
@@ -680,7 +679,6 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 ## Todo
 
 - [ ] Better code coverage
-- [ ] History file cleanup (retain first x lines only)
 - [ ] Consider resolving ambiguity in _prompt_ param/method
 - [ ] Async autocomplete method
 - [ ] Choices autocompletion in REPL mode (open upstream PR in yargs)
