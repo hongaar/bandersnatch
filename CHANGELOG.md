@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/hongaar/bandersnatch/compare/v1.5.4...v1.6.0) (2021-05-13)
+
+
+### Features
+
+* truncate history file ([#249](https://github.com/hongaar/bandersnatch/issues/249)) ([efee1a8](https://github.com/hongaar/bandersnatch/commit/efee1a8204fbaf48a6dd4a0dcf9346a035721415))
+
 ## [1.5.4](https://github.com/hongaar/bandersnatch/compare/v1.5.3...v1.5.4) (2021-05-12)
 
 
