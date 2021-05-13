@@ -50,11 +50,11 @@ type ProgramOptions = {
   version?: boolean
 
   /**
-   * Use this history file in REPL mode.
+   * Use this history file. Set to NULL to disable history file.
    *
    * Defaults to `{homedir}/.bandersnatch_history`.
    */
-  historyFile?: string
+  historyFile?: string | null
 }
 
 /**
@@ -70,23 +70,25 @@ function extractCommandFromProcess() {
 
 export class Program extends (EventEmitter as new () => TypedEventEmitter<Events>) {
   private commands: Command<any>[] = []
-  private history: History
+  private history?: History
   private replInstance?: Repl
 
   constructor(public options: ProgramOptions = {}) {
     super()
 
     // Set default prompt
-    if (!this.options.prompt) {
+    if (typeof this.options.prompt === 'undefined') {
       this.options.prompt = DEFAULT_PROMPT
     }
 
     // Set default historyFile
-    if (!this.options.historyFile) {
+    if (typeof this.options.historyFile === 'undefined') {
       this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE)
     }
 
-    this.history = history(this)
+    if (this.options.historyFile !== null) {
+      this.history = history(this)
+    }
   }
 
   /**
@@ -228,7 +230,9 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
         })
     )
 
-    this.replInstance.attachHistory(this.history)
+    if (this.history) {
+      this.replInstance.attachHistory(this.history)
+    }
     this.replInstance.start()
 
     return this.replInstance

@@ -323,8 +323,8 @@ Creates a new program. Options (object, optional) can contain these keys:
   displays program usage information.
 - `version` (boolean, default: true) adds `version` and `--version` to the
   program which displays program version from package.json.
-- `historyFile` (string, defaults: {homedir}/.bandersnatch_history) is a path to
-  the app history file.
+- `historyFile` (string | null, defaults: {homedir}/.bandersnatch_history) is a
+  path to the app history file. Set to NULL to disable.
 
 #### `program.description(description)`
 
@@ -680,7 +680,6 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 ## Todo
 
 - [ ] Better code coverage
-- [ ] History file cleanup (retain first x lines only)
 - [ ] Consider resolving ambiguity in _prompt_ param/method
 - [ ] Async autocomplete method
 - [ ] Choices autocompletion in REPL mode (open upstream PR in yargs)
@@ -694,6 +693,7 @@ Contributions are very welcome.
 git clone git@github.com:hongaar/bandersnatch.git
 cd bandersnatch
 yarn
+yarn husky install
 
 # Run an example
 yarn start examples/foo.ts
