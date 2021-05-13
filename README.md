@@ -692,6 +692,7 @@ Contributions are very welcome.
 git clone git@github.com:hongaar/bandersnatch.git
 cd bandersnatch
 yarn
+yarn husky install
 
 # Run an example
 yarn start examples/foo.ts
