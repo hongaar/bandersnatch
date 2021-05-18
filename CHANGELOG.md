@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/hongaar/bandersnatch/compare/v1.6.0...v1.6.1) (2021-05-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/yargs to v16.0.2 ([#250](https://github.com/hongaar/bandersnatch/issues/250)) ([ec587c9](https://github.com/hongaar/bandersnatch/commit/ec587c97a8a96d97ae9481d31122bb6c942cfb3e))
+
 # [1.6.0](https://github.com/hongaar/bandersnatch/compare/v1.5.4...v1.6.0) (2021-05-13)
 
 
