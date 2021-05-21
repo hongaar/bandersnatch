@@ -911,11 +911,11 @@ __metadata:
   linkType: hard
 
 "@types/yargs@npm:^16.0.0":
-  version: 16.0.2
-  resolution: "@types/yargs@npm:16.0.2"
+  version: 16.0.3
+  resolution: "@types/yargs@npm:16.0.3"
   dependencies:
     "@types/yargs-parser": "*"
-  checksum: 4c63921bc54297e1a0a35cb70c76b0c5d90085b78e7569ae21ef22aef9f826adfaad8c43bfa3987d98d0136dbbe977914ae0918d4a40cf073b425c9349ede75d
+  checksum: 84b8f617742b4a86f334838152cbc8d2fae4cc2568a81c4d54a9a9c7a6dc926f4fb21c3cb9d34cad895ab4f020041e28bcfe16348a34d370a2833450750ccd66
   languageName: node
   linkType: hard
 
