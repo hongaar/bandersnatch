@@ -1,4 +1,5 @@
 import { Program } from './program'
+import { isPromise } from './utils'
 
 export function autocompleter(program: Program) {
   return new Autocompleter(program)
@@ -20,6 +21,11 @@ export class Autocompleter {
         ['$0', '--get-yargs-completions', '$0', ...argv],
         {},
         (err, argv, output) => {
+          // We don't use yargs 17 promise style argv
+          if (isPromise(argv)) {
+            throw new Error('argv is of unexpected type')
+          }
+
           if (argv.getYargsCompletions) {
             resolve(output ? output.split('\n') : [])
           }
