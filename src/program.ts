@@ -175,9 +175,14 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     // Return promise resolving to the return value of the command
     // handler.
     return new Promise((resolve, reject) => {
-      // @ts-ignore
+      // @ts-ignore Not sure why this is needed?
       this.createYargsInstance()
-        .parse(cmd, {}, (err, argv: Arguments, output) => {
+        .parse(cmd, {}, (err, argv: Arguments | Promise<Arguments>, output) => {
+          // We don't use yargs 17 promise style argv
+          if (isPromise(argv)) {
+            throw new Error('argv is of unexpected type')
+          }
+
           /**
            * From the yargs docs:
            * > any text that would have been output by yargs to the terminal,
