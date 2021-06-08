@@ -1536,7 +1536,7 @@ __metadata:
     husky: 6.0.0
     jest: 27.0.4
     leasot: 12.0.0
-    mock-argv: 2.0.1
+    mock-argv: 2.0.2
     prettier: 2.3.0
     string-argv: ^0.3.1
     ts-jest: 27.0.2
@@ -3929,10 +3929,10 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"mock-argv@npm:2.0.1":
-  version: 2.0.1
-  resolution: "mock-argv@npm:2.0.1"
-  checksum: 7facea82ff8cc1357cac0cb7fcada720ba2965d8c70536a6c3408457090b4213ed75be8389cf37d381909a30e5d724b9fb2dd1dd6e6878da1d623ac5973f2f8e
+"mock-argv@npm:2.0.2":
+  version: 2.0.2
+  resolution: "mock-argv@npm:2.0.2"
+  checksum: 2abfab7a2be46515888999fa34f7c90250c6ddf3070878fc8666b9302d4a558d8dfe1bdabe98021c7d703f0db605be31ef2b95936ffc8025b5ae4cc3f804dab1
   languageName: node
   linkType: hard
 
