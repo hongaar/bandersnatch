@@ -57,6 +57,15 @@ type ProgramOptions = {
   historyFile?: string | null
 }
 
+type ReplOptions = {
+  /**
+   * Specifies whether to add a default behaviour for an `exit` command.
+   * 
+   * Defaults to `true`.
+   */
+  addExitCommand?: boolean;
+}
+
 /**
  * Creates a new bandersnatch program.
  */
@@ -223,17 +232,23 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   /**
    * Run event loop which reads command from stdin.
    */
-  public repl() {
+  public repl(options: ReplOptions) {
+    if (typeof options.addExitCommand === 'undefined') {
+      options.addExitCommand = true
+    }
+
     this.replInstance = repl(this)
 
     // Add exit command
-    this.add(
-      command('exit')
-        .description('Exit the application')
-        .action(() => {
-          process.exit()
-        })
-    )
+    if (options.addExitCommand) {
+      this.add(
+        command('exit')
+          .description('Exit the application')
+          .action(() => {
+            process.exit()
+          })
+      )
+    }
 
     if (this.history) {
       this.replInstance.attachHistory(this.history)
