@@ -261,8 +261,8 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   /**
    * When argv is set, run the program, otherwise start repl loop.
    */
-  public runOrRepl() {
-    return extractCommandFromProcess().length ? this.run() : this.repl()
+  public runOrRepl(options: ReplOptions) {
+    return extractCommandFromProcess().length ? this.run() : this.repl(options)
   }
 
   /**
