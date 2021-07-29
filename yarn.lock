@@ -1544,7 +1544,7 @@ __metadata:
     "@types/jest": 26.0.24
     "@types/node": 15.6.2
     "@types/yargs": ^17.0.0
-    doctoc: 2.0.0
+    doctoc: 2.0.1
     enquirer: ^2.3.6
     husky: 7.0.1
     jest: 27.0.6
@@ -2046,19 +2046,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"doctoc@npm:2.0.0":
-  version: 2.0.0
-  resolution: "doctoc@npm:2.0.0"
+"doctoc@npm:2.0.1":
+  version: 2.0.1
+  resolution: "doctoc@npm:2.0.1"
   dependencies:
     "@textlint/markdown-to-ast": ~6.1.7
     anchor-markdown-header: ~0.5.7
     htmlparser2: ~4.1.0
     minimist: ~1.2.5
-    underscore: ~1.10.2
+    underscore: ~1.12.1
     update-section: ~0.3.3
   bin:
     doctoc: doctoc.js
-  checksum: d0d4f32eb43a41ddd271e89d532cfb004a534cc57bc25579853d71c6d2a96d2242fd0405571a3ab5d2402a24f1256f993d9cfd05000c2c43e624b1a827709f8d
+  checksum: 40ad0181ce83333c1fb5a738e53b6583e0c3d2d2a321033cb3077f6481be496aa0601df7dd0248ca80c6837229ff4904b06285c385ee896eabb1a49a07b532eb
   languageName: node
   linkType: hard
 
@@ -5115,10 +5115,10 @@ typescript@4.3.5:
   languageName: node
   linkType: hard
 
-"underscore@npm:~1.10.2":
-  version: 1.10.2
-  resolution: "underscore@npm:1.10.2"
-  checksum: 199ee8d97258458273ee8b9f5ce5368c3669646ef4c50766fe5a2d12b9b22ce58a78e278d8fb79ceb9618041ee14dc6780ba9a563bd700f1b10c080668ded6ea
+"underscore@npm:~1.12.1":
+  version: 1.12.1
+  resolution: "underscore@npm:1.12.1"
+  checksum: ec327603aa112b99fe9d74cd9bf3b3b7451465a9d2610ceab269a532e3f191650ab017903be34dc86fe406a11d04d8905a3b04dd4c129493e51bee09a3f3074c
   languageName: node
   linkType: hard
 
