@@ -325,6 +325,9 @@ Creates a new program. Options (object, optional) can contain these keys:
   program which displays program version from package.json.
 - `historyFile` (string | null, defaults: {homedir}/.bandersnatch_history) is a
   path to the app history file. Set to NULL to disable.
+- `exit` (boolean | () => void, default: () => process.exit()) Specifies whether to add a default behaviour for an `exit`
+  command. `false` disables the default implementation, a custom function will be installed
+  as the actual handler.
 
 #### `program.description(description)`
 
