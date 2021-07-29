@@ -1552,7 +1552,7 @@ __metadata:
     mock-argv: 2.0.6
     prettier: 2.3.2
     string-argv: ^0.3.1
-    ts-jest: 27.0.2
+    ts-jest: 27.0.4
     ts-node: 10.1.0
     typed-emitter: ^1.3.1
     typescript: 4.3.5
@@ -4999,9 +4999,9 @@ resolve@^1.3.2:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.0.2":
-  version: 27.0.2
-  resolution: "ts-jest@npm:27.0.2"
+"ts-jest@npm:27.0.4":
+  version: 27.0.4
+  resolution: "ts-jest@npm:27.0.4"
   dependencies:
     bs-logger: 0.x
     buffer-from: 1.x
@@ -5014,11 +5014,21 @@ resolve@^1.3.2:
     semver: 7.x
     yargs-parser: 20.x
   peerDependencies:
+    "@babel/core": ">=7.0.0-beta.0 <8"
+    "@types/jest": ^26.0.0
+    babel-jest: ">=27.0.0 <28"
     jest: ^27.0.0
     typescript: ">=3.8 <5.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/jest":
+      optional: true
+    babel-jest:
+      optional: true
   bin:
     ts-jest: cli.js
-  checksum: dbc3fb1e61b6fc4c4063c32e8637bd2a255e8e54f0388ddd67064b712c796e9523697ec9d74a7563ce04117f4771f29e3b2a87cd5a455645808af877a7fba96a
+  checksum: 0f6013e35bb84bf5e65a1a85ea7ed5febff13ad40745dcf5bd6a40854b6d9cff3ffcd382994028941cb7f4548ec835f6fcfc502f5a3bf69deaec0cd92fa89f9b
   languageName: node
   linkType: hard
 
