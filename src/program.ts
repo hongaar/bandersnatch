@@ -55,6 +55,18 @@ type ProgramOptions = {
    * Defaults to `{homedir}/.bandersnatch_history`.
    */
   historyFile?: string | null
+
+  /**
+   * Specifies whether to add a default behaviour for an `exit` command.
+   * 
+   * Takes a boolean or a function argument:
+   * - `false` installs no handler
+   * - `true` will install the default handler
+   * - a given function will be installed as the handler
+   * 
+   * Defaults to `() => process.exit()`.
+   */
+  exit?: boolean | (() => void)
 }
 
 /**
@@ -84,6 +96,11 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     // Set default historyFile
     if (typeof this.options.historyFile === 'undefined') {
       this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE)
+    }
+
+    // Set default exit handler
+    if (this.options.exit === true || typeof this.options.exit === 'undefined') {
+      this.options.exit = () => process.exit()
     }
 
     if (this.options.historyFile !== null) {
@@ -227,13 +244,13 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     this.replInstance = repl(this)
 
     // Add exit command
-    this.add(
-      command('exit')
-        .description('Exit the application')
-        .action(() => {
-          process.exit()
-        })
-    )
+    if (typeof this.options.exit === 'function') {
+      this.add(
+        command('exit')
+          .description('Exit the application')
+          .action(this.options.exit)
+      )
+    }
 
     if (this.history) {
       this.replInstance.attachHistory(this.history)
