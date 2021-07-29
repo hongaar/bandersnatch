@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/hongaar/bandersnatch/compare/v1.6.4...v1.7.0) (2021-07-29)
+
+
+### Features
+
+* allow custom exit command implementation ([#275](https://github.com/hongaar/bandersnatch/issues/275)) ([9527735](https://github.com/hongaar/bandersnatch/commit/9527735bb440ab7701c4f27e2acb676e81bae2f6))
+
 ## [1.6.4](https://github.com/hongaar/bandersnatch/compare/v1.6.3...v1.6.4) (2021-07-05)
 
 
