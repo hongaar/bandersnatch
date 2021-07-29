@@ -98,6 +98,11 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
       this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE)
     }
 
+    // Set default exit handler
+    if (this.options.exit && typeof this.options.exit !== 'function') {
+      this.options.exit = () => process.exit()
+    }
+
     if (this.options.historyFile !== null) {
       this.history = history(this)
     }
