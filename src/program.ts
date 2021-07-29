@@ -99,7 +99,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     }
 
     // Set default exit handler
-    if (this.options.exit && typeof this.options.exit !== 'function') {
+    if (this.options.exit === true || typeof this.options.exit === 'undefined') {
       this.options.exit = () => process.exit()
     }
 
