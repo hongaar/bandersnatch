@@ -55,15 +55,18 @@ type ProgramOptions = {
    * Defaults to `{homedir}/.bandersnatch_history`.
    */
   historyFile?: string | null
-}
 
-type ReplOptions = {
   /**
    * Specifies whether to add a default behaviour for an `exit` command.
    * 
-   * Defaults to `true`.
+   * Takes a boolean or a function argument:
+   * - `false` installs no handler
+   * - `true` will install the default handler
+   * - a given function will be installed as the handler
+   * 
+   * Defaults to `() => process.exit()`.
    */
-  addExitCommand?: boolean;
+  exit?: boolean | (() => void)
 }
 
 /**
@@ -232,21 +235,15 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   /**
    * Run event loop which reads command from stdin.
    */
-  public repl(options: ReplOptions) {
-    if (typeof options.addExitCommand === 'undefined') {
-      options.addExitCommand = true
-    }
-
+  public repl() {
     this.replInstance = repl(this)
 
     // Add exit command
-    if (options.addExitCommand) {
+    if (typeof this.options.exit === 'function') {
       this.add(
         command('exit')
           .description('Exit the application')
-          .action(() => {
-            process.exit()
-          })
+          .action(this.options.exit)
       )
     }
 
@@ -261,8 +258,8 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   /**
    * When argv is set, run the program, otherwise start repl loop.
    */
-  public runOrRepl(options: ReplOptions) {
-    return extractCommandFromProcess().length ? this.run() : this.repl(options)
+  public runOrRepl() {
+    return extractCommandFromProcess().length ? this.run() : this.repl()
   }
 
   /**
