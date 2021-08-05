@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/hongaar/bandersnatch/compare/v1.7.0...v1.7.1) (2021-08-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency yargs to v17.1.0 ([#282](https://github.com/hongaar/bandersnatch/issues/282)) ([0f97980](https://github.com/hongaar/bandersnatch/commit/0f9798063754a15a88f163d281e6f8e9b548bc58))
+
 # [1.7.0](https://github.com/hongaar/bandersnatch/compare/v1.6.4...v1.7.0) (2021-07-29)
 
 
