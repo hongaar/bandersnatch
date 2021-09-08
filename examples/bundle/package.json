@@ -1,23 +1,23 @@
 {
-    "name": "echo",
-    "description": "",
-    "version": "1.0.0",
-    "bin": "echo.js",
-    "files": [
-        "lib"
-    ],
-    "scripts": {
-        "prepublishOnly": "yarn build",
-        "build": "tsc",
-        "bundle": "yarn build && pkg -t host ."
-    },
-    "author": "",
-    "license": "MIT",
-    "dependencies": {
-        "bandersnatch": "^1.0.0"
-    },
-    "devDependencies": {
-        "pkg": "^4.4.2",
-        "typescript": "^3.7.3"
-    }
+  "name": "echo",
+  "description": "",
+  "version": "1.0.0",
+  "bin": "echo.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "prepublishOnly": "yarn build",
+    "build": "tsc",
+    "bundle": "yarn build && pkg -t host ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bandersnatch": "^1.0.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.3.1",
+    "typescript": "^4.4.2"
+  }
 }

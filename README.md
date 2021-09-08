@@ -601,8 +601,8 @@ Add these scripts to your `package.json`:
      "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
-     "pkg": "^4.4.2",
-     "typescript": "^3.7.3"
+     "pkg": "^5.3.1",
+     "typescript": "^4.4.2"
    }
  }
 ```
@@ -639,8 +639,8 @@ work, we need to make a small adjustment to `package.json`:
      "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
-     "pkg": "^4.4.2",
-     "typescript": "^3.7.3"
+     "pkg": "^5.3.1",
+     "typescript": "^4.4.2"
    }
  }
 ```
@@ -668,8 +668,8 @@ To create a binary (your app with Node.js bundled), add this script to
      "bandersnatch": "^1.0.0"
    },
    "devDependencies": {
-     "pkg": "^4.4.2",
-     "typescript": "^3.7.3"
+     "pkg": "^5.3.1",
+     "typescript": "^4.4.2"
    }
  }
 ```
