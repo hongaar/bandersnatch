@@ -34,6 +34,7 @@ intuitive to work with.
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
+  - [Error handling](#error-handling)
   - [REPL example](#repl-example)
   - [Prompt](#prompt)
   - [TypeScript](#typescript)
@@ -123,6 +124,58 @@ Options:
 
 _ℹ You see `bin.js` here instead of `foo.ts` because we're running the program
 with `ts-node`._
+
+### Error handling
+
+We first create a new program called `cat.ts` which is a simple version of the
+`cat` program we all know:
+
+```ts
+import { readFileSync } from 'fs'
+import { program, command } from 'bandersnatch'
+
+const cat = command('cat')
+  .description('Concatenate files')
+  .argument('files', { variadic: true })
+  .action(({ files }) =>
+    console.log(
+      files.reduce((str, file) => str + readFileSync(file, 'utf8'), '')
+    )
+  )
+
+program().default(cat).run()
+```
+
+Now try your program by running it:
+
+```
+$ ts-node cat.ts somefile
+contents of somefile
+```
+
+However, when `somefile` doesn't exist, we get are faced with an ugly unhandled
+promise rejection warning/error (depending on the Node.js version you're using).
+
+Let's fix that:
+
+```diff
+-program().default(cat).run()
++program()
++  .default(cat)
++  .run()
++  .catch((err) => {
++    console.error(`There was a problem running this command:\n${String(err)}`)
++    process.exit(1)
++  })
+```
+
+Which will yield:
+
+```
+$ ts-node cat.ts somefile
+There was a problem running this command:
+Error: ENOENT: no such file or directory, open 'somefile'
+```
 
 ### REPL example
 

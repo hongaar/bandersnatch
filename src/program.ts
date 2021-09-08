@@ -58,12 +58,12 @@ type ProgramOptions = {
 
   /**
    * Specifies whether to add a default behaviour for an `exit` command.
-   * 
+   *
    * Takes a boolean or a function argument:
    * - `false` installs no handler
    * - `true` will install the default handler
    * - a given function will be installed as the handler
-   * 
+   *
    * Defaults to `() => process.exit()`.
    */
   exit?: boolean | (() => void)
@@ -99,7 +99,10 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     }
 
     // Set default exit handler
-    if (this.options.exit === true || typeof this.options.exit === 'undefined') {
+    if (
+      this.options.exit === true ||
+      typeof this.options.exit === 'undefined'
+    ) {
       this.options.exit = () => process.exit()
     }
 
@@ -217,9 +220,12 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
            * From the yargs docs:
            * > Populated if any validation errors raised while parsing.
            * http://yargs.js.org/docs/#api-parseargs-context-parsecallback
+           * This seems to be incorrect though, and err is populated when any
+           * error is thrown inside the command handler.
            */
           if (err) {
-            console.error(err)
+            // Ignore err value, which encourages users to deliberately handle
+            // error conditions in their programs.
           }
 
           if (isPromise(argv.__promise)) {
