@@ -4,7 +4,11 @@ import path from 'path'
 import { command, history, History, HISTSIZE, program } from '../src'
 
 // https://stackoverflow.com/a/52560084/938297
-function tmpFile(name = 'tmp_file', data = '', encoding = 'utf8') {
+function tmpFile(
+  name = 'tmp_file',
+  data = '',
+  encoding: BufferEncoding = 'utf8'
+) {
   return new Promise<string>((resolve, reject) => {
     const tempPath = path.join(os.tmpdir(), 'bandersnatch-')
     fs.mkdtemp(tempPath, (err, folder) => {
