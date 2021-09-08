@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/hongaar/bandersnatch/compare/v1.7.2...v1.8.0) (2021-09-08)
+
+
+### Features
+
+* do not print errors returned from yargs ([#300](https://github.com/hongaar/bandersnatch/issues/300)) ([90712a9](https://github.com/hongaar/bandersnatch/commit/90712a93a45ff89e12f123ec851b08704f1e9b83))
+
 ## [1.7.2](https://github.com/hongaar/bandersnatch/compare/v1.7.1...v1.7.2) (2021-08-13)
 
 
