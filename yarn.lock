@@ -953,21 +953,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/git@npm:9.0.0":
-  version: 9.0.0
-  resolution: "@semantic-release/git@npm:9.0.0"
+"@semantic-release/git@npm:9.0.1":
+  version: 9.0.1
+  resolution: "@semantic-release/git@npm:9.0.1"
   dependencies:
     "@semantic-release/error": ^2.1.0
     aggregate-error: ^3.0.0
     debug: ^4.0.0
     dir-glob: ^3.0.0
-    execa: ^4.0.0
+    execa: ^5.0.0
     lodash: ^4.17.4
     micromatch: ^4.0.0
     p-reduce: ^2.0.0
   peerDependencies:
     semantic-release: ">=16.0.0 <18.0.0"
-  checksum: a62c964363f02ebf1c0b37c45cfa557dfddf9f64e3eead1aaa7b9df297581f3608c03592986946dabdc75b7891a04b86bfd18ac6b0bc1d6beefaed14656589d3
+  checksum: 00045da5b48ff09b4a3045c93f07c4bf7e7fb8355d9d4e306862a2a9a4233f728901e4949fac5fa7bed868e18931f8d5bbeae1dfc4cc298a20191789a8c70907
   languageName: node
   linkType: hard
 
@@ -1563,7 +1563,7 @@ __metadata:
   resolution: "bandersnatch@workspace:."
   dependencies:
     "@semantic-release/changelog": 5.0.1
-    "@semantic-release/git": 9.0.0
+    "@semantic-release/git": 9.0.1
     "@types/jest": 27.0.1
     "@types/node": 15.6.2
     "@types/yargs": ^17.0.0
@@ -1917,7 +1917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -2178,15 +2178,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"end-of-stream@npm:^1.1.0":
-  version: 1.4.4
-  resolution: "end-of-stream@npm:1.4.4"
-  dependencies:
-    once: ^1.4.0
-  checksum: 530a5a5a1e517e962854a31693dbb5c0b2fc40b46dad2a56a2deec656ca040631124f4795823acc68238147805f8b021abbe221f4afed5ef3c8e8efc2024908b
-  languageName: node
-  linkType: hard
-
 "enquirer@npm:^2.3.6":
   version: 2.3.6
   resolution: "enquirer@npm:2.3.6"
@@ -2285,23 +2276,6 @@ __metadata:
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
   checksum: 22b5b08f74737379a840b8ed2036a5fb35826c709ab000683b092d9054e5c2a82c27818f12604bfc2a9a76b90b6834ef081edbc1c7ae30d1627012e067c6ec87
-  languageName: node
-  linkType: hard
-
-"execa@npm:^4.0.0":
-  version: 4.0.3
-  resolution: "execa@npm:4.0.3"
-  dependencies:
-    cross-spawn: ^7.0.0
-    get-stream: ^5.0.0
-    human-signals: ^1.1.1
-    is-stream: ^2.0.0
-    merge-stream: ^2.0.0
-    npm-run-path: ^4.0.0
-    onetime: ^5.1.0
-    signal-exit: ^3.0.2
-    strip-final-newline: ^2.0.0
-  checksum: e76102eeab4727bdad930c33df5fd8621fbd77930061e3a815307e132dc8eb1d103631917ea3ed7d2e5257b9c74c7dcf6980b5f7fbcd0d1cf6cbcb83a3bc226f
   languageName: node
   linkType: hard
 
@@ -2546,15 +2520,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"get-stream@npm:^5.0.0":
-  version: 5.1.0
-  resolution: "get-stream@npm:5.1.0"
-  dependencies:
-    pump: ^3.0.0
-  checksum: 371e1fb3f3b009edffd379810ed52a1f0a0a621dbb3778bd844e3b002065af0790bfddde845b4a0f05f71da5d99441465f5586281497321b151a8bdd102c885a
-  languageName: node
-  linkType: hard
-
 "get-stream@npm:^6.0.0":
   version: 6.0.1
   resolution: "get-stream@npm:6.0.1"
@@ -2703,13 +2668,6 @@ fsevents@^2.3.2:
     agent-base: 6
     debug: 4
   checksum: 165bfb090bd26d47693597661298006841ab733d0c7383a8cb2f17373387a94c903a3ac687090aa739de05e379ab6f868bae84ab4eac288ad85c328cd1ec9e53
-  languageName: node
-  linkType: hard
-
-"human-signals@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "human-signals@npm:1.1.1"
-  checksum: d587647c9e8ec24e02821b6be7de5a0fc37f591f6c4e319b3054b43fd4c35a70a94c46fc74d8c1a43c47fde157d23acd7421f375e1c1365b09a16835b8300205
   languageName: node
   linkType: hard
 
@@ -4054,7 +4012,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"npm-run-path@npm:^4.0.0, npm-run-path@npm:^4.0.1":
+"npm-run-path@npm:^4.0.1":
   version: 4.0.1
   resolution: "npm-run-path@npm:4.0.1"
   dependencies:
@@ -4096,21 +4054,12 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"once@npm:^1.3.0, once@npm:^1.3.1, once@npm:^1.4.0":
+"once@npm:^1.3.0":
   version: 1.4.0
   resolution: "once@npm:1.4.0"
   dependencies:
     wrappy: 1
   checksum: cd0a88501333edd640d95f0d2700fbde6bff20b3d4d9bdc521bdd31af0656b5706570d6c6afe532045a20bb8dc0849f8332d6f2a416e0ba6d3d3b98806c7db68
-  languageName: node
-  linkType: hard
-
-"onetime@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "onetime@npm:5.1.0"
-  dependencies:
-    mimic-fn: ^2.1.0
-  checksum: 426c13de5015249d2e38855e9900276ad34d9d2738f780ed4bf8d1334deab4ca7a45628e36ce8a6c5f679b0508c65bb0907dbbd6f67a6e23bd1187e501834f71
   languageName: node
   linkType: hard
 
@@ -4351,16 +4300,6 @@ fsevents@^2.3.2:
   version: 1.8.0
   resolution: "psl@npm:1.8.0"
   checksum: 6150048ed2da3f919478bee8a82f3828303bc0fc730fb015a48f83c9977682c7b28c60ab01425a72d82a2891a1681627aa530a991d50c086b48a3be27744bde7
-  languageName: node
-  linkType: hard
-
-"pump@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "pump@npm:3.0.0"
-  dependencies:
-    end-of-stream: ^1.1.0
-    once: ^1.3.1
-  checksum: e42e9229fba14732593a718b04cb5e1cfef8254544870997e0ecd9732b189a48e1256e4e5478148ecb47c8511dca2b09eae56b4d0aad8009e6fac8072923cfc9
   languageName: node
   linkType: hard
 
