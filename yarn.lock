@@ -953,9 +953,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/git@npm:9.0.1":
-  version: 9.0.1
-  resolution: "@semantic-release/git@npm:9.0.1"
+"@semantic-release/git@npm:10.0.0":
+  version: 10.0.0
+  resolution: "@semantic-release/git@npm:10.0.0"
   dependencies:
     "@semantic-release/error": ^2.1.0
     aggregate-error: ^3.0.0
@@ -966,8 +966,8 @@ __metadata:
     micromatch: ^4.0.0
     p-reduce: ^2.0.0
   peerDependencies:
-    semantic-release: ">=16.0.0 <18.0.0"
-  checksum: 00045da5b48ff09b4a3045c93f07c4bf7e7fb8355d9d4e306862a2a9a4233f728901e4949fac5fa7bed868e18931f8d5bbeae1dfc4cc298a20191789a8c70907
+    semantic-release: ">=18.0.0"
+  checksum: 1d3710d0bb258e49719966e202a3b44f00a234491848ed5ce3999ee3e0cabd08e4ec2e9ab8ec5acd63acebf66ef9a44fed37512db5fcd97dac04c5a331aeeb2d
   languageName: node
   linkType: hard
 
@@ -1563,7 +1563,7 @@ __metadata:
   resolution: "bandersnatch@workspace:."
   dependencies:
     "@semantic-release/changelog": 5.0.1
-    "@semantic-release/git": 9.0.1
+    "@semantic-release/git": 10.0.0
     "@types/jest": 27.0.1
     "@types/node": 16.7.13
     "@types/yargs": ^17.0.2
