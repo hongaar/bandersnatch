@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/hongaar/bandersnatch/compare/v1.8.0...v1.8.1) (2021-09-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/yargs to v17.0.3 ([#309](https://github.com/hongaar/bandersnatch/issues/309)) ([14ddd2f](https://github.com/hongaar/bandersnatch/commit/14ddd2fbfd32db7c7355078108731048f0c54039))
+
 # [1.8.0](https://github.com/hongaar/bandersnatch/compare/v1.7.2...v1.8.0) (2021-09-08)
 
 
