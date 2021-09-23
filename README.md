@@ -14,7 +14,7 @@
 - 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax
 - ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop)
 - 💬 Prompts for missing arguments
-- 🔜 Autocompletes arguments
+- 🔜 Autocompletion
 - 🔙 Command history
 - 🤯 Fully typed
 - ⚡ Uses the power of `yargs` and `enquirer`
@@ -29,7 +29,6 @@ intuitive to work with.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Getting started](#getting-started)
   - [Installation](#installation)
@@ -223,8 +222,8 @@ $ ts-node dice.ts
 5
 ```
 
-The REPL can autocomplete commands, arguments and options. Try typing only the
-letter `r` and then hit _TAB_. This works for options as well:
+The REPL can autocomplete commands, arguments, options and choices. Try typing
+only the letter `r` and then hit _TAB_. This works for options as well:
 
 ```
 $ ts-node dice.ts
@@ -737,8 +736,7 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
 - [ ] Better code coverage
 - [ ] Consider resolving ambiguity in _prompt_ param/method
-- [ ] Async autocomplete method
-- [ ] Choices autocompletion in REPL mode (open upstream PR in yargs)
+- [ ] Async autocomplete method for arg values
 
 ## Contributing
 

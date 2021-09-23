@@ -11,18 +11,23 @@ const app = program()
         prompt: true,
       })
       .argument('port', {
-        default: '443',
-        type: 'number',
+        default: 443,
         prompt: true,
       })
       .argument('tls', {
         default: true,
-        type: 'boolean',
         prompt: true,
       })
-      .action(async ({ host, port, tls }) => {
-        url = `${tls ? 'https' : 'http'}://${host}:${port}`
-        console.log(`Connecting to ${url}...`)
+      .option('protocol', {
+        default: 'http',
+        choices: ['http', 'ftp', 'imap', 'ldap', 'pop3'] as const,
+      })
+      .option('timeout', {
+        default: 60,
+      })
+      .action(async ({ host, port, tls, protocol, timeout }) => {
+        url = `${protocol}${tls && 's'}://${host}:${port}`
+        console.log(`Connecting to ${url} (timeout set to ${timeout}s)...`)
       })
   )
   .add(
