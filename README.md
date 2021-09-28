@@ -758,7 +758,7 @@ Please use
 
 ## License
 
-Copyright (c) 2020 Joram van den Boezem. Licensed under the MIT license.
+Copyright (c) 2021 Joram van den Boezem. Licensed under the MIT license.
 
 ---
 
