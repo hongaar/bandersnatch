@@ -1574,7 +1574,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/node": 16.7.13
     "@types/yargs": ^17.0.2
-    doctoc: 2.0.1
+    doctoc: 2.1.0
     enquirer: ^2.3.6
     husky: 7.0.2
     jest: 27.2.5
@@ -2069,9 +2069,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"doctoc@npm:2.0.1":
-  version: 2.0.1
-  resolution: "doctoc@npm:2.0.1"
+"doctoc@npm:2.1.0":
+  version: 2.1.0
+  resolution: "doctoc@npm:2.1.0"
   dependencies:
     "@textlint/markdown-to-ast": ~6.1.7
     anchor-markdown-header: ~0.5.7
@@ -2081,7 +2081,7 @@ __metadata:
     update-section: ~0.3.3
   bin:
     doctoc: doctoc.js
-  checksum: 40ad0181ce83333c1fb5a738e53b6583e0c3d2d2a321033cb3077f6481be496aa0601df7dd0248ca80c6837229ff4904b06285c385ee896eabb1a49a07b532eb
+  checksum: ca739bd6001d5deb3fad49b7ecbf568db2bd42da1d1e27b4e74506b88087f5a2cfb9132865ec1068a036c0509532d2a57770eab05c39a3582946abb6c4b2f07c
   languageName: node
   linkType: hard
 
