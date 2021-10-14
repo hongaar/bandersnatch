@@ -5033,9 +5033,9 @@ resolve@^1.3.2:
   linkType: hard
 
 "typed-emitter@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "typed-emitter@npm:1.3.1"
-  checksum: 532029e2fba997908833a4ea4007b6ec937dbe5db4ef65495439d9bc2e5441552ebae5b5dce4fb6ee4c981ac4e4127e8918ab4bad7dcf9581476972e3305a1f1
+  version: 1.4.0
+  resolution: "typed-emitter@npm:1.4.0"
+  checksum: 914a868f6e6f9b7b20295019adb1fe71fc83b19ec1cd0d12a7b5d74a146f1bfe3db7b2b28db7ee896c9ee0fab291287ffca90550851e188c2a0eee6ed788d720
   languageName: node
   linkType: hard
 
