@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/hongaar/bandersnatch/compare/v1.8.3...v1.8.4) (2021-10-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency typed-emitter to v1.4.0 ([#323](https://github.com/hongaar/bandersnatch/issues/323)) ([38570cd](https://github.com/hongaar/bandersnatch/commit/38570cdc754ac35f093b4c7415e3a0989a94c244))
+
 ## [1.8.3](https://github.com/hongaar/bandersnatch/compare/v1.8.2...v1.8.3) (2021-09-26)
 
 
