@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/hongaar/bandersnatch/compare/v1.8.4...v1.9.0) (2021-10-25)
+
+
+### Features
+
+* add option to pass yargs parserConfiguration ([#334](https://github.com/hongaar/bandersnatch/issues/334)) ([9a19c98](https://github.com/hongaar/bandersnatch/commit/9a19c983058b0d3598d8a07015fa69a788906d84))
+
 ## [1.8.4](https://github.com/hongaar/bandersnatch/compare/v1.8.3...v1.8.4) (2021-10-14)
 
 
