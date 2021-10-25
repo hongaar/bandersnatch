@@ -142,7 +142,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
    * @private
    */
   public createYargsInstance(
-    parserConfiguration?: Partial<ParserConfigurationOptions>
+    overrideParserConfiguration?: Partial<ParserConfigurationOptions>
   ) {
     let yargs = createYargs()
 
@@ -158,7 +158,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     if (typeof this.options.parserConfiguration !== 'undefined') {
       yargs = yargs.parserConfiguration({
         ...this.options.parserConfiguration,
-        ...parserConfiguration,
+        ...overrideParserConfiguration,
       })
     }
 

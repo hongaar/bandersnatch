@@ -375,11 +375,14 @@ Creates a new program. Options (object, optional) can contain these keys:
   displays program usage information.
 - `version` (boolean, default: true) adds `version` and `--version` to the
   program which displays program version from package.json.
-- `historyFile` (string | null, defaults: {homedir}/.bandersnatch_history) is a
+- `historyFile` (string | null, default: {homedir}/.bandersnatch_history) is a
   path to the app history file. Set to NULL to disable.
-- `exit` (boolean | () => void, default: () => process.exit()) Specifies whether to add a default behaviour for an `exit`
-  command. `false` disables the default implementation, a custom function will be installed
-  as the actual handler.
+- `exit` (boolean | () => void, default: () => process.exit()) Specifies whether
+  to add a default behaviour for an `exit` command. `false` disables the default
+  implementation, a custom function will be installed as the actual handler.
+- `parserConfiguration` (object, optional) can be used to modify the parser
+  configuration. For available options, see
+  - https://github.com/yargs/yargs/blob/main/docs/api.md#parserConfiguration.
 
 #### `program.description(description)`
 
