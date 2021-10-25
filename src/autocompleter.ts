@@ -14,7 +14,9 @@ export class Autocompleter {
 
   private yargsCompletions(argv: string[]) {
     return new Promise<string[]>((resolve, reject) => {
-      const yargs = this.program.createYargsInstance()
+      // We need to override strip-dashed to make sure yargs can find the
+      // '--get-yargs-completions' option.
+      const yargs = this.program.createYargsInstance({ 'strip-dashed': false })
 
       // yargs.getCompletion() doesn't work for our use case.
       yargs.parse(
