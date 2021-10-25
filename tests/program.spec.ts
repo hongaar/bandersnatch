@@ -50,6 +50,19 @@ test('program executes argv', async () => {
   })
 })
 
+test('program passes parserConfiguration', async () => {
+  await mockArgv(['test', '--test-field', '1'], async () => {
+    const app = program({ parserConfiguration: { 'strip-dashed': true } }).add(
+      command('test')
+        .option('test-field')
+        .action((args) => {
+          return JSON.stringify(args)
+        })
+    )
+    await expect(app.run()).resolves.toBe('{"testField":1}')
+  })
+})
+
 test('program starts repl', async () => {
   const app = program()
   expect(app.repl()).toBeInstanceOf(MockedRepl)

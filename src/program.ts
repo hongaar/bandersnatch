@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import os from 'os'
 import path from 'path'
 import TypedEventEmitter from 'typed-emitter'
-import { Argv } from 'yargs'
+import { Argv, ParserConfigurationOptions } from 'yargs'
 import createYargs from 'yargs/yargs'
 import { Arguments, Command, command } from './command'
 import { history, History } from './history'
@@ -67,6 +67,14 @@ type ProgramOptions = {
    * Defaults to `() => process.exit()`.
    */
   exit?: boolean | (() => void)
+
+  /**
+   * Pass Yargs parser configuration, for available options, see
+   * https://github.com/yargs/yargs/blob/main/docs/advanced.md#customizing-yargs-parser.
+   *
+   * Defaults to `undefined`.
+   */
+  parserConfiguration?: Partial<ParserConfigurationOptions>
 }
 
 /**
@@ -133,8 +141,10 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
    *
    * @private
    */
-  public createYargsInstance() {
-    const yargs = createYargs()
+  public createYargsInstance(
+    overrideParserConfiguration?: Partial<ParserConfigurationOptions>
+  ) {
+    let yargs = createYargs()
 
     this.options.description && yargs.usage(this.options.description)
 
@@ -143,6 +153,14 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
 
     // Version must be false or undefined
     this.options.version !== false ? yargs.version() : yargs.version(false)
+
+    // Pass yargs parser options if defined
+    if (typeof this.options.parserConfiguration !== 'undefined') {
+      yargs = yargs.parserConfiguration({
+        ...this.options.parserConfiguration,
+        ...overrideParserConfiguration,
+      })
+    }
 
     // Non-configurable options
     yargs.recommendCommands()
