@@ -1167,10 +1167,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.11.14":
-  version: 16.11.14
-  resolution: "@types/node@npm:16.11.14"
-  checksum: 0bd4333fb4e56532db7f5174732268b18089913ddbb0e97957228e64f9fe3babf9923c77ce6f07d3d354445cfbb8d31b95c1f8be3c0f7426308bd8b93d3aaa02
+"@types/node@npm:16.11.15":
+  version: 16.11.15
+  resolution: "@types/node@npm:16.11.15"
+  checksum: 30969f1c43d85ee645f1ff28640d25b8b7748bbd3cb31aeebc2799fa9f7aa580782430309496c82983a92009afe52e46b50b9b996cea697f62e93f27eb8f5eb5
   languageName: node
   linkType: hard
 
@@ -1572,7 +1572,7 @@ __metadata:
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/git": 10.0.1
     "@types/jest": 27.0.3
-    "@types/node": 16.11.14
+    "@types/node": 16.11.15
     "@types/yargs": ^17.0.2
     doctoc: 2.1.0
     enquirer: ^2.3.6
