@@ -1807,7 +1807,7 @@ __metadata:
     enquirer: ^2.3.6
     husky: 7.0.4
     jest: 27.5.1
-    leasot: 12.0.0
+    leasot: 12.1.0
     mock-argv: 2.0.8
     prettier: 2.5.1
     string-argv: ^0.3.1
@@ -3920,9 +3920,9 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"leasot@npm:12.0.0":
-  version: 12.0.0
-  resolution: "leasot@npm:12.0.0"
+"leasot@npm:12.1.0":
+  version: 12.1.0
+  resolution: "leasot@npm:12.1.0"
   dependencies:
     async: ^3.2.0
     chalk: ^4.1.0
@@ -3938,7 +3938,7 @@ fsevents@^2.3.2:
   bin:
     leasot: bin/leasot
     leasot-reporter: bin/leasot-reporter
-  checksum: 2d4304ce6a07f0cdad129489a3c2856a65260d777182ed60c1420ab328ba1682d4823bcbd5d88cd4b2e09730c3aa110cb4e109b0a8ee558af60b70059daeefcf
+  checksum: 51c1d5e5114febab8712a10b793188fc4597259bfb3b2801e918bcd1e918365a4bd650d27b1e4b143a4e69ae923b1d2c225668acb1a2298cde74e7ec24b657d1
   languageName: node
   linkType: hard
 
