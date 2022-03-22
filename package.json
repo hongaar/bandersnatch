@@ -31,7 +31,7 @@
     "test": "tsd && jest",
     "start": "ts-node",
     "doc:toc": "doctoc README.md",
-    "doc:todos": "leasot --exit-nicely --reporter markdown \"src/**/*.ts\" > TODO.md"
+    "doc:todos": "leasot --exit-nicely --reporter markdown \"{src,test-d,tests}/**/*.ts\" > TODO.md"
   },
   "author": "",
   "license": "MIT",

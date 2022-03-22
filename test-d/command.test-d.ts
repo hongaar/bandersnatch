@@ -27,7 +27,7 @@ cmd.argument('foo', { optional: true }).action((args) => {
 })
 cmd.argument('foo', { optional: true, default: 'bar' }).action((args) => {
   // Optional with default
-  expectType<{ foo: string | undefined }>(args)
+  expectType<{ foo: string }>(args)
 })
 
 // Numeric argument types
@@ -51,11 +51,11 @@ cmd
   .argument('foo', { type: 'number', optional: true, default: 100 })
   .action((args) => {
     // Optional with default
-    expectType<{ foo: string | undefined }>(args)
+    expectType<{ foo: number }>(args)
   })
 cmd.argument('foo', { optional: true, default: 100 }).action((args) => {
   // Optional inferred from default
-  expectType<{ foo: number | undefined }>(args)
+  expectType<{ foo: number }>(args)
 })
 
 // Boolean argument types
@@ -79,11 +79,11 @@ cmd
   .argument('foo', { type: 'boolean', optional: true, default: false })
   .action((args) => {
     // Optional with default
-    expectType<{ foo: boolean | undefined }>(args)
+    expectType<{ foo: boolean }>(args)
   })
 cmd.argument('foo', { optional: true, default: false }).action((args) => {
   // Optional inferred from default
-  expectType<{ foo: boolean | undefined }>(args)
+  expectType<{ foo: boolean }>(args)
 })
 
 // @todo: option types

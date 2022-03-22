@@ -737,9 +737,7 @@ Optionally deploy to GitHub, S3, etc. using your preferred CD method if needed.
 
 ## Todo
 
-- [ ] Better code coverage
-- [ ] Consider resolving ambiguity in _prompt_ param/method
-- [ ] Async autocomplete method for arg values
+See [TODO.md](TODO.md)
 
 ## Contributing
 

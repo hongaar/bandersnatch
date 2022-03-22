@@ -1,8 +1,9 @@
 {
-  "include": ["src", "tests", "test-d"],
+  "include": ["src", "tests", "test-d", "examples"],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
+    "declaration": true,
 
     "target": "es2017",
     "module": "commonjs",
