@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/hongaar/bandersnatch/compare/v1.9.0...v1.9.1) (2022-03-22)
+
+
+### Bug Fixes
+
+* args typed with undefined ([#389](https://github.com/hongaar/bandersnatch/issues/389)) ([419f048](https://github.com/hongaar/bandersnatch/commit/419f0486e55b79a671185eda0ce3558c4cf3665f))
+
 # [1.9.0](https://github.com/hongaar/bandersnatch/compare/v1.8.4...v1.9.0) (2021-10-25)
 
 
