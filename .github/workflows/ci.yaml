@@ -33,6 +33,7 @@ jobs:
       - run: yarn test
       - uses: actions/upload-artifact@v3
         with:
+          name: lib
           path: lib
 
   coverage:
@@ -50,6 +51,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - run: yarn install
       - uses: actions/download-artifact@v3
+        with:
+          name: lib
       - uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: e1a2f8ecd90c13810c302d9cdfb4a26a5b79666e899c4f353e558416c168da0d
