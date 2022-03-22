@@ -23,6 +23,9 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn test
+      - uses: actions/upload-artifact@v3
+        with:
+          path: lib
 
   coverage:
     needs: test
@@ -30,6 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: yarn install
+      - uses: actions/download-artifact@v3
       - uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: e1a2f8ecd90c13810c302d9cdfb4a26a5b79666e899c4f353e558416c168da0d
