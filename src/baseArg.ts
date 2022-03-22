@@ -8,7 +8,7 @@ export interface BaseArgOptions {
 
 export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
   /**
-   * Add support for numeric variadic arguments
+   * Numeric variadic arguments
    */
   O extends {
     variadic: true
@@ -16,12 +16,27 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
   }
     ? Array<number>
     : /**
-     * Add support for string variadic arguments
+     * String variadic arguments
      */
     O extends {
         variadic: true
       }
     ? Array<string>
+    : /**
+     * Numeric optional argument
+     */
+    O extends {
+        optional: true
+        type: 'number'
+      }
+    ? number | undefined
+    : /**
+     * String optional argument
+     */
+    O extends {
+        optional: true
+      }
+    ? string | undefined
     : /**
      * Choices with array type
      */ O extends { choices: ReadonlyArray<infer C>; type: 'array' }

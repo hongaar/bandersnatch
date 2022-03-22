@@ -1,5 +1,5 @@
 {
-  "include": ["./src"],
+  "include": ["src", "tests", "test-d"],
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
