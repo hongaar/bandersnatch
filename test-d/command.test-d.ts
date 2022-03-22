@@ -10,30 +10,80 @@ expectType<Command>(cmd.description('foo'))
 expectType<Command>(cmd.hidden())
 expectType<Command>(cmd.add(cmd))
 expectType<Command>(cmd.default())
-expectType<Command>(cmd.action(undefined))
+expectType<Command>(cmd.action(() => {}))
 
-// Argument types
+// String argument types
 cmd.argument('foo').action((args) => {
-  // Argument without options
+  // No options
   expectType<{ foo: string }>(args)
 })
 cmd.argument('foo', { default: 'bar' }).action((args) => {
-  // Argument with default
+  // With default
   expectType<{ foo: string }>(args)
 })
 cmd.argument('foo', { optional: true }).action((args) => {
-  // Optional argument
-  expectType<{ foo: string }>(args)
+  // Optional
+  expectType<{ foo: string | undefined }>(args)
+})
+cmd.argument('foo', { optional: true, default: 'bar' }).action((args) => {
+  // Optional with default
+  expectType<{ foo: string | undefined }>(args)
+})
+
+// Numeric argument types
+cmd.argument('foo', { type: 'number' }).action((args) => {
+  // No options
+  expectType<{ foo: number }>(args)
+})
+cmd.argument('foo', { type: 'number', default: 100 }).action((args) => {
+  // With default
+  expectType<{ foo: number }>(args)
+})
+cmd.argument('foo', { default: 100 }).action((args) => {
+  // Inferred from default
+  expectType<{ foo: number }>(args)
+})
+cmd.argument('foo', { type: 'number', optional: true }).action((args) => {
+  // Optional
+  expectType<{ foo: number | undefined }>(args)
 })
 cmd
-  .argument('foo', {
-    type: 'number',
-  })
+  .argument('foo', { type: 'number', optional: true, default: 100 })
   .action((args) => {
-    expectType<{ foo: number }>(args)
+    // Optional with default
+    expectType<{ foo: string | undefined }>(args)
   })
-
-// Option types
-cmd.option('foo').action((args) => {
-  expectType<{ foo: unknown }>(args)
+cmd.argument('foo', { optional: true, default: 100 }).action((args) => {
+  // Optional inferred from default
+  expectType<{ foo: number | undefined }>(args)
 })
+
+// Boolean argument types
+cmd.argument('foo', { type: 'boolean' }).action((args) => {
+  // No options
+  expectType<{ foo: boolean }>(args)
+})
+cmd.argument('foo', { type: 'boolean', default: false }).action((args) => {
+  // With default
+  expectType<{ foo: boolean }>(args)
+})
+cmd.argument('foo', { default: false }).action((args) => {
+  // Inferred from default
+  expectType<{ foo: boolean }>(args)
+})
+cmd.argument('foo', { type: 'boolean', optional: true }).action((args) => {
+  // Optional
+  expectType<{ foo: boolean | undefined }>(args)
+})
+cmd
+  .argument('foo', { type: 'boolean', optional: true, default: false })
+  .action((args) => {
+    // Optional with default
+    expectType<{ foo: boolean | undefined }>(args)
+  })
+cmd.argument('foo', { optional: true, default: false }).action((args) => {
+  // Optional inferred from default
+  expectType<{ foo: boolean | undefined }>(args)
+})
+
+// @todo: option types

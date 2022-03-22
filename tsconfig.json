@@ -1,15 +1,16 @@
 {
   "include": ["src", "tests", "test-d"],
   "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+
     "target": "es2017",
     "module": "commonjs",
     "lib": ["es2017"],
-    "declaration": true,
-    "outDir": "lib",
-    "rootDir": "src",
-    "strict": true,
     "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "moduleResolution": "node"
+
+    "strict": true
   }
 }

@@ -12,7 +12,7 @@ expectType<Program>(app.description('foo'))
 expectType<Program>(app.prompt('foo'))
 expectType<Program>(app.add(command()))
 expectType<Program>(app.default(command()))
-expectType<Program>(app.on('run', undefined))
+expectType<Program>(app.on('run', () => {}))
 
 // Run methods
 expectType<Promise<unknown>>(app.run('foo'))

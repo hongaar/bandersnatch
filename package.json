@@ -25,7 +25,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "build": "tsc --rootDir src",
+    "build": "tsc --project tsconfig.build.json",
     "watch": "tsc --watch",
     "lint": "prettier --write \"src/**/*\"",
     "test": "tsd && jest",
