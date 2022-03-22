@@ -1,5 +1,5 @@
-import { Options as BaseOptions, Argv } from 'yargs'
-import { BaseArgOptions, BaseArg } from './baseArg'
+import { Argv, Options as BaseOptions } from 'yargs'
+import { BaseArg, BaseArgOptions } from './baseArg'
 
 // We ignore some not-so-common use cases from the type to make using this
 // library easier. They could still be used at runtime but won't be documented
@@ -14,6 +14,7 @@ type IgnoreOptions =
   | 'defaultDescription'
   | 'demand'
   | 'demandOption'
+  | 'deprecate'
   | 'desc'
   | 'describe'
   | 'global'
@@ -28,7 +29,7 @@ type IgnoreOptions =
   | 'requiresArg'
   | 'skipValidation'
   | 'string'
-// | 'implies'
+  | 'implies'
 
 export interface OptionOptions
   extends Omit<BaseOptions, IgnoreOptions>,

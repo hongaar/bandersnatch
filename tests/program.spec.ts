@@ -1,6 +1,4 @@
-// @ts-ignore
 import mockArgv from 'mock-argv'
-import { mocked } from 'ts-jest/utils'
 import { command, program, Program, Repl } from '../src'
 
 jest.mock('../src/repl', () => {
@@ -22,7 +20,7 @@ class MockedRepl {
 }
 
 beforeEach(() => {
-  const MockedRepl = mocked(Repl, true)
+  const MockedRepl = jest.mocked(Repl, true)
   MockedRepl.mockClear()
 })
 

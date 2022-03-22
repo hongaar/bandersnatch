@@ -92,7 +92,7 @@ export class Command<T = {}> {
   ) {
     this.add(new Argument(name, options))
 
-    return (this as unknown) as Command<
+    return this as unknown as Command<
       T & { [key in K]: InferArgType<O, string> }
     >
   }
@@ -107,7 +107,7 @@ export class Command<T = {}> {
   ) {
     this.add(new Option(name, options))
 
-    return (this as unknown) as Command<T & { [key in K]: InferArgType<O> }>
+    return this as unknown as Command<T & { [key in K]: InferArgType<O> }>
   }
 
   /**
@@ -275,6 +275,7 @@ export class Command<T = {}> {
       let promise = prompterInstance.prompt()
 
       promise = promise.then((args) => {
+        // @todo coerce all types and remove coerce option from baseArg
         if (this.handler) {
           return this.handler(args, commandRunner)
         }
@@ -289,6 +290,7 @@ export class Command<T = {}> {
 
       // Save promise chain on argv instance, so we can access it in parse
       // callback.
+      // @todo Upgrade to native async handlers in yarn 17
       argv.__promise = promise
 
       return promise

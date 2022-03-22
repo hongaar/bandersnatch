@@ -6,43 +6,40 @@ export interface BaseArgOptions {
   prompt?: true | string
 }
 
+// prettier-ignore
 export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
-  /**
-   * Add support for numeric variadic arguments
-   */
-  O extends {
-    variadic: true
-    type: 'number'
-  }
-    ? Array<number>
-    : /**
-     * Add support for string variadic arguments
-     */
-    O extends {
-        variadic: true
-      }
-    ? Array<string>
-    : /**
-     * Choices with array type
-     */ O extends { choices: ReadonlyArray<infer C>; type: 'array' }
-    ? C[]
-    : /**
-     * Choices with array default
-     */ O extends {
-        choices: ReadonlyArray<infer C>
-        default: ReadonlyArray<string>
-      }
-    ? C[]
-    : /**
-     * Prefer choices over default
-     */ O extends { choices: ReadonlyArray<infer C> }
-    ? C
-    : /**
-     * Allow fallback type
-     */
-    unknown extends InferredOptionType<O>
-    ? F
-    : InferredOptionType<O>
+  // Default number
+  O extends { default: number } ? number :  
+  // Optional number
+  O extends { type: 'number', optional: true } ? number | undefined :  
+  // Variadic number
+  O extends { type: 'number', variadic: true } ? Array<number> :  
+  // Number
+  O extends { type: 'number' } ? number :  
+  // Default boolean
+  O extends { default: boolean } ? boolean :  
+  // Optional boolean
+  O extends { type: 'boolean', optional: true } ? boolean | undefined :  
+  // Variadic boolean
+  O extends { type: 'boolean', variadic: true } ? Array<boolean> :  
+  // Boolean
+  O extends { type: 'boolean' } ? boolean :  
+  // Default string
+  O extends { default: string } ? string :  
+  // Optional string
+  O extends { optional: true } ? string | undefined :  
+  // Variadic string
+  O extends { variadic: true } ? Array<string> :  
+  // Choices with array type
+  O extends { choices: ReadonlyArray<infer C>; type: 'array' } ? C[] :
+  // Choices with array default
+  O extends { choices: ReadonlyArray<infer C>, default: ReadonlyArray<string> } ? C[] :
+  // Prefer choices over default
+  O extends { choices: ReadonlyArray<infer C> } ? C :
+  // Allow fallback type
+  unknown extends InferredOptionType<O> ? F :
+  // yargs type
+  InferredOptionType<O>
 
 export class BaseArg {
   protected name: string
@@ -87,6 +84,7 @@ export class BaseArg {
 
   /**
    * Get possible values, is specified.
+   * @todo See if we can add this to autocompleter
    */
   getChoices() {
     return this.options.choices
