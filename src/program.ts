@@ -12,7 +12,7 @@ import { isPromise } from './utils'
 const DEFAULT_PROMPT = '> '
 const DEFAULT_HISTORY_FILE = '.bandersnatch_history'
 
-interface Events {
+type Events = {
   run: (command: string | readonly string[]) => void
 }
 
