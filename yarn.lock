@@ -1869,7 +1869,7 @@ __metadata:
     ts-jest: 27.1.3
     ts-node: 10.7.0
     tsd: ^0.19.1
-    typed-emitter: ^1.3.1
+    typed-emitter: ^2.0.0
     typescript: 4.6.2
     yargs: ^17.1.1
   languageName: unknown
@@ -5139,6 +5139,15 @@ resolve@^1.3.2:
   languageName: node
   linkType: hard
 
+"rxjs@npm:*":
+  version: 7.5.5
+  resolution: "rxjs@npm:7.5.5"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: e034f60805210cce756dd2f49664a8108780b117cf5d0e2281506e9e6387f7b4f1532d974a8c8b09314fa7a16dd2f6cff3462072a5789672b5dcb45c4173f3c6
+  languageName: node
+  linkType: hard
+
 "safe-buffer@npm:~5.1.0, safe-buffer@npm:~5.1.1":
   version: 5.1.2
   resolution: "safe-buffer@npm:5.1.2"
@@ -5761,6 +5770,13 @@ resolve@^1.3.2:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.1.0":
+  version: 2.3.1
+  resolution: "tslib@npm:2.3.1"
+  checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
+  languageName: node
+  linkType: hard
+
 "type-check@npm:~0.3.2":
   version: 0.3.2
   resolution: "type-check@npm:0.3.2"
@@ -5805,10 +5821,15 @@ resolve@^1.3.2:
   languageName: node
   linkType: hard
 
-"typed-emitter@npm:^1.3.1":
-  version: 1.4.0
-  resolution: "typed-emitter@npm:1.4.0"
-  checksum: 914a868f6e6f9b7b20295019adb1fe71fc83b19ec1cd0d12a7b5d74a146f1bfe3db7b2b28db7ee896c9ee0fab291287ffca90550851e188c2a0eee6ed788d720
+"typed-emitter@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "typed-emitter@npm:2.1.0"
+  dependencies:
+    rxjs: "*"
+  dependenciesMeta:
+    rxjs:
+      optional: true
+  checksum: 95821a9e05784b972cc9d152891fd12a56cb4b1a7c57e768c02bea6a8984da7aff8f19404a7b69eea11fae2a3b6c0c510a4c510f575f50162c759ae9059f2520
   languageName: node
   linkType: hard
 
