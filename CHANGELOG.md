@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/hongaar/bandersnatch/compare/v1.9.1...v1.9.2) (2022-03-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency typed-emitter to v2 ([#368](https://github.com/hongaar/bandersnatch/issues/368)) ([8435770](https://github.com/hongaar/bandersnatch/commit/8435770e8500937b41a05b4c82de6c393a69b18c))
+
 ## [1.9.1](https://github.com/hongaar/bandersnatch/compare/v1.9.0...v1.9.1) (2022-03-22)
 
 
