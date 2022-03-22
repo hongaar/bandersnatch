@@ -3,7 +3,7 @@ import { command, program } from '../src'
 
 const cat = command('cat')
   .description('Concatenate files')
-  .argument('files', { variadic: true })
+  .argument('files', { variadic: true, default: [] })
   .action(({ files }) =>
     console.log(
       files.reduce((str, file) => str + readFileSync(file, 'utf8'), '')
