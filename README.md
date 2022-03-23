@@ -30,6 +30,7 @@ intuitive to work with.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
@@ -62,6 +63,8 @@ intuitive to work with.
 - [Bundle](#bundle)
 - [Todo](#todo)
 - [Contributing](#contributing)
+  - [Local install](#local-install)
+  - [Devcontainer](#devcontainer)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

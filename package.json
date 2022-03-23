@@ -18,32 +18,38 @@
     "argument",
     "option"
   ],
-  "main": "lib/index.js",
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12"
+  },
+  "sideEffects": false,
+  "main": "lib/cjs/index.js",
+  "module": "lib/mjs/index.js",
   "files": [
     "lib"
   ],
-  "types": "lib/index.d.ts",
+  "types": "lib/mjs/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "yarn build:cjs && yarn build:mjs",
+    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir lib/cjs",
+    "build:mjs": "tsc --project tsconfig.build.json --module es6 --outDir lib/mjs",
     "watch": "tsc --watch",
-    "lint": "prettier --write \"src/**/*\"",
+    "format": "yarn format:code && yarn format:toc && yarn format:todos",
+    "format:code": "prettier --write \"src/**/*\"",
+    "format:toc": "doctoc README.md",
+    "format:todos": "leasot --exit-nicely --reporter markdown \"{src,test-d,tests}/**/*.ts\" > TODO.md",
     "test": "tsd && jest",
     "start": "ts-node",
-    "doc:toc": "doctoc README.md",
-    "doc:todos": "leasot --exit-nicely --reporter markdown \"{src,test-d,tests}/**/*.ts\" > TODO.md"
+    "release": "semantic-release"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@types/yargs": "^17.0.2",
     "enquirer": "^2.3.6",
     "string-argv": "^0.3.1",
     "typed-emitter": "^2.0.0",
     "yargs": "^17.1.1"
-  },
-  "engines": {
-    "node": ">=12"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.1",
@@ -56,9 +62,10 @@
     "leasot": "12.2.0",
     "mock-argv": "2.0.8",
     "prettier": "2.6.0",
+    "semantic-release": "19.0.2",
     "ts-jest": "27.1.3",
     "ts-node": "10.7.0",
-    "tsd": "^0.19.1",
+    "tsd": "0.19.1",
     "typescript": "4.6.2"
   }
 }
