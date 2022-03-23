@@ -7,29 +7,35 @@
 [![Code Climate coverage](https://img.shields.io/codeclimate/coverage/hongaar/bandersnatch)](https://codeclimate.com/github/hongaar/bandersnatch/code)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/bandersnatch)](https://bundlephobia.com/result?p=bandersnatch)
 
-> Super lightweight and friendly CLI scaffolding for Node.js programs.
+```ts
+program()
+  .default(
+    command()
+      .description('What is bandersnatch?')
+      .action(() => console.log(description))
+  )
+  .run()
+```
 
-## Features
+```
+$ ./bandersnatch
+Simple and intuitive yet powerful and versatile framework for Node.js CLI programs
+```
 
-- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax
-- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop)
-- 💬 Prompts for missing arguments
-- 🔜 Autocompletion
-- 🔙 Command history
-- 🤯 Fully typed
-- ⚡ Uses the power of `yargs` and `enquirer`
+## Notable features
 
-It's built in TypeScript and command arguments are fully typed.
-
-Bandersnatch is not designed to be used as a full CLI framework like oclif, and
-tries to minimize the assumptions made about your program to make it easy and
-intuitive to work with.
+- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax, intuitive to use
+- 🔜 Autocompletion of commands, arguments, options and choices
+- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop) for interactive programs with 🔙 Command history
+- 💬 Can prompt for missing arguments
+- 🤯 Built in TypeScript, command arguments are fully typed
+- 🪆 Supports singular (e.g. `ssh`) and nested commands (e.g. `git commit`)
+- 🏃 Argument types are guaranteed at runtime (coming soon)
 
 ## Table of contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Getting started](#getting-started)
   - [Installation](#installation)
@@ -89,11 +95,14 @@ Let's create a simple program `foo.ts`:
 ```ts
 import { program, command } from 'bandersnatch'
 
-const foo = command('foo')
+const cmd = command()
+  .default()
   .description('Outputs "bar".')
   .action(() => console.log('bar'))
 
-program().default(foo).run()
+const app = program().description('foo').add(cmd)
+
+app.run()
 ```
 
 This creates a new program, adds a default command which logs "bar" to the
@@ -108,7 +117,7 @@ bar
 
 _ℹ Assuming you have `ts-node` installed._
 
-Try running `ts-node foo.ts help` to see the auto-generated help output:
+Try running `ts-node foo.ts --help` to see the auto-generated help output:
 
 ```
 $ ts-node foo.ts help
@@ -129,7 +138,7 @@ with `ts-node`._
 
 ### Error handling
 
-We first create a new program called `cat.ts` which is a simple version of the
+We first create a new program called `cat.ts` which is a naive version of the
 `cat` program we all know:
 
 ```ts
@@ -765,10 +774,10 @@ yarn start examples/foo.ts
 A devcontainer configuration is included in this repo to
 [get started quickly](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 
-## License
+## Credits
 
-Copyright (c) 2022 Joram van den Boezem. Licensed under the MIT license.
-
----
-
-Inspired by [vorpal](https://vorpal.js.org/)
+©️ Copyright 2022 [Joram van den Boezem](https://joram.dev)  
+♻️ Licensed under the [MIT license](LICENSE)  
+💡 Inspired by [vorpal](https://vorpal.js.org/)  
+⚡ Powered by [yargs](http://yargs.js.org) and
+[enquirer](https://github.com/enquirer/enquirer)
