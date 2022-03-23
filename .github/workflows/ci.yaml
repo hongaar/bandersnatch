@@ -12,7 +12,7 @@ jobs:
         node: [12, 14, 16]
         experimental: [false]
         include:
-          - node: 15
+          - node: 17
             experimental: true
     continue-on-error: ${{ matrix.experimental }}
     steps:
