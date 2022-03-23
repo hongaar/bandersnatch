@@ -1,7 +1,7 @@
 import fs from 'fs'
 import os from 'os'
 import { REPLServer } from 'repl'
-import { Program } from './program'
+import { Program } from './program.js'
 
 export const HISTSIZE = 500
 

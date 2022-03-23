@@ -1,0 +1,10 @@
+{
+    "name": "bandersnatch-smoke-test-esm",
+    "type": "module",
+    "scripts": {
+        "test": "node index.mjs"
+    },
+    "dependencies": {
+        "bandersnatch": "^1.9.2"
+    }
+}

@@ -1,5 +1,5 @@
 import { Argv, PositionalOptions } from 'yargs'
-import { BaseArg, BaseArgOptions } from './baseArg'
+import { BaseArg, BaseArgOptions } from './baseArg.js'
 
 // We ignore some not-so-common use cases from the type to make using this
 // library easier. They could still be used at runtime but won't be documented

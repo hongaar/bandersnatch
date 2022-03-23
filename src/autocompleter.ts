@@ -1,5 +1,5 @@
-import { Program } from './program'
-import { isPromise } from './utils'
+import { Program } from './program.js'
+import { isPromise } from './utils.js'
 
 export function autocompleter(program: Program) {
   return new Autocompleter(program)

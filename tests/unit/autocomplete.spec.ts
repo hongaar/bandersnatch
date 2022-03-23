@@ -1,9 +1,9 @@
 import {
-  autocompleter as createAutocompleter,
   Autocompleter,
+  autocompleter as createAutocompleter,
+  command,
   program as createProgram,
-  command
-} from '../src'
+} from '../../src/index.js'
 
 test('autocompleter should return new Autocompleter object', () => {
   const program = createProgram()

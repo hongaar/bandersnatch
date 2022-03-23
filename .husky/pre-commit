@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn lint && yarn doc:toc && yarn doc:todos && git add .
+yarn format && git add .

@@ -1,6 +1,6 @@
 import type { InferredOptionType, Options, PositionalOptions } from 'yargs'
-import type { ArgumentOptions } from './argument'
-import type { OptionOptions } from './option'
+import type { ArgumentOptions } from './argument.js'
+import type { OptionOptions } from './option.js'
 
 export interface BaseArgOptions {
   prompt?: true | string

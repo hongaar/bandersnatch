@@ -1,12 +1,11 @@
 {
-  "include": ["src", "tests", "test-d", "examples"],
+  "include": ["src", "tests", "examples"],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
-    "declaration": true,
 
     "target": "es2017",
-    "module": "commonjs",
+    "module": "es6",
     "lib": ["es2017"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

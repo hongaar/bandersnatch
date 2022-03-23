@@ -1,5 +1,5 @@
 import { expectType } from 'tsd'
-import { Command, command } from '../src/command'
+import { Command, command } from '../../src/command'
 
 const cmd = command()
 
