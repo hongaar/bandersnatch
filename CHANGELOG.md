@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/hongaar/bandersnatch/compare/v1.10.0...v1.10.1) (2022-03-23)
+
+
+### Bug Fixes
+
+* package.json main entry ([10f1828](https://github.com/hongaar/bandersnatch/commit/10f18280b46ef43d06fd3c9799e46c7fb272846b))
+
 # [1.10.0](https://github.com/hongaar/bandersnatch/compare/v1.9.2...v1.10.0) (2022-03-23)
 
 
