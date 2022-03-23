@@ -46,7 +46,9 @@
     "format:code": "prettier --write \"src/**/*\"",
     "format:toc": "doctoc README.md",
     "format:todos": "leasot --exit-nicely --reporter markdown \"{src,tests}/**/*.ts\" > TODO.md",
-    "test": "tsd && jest && yarn test:smoke",
+    "test": "yarn test:unit && yarn test:types && yarn test:smoke",
+    "test:unit": "jest",
+    "test:types": "tsd",
     "test:smoke": "./tests/smoke/run.sh",
     "start": "ts-node",
     "release": "semantic-release"
@@ -77,6 +79,6 @@
     "typescript": "4.6.2"
   },
   "tsd": {
-    "directory": "tests/test-d"
+    "directory": "tests/types"
   }
 }
