@@ -37,7 +37,6 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
@@ -621,12 +620,11 @@ And create an example app in `src/cli.ts`:
 ```ts
 import { program, command } from 'bandersnatch'
 
-export default program()
-  .default(
-    command('echo', 'Echo something in the terminal')
-      .argument('words', 'Say some kind words', { variadic: true })
-      .action(console.log)
-  )
+export default program().default(
+  command('echo', 'Echo something in the terminal')
+    .argument('words', 'Say some kind words', { variadic: true })
+    .action(console.log)
+)
 ```
 
 Building your app with TypeScript is very powerful, but runtime compilation is
