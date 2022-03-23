@@ -27,7 +27,7 @@
   "files": [
     "lib"
   ],
-  "main": "./lib/cjs/index.js",
+  "main": "./lib/cjs/index.cjs",
   "exports": {
     "types": "./lib/types/index.d.ts",
     "import": "./lib/cjs/index.cjs",
