@@ -1,9 +1,13 @@
 import Enquirer from 'enquirer'
 import { command, Command, program } from '../../src/index.js'
 
-jest.mock('enquirer')
+jest.mock('enquirer', () => {
+  return {
+    prompt: jest.fn(),
+  }
+})
 
-const prompt = (Enquirer.prompt = jest.fn())
+const prompt = Enquirer.prompt as jest.Mock
 
 let outputSpy: jest.MockInstance<any, any>
 let errorSpy: jest.MockInstance<any, any>

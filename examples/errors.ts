@@ -1,4 +1,4 @@
-import { command, program } from '../src'
+import { command, program } from '../src/index.js'
 
 const app = program()
 

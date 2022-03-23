@@ -1,4 +1,4 @@
-import enquirer from 'enquirer'
+import * as enquirer from 'enquirer'
 import { CompleterResult } from 'readline'
 import nodeRepl, { REPLServer } from 'repl'
 import { parseArgsStringToArgv } from 'string-argv'

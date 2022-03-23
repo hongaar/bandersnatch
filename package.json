@@ -50,7 +50,7 @@
     "test:unit": "jest",
     "test:types": "tsd",
     "test:smoke": "./tests/smoke/run.sh",
-    "start": "ts-node",
+    "start": "node --loader ts-node/esm",
     "release": "semantic-release"
   },
   "dependencies": {

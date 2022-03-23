@@ -1,4 +1,4 @@
-import { program, command } from '../src'
+import { command, program } from '../src/index.js'
 
 const cmd = command()
   .argument('address', {
