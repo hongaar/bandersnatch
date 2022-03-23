@@ -741,21 +741,26 @@ See [TODO.md](TODO.md)
 
 ## Contributing
 
-Contributions are very welcome.
+Contributions are very welcome. Please use
+[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+### Local install
 
 ```bash
 # Clone and install
 git clone git@github.com:hongaar/bandersnatch.git
 cd bandersnatch
-yarn
+yarn install
 yarn husky install
 
 # Run an example
 yarn start examples/foo.ts
 ```
 
-Please use
-[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+### Devcontainer
+
+A devcontainer configuration is included in this repo to
+[get started quickly](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 
 ## License
 
