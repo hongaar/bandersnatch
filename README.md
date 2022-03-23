@@ -37,6 +37,7 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Getting started](#getting-started)
   - [Installation](#installation)
   - [Simple example](#simple-example)
@@ -71,7 +72,7 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 - [Contributing](#contributing)
   - [Local install](#local-install)
   - [Devcontainer](#devcontainer)
-- [License](#license)
+- [Credits](#credits)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

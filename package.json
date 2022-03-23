@@ -45,7 +45,7 @@
     "format": "yarn format:code && yarn format:toc && yarn format:todos",
     "format:code": "prettier --write \"src/**/*\"",
     "format:toc": "doctoc README.md",
-    "format:todos": "leasot --exit-nicely --reporter markdown \"{src,tests}/**/*.ts\" > TODO.md",
+    "format:todos": "leasot --exit-nicely --reporter markdown --ignore \"**/node_modules\" \"**/*.ts\" > TODO.md",
     "test": "yarn test:unit && yarn test:types && yarn test:smoke",
     "test:unit": "jest",
     "test:types": "tsd",
