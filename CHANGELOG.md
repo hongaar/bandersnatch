@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/hongaar/bandersnatch/compare/v1.9.2...v1.10.0) (2022-03-23)
+
+
+### Features
+
+* esm support ([#391](https://github.com/hongaar/bandersnatch/issues/391)) ([243b498](https://github.com/hongaar/bandersnatch/commit/243b4988f9527000d3f9ff1d7ca57a5f94dba7bb))
+
 ## [1.9.2](https://github.com/hongaar/bandersnatch/compare/v1.9.1...v1.9.2) (2022-03-22)
 
 
