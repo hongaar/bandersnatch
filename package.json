@@ -30,7 +30,7 @@
   "main": "./lib/cjs/index.js",
   "exports": {
     "types": "./lib/types/index.d.ts",
-    "import": "./lib/esm/index.js",
+    "import": "./lib/cjs/index.cjs",
     "require": "./lib/cjs/index.cjs"
   },
   "type": "module",
