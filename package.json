@@ -24,23 +24,30 @@
     "node": ">=12"
   },
   "sideEffects": false,
-  "main": "lib/cjs/index.js",
-  "module": "lib/mjs/index.js",
   "files": [
     "lib"
   ],
-  "types": "lib/mjs/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "exports": {
+    "types": "./lib/types/index.d.ts",
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.cjs"
+  },
+  "type": "module",
+  "types": "./lib/types/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "build": "yarn build:cjs && yarn build:mjs",
-    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir lib/cjs",
-    "build:mjs": "tsc --project tsconfig.build.json --module es6 --outDir lib/mjs",
-    "watch": "tsc --watch",
+    "build": "rm -rf lib && yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir lib/cjs && yarn convert-extension cjs lib/cjs/ && rm lib/cjs/*.map",
+    "build:esm": "tsc --project tsconfig.build.json --module es6 --outDir lib/esm",
+    "watch:cjs": "yarn build:cjs --watch",
+    "watch:esm": "yarn build:esm --watch",
     "format": "yarn format:code && yarn format:toc && yarn format:todos",
     "format:code": "prettier --write \"src/**/*\"",
     "format:toc": "doctoc README.md",
-    "format:todos": "leasot --exit-nicely --reporter markdown \"{src,test-d,tests}/**/*.ts\" > TODO.md",
-    "test": "tsd && jest",
+    "format:todos": "leasot --exit-nicely --reporter markdown \"{src,tests}/**/*.ts\" > TODO.md",
+    "test": "tsd && jest && yarn test:smoke",
+    "test:smoke": "./tests/smoke/run.sh",
     "start": "ts-node",
     "release": "semantic-release"
   },
@@ -56,6 +63,7 @@
     "@semantic-release/git": "10.0.1",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.26",
+    "convert-extension": "0.3.0",
     "doctoc": "2.1.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
@@ -67,5 +75,8 @@
     "ts-node": "10.7.0",
     "tsd": "0.19.1",
     "typescript": "4.6.2"
+  },
+  "tsd": {
+    "directory": "tests/test-d"
   }
 }

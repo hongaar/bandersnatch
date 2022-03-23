@@ -1,7 +1,13 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { command, history, History, HISTSIZE, program } from '../src'
+import {
+  command,
+  history,
+  History,
+  HISTSIZE,
+  program,
+} from '../../src/index.js'
 
 // https://stackoverflow.com/a/52560084/938297
 function tmpFile(

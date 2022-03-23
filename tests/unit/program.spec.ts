@@ -1,7 +1,7 @@
 import mockArgv from 'mock-argv'
-import { command, program, Program, Repl } from '../src'
+import { command, program, Program, Repl } from '../../src/index.js'
 
-jest.mock('../src/repl', () => {
+jest.mock('../../src/repl', () => {
   return {
     repl: jest.fn().mockImplementation(() => {
       return new MockedRepl()

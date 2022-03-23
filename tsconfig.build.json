@@ -3,6 +3,8 @@
   "include": ["src"],
   "compilerOptions": {
     "rootDir": "src",
-    "noEmit": false
+    "noEmit": false,
+    "declaration": true,
+    "declarationDir": "lib/types"
   }
 }

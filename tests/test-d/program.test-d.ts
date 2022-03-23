@@ -1,7 +1,7 @@
 import { expectType } from 'tsd'
-import { command } from '../src/command'
-import { Program, program } from '../src/program'
-import { Repl } from '../src/repl'
+import { command } from '../../src/command'
+import { Program, program } from '../../src/program'
+import { Repl } from '../../src/repl'
 
 const app = program()
 

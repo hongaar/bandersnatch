@@ -1,5 +1,5 @@
 import Enquirer from 'enquirer'
-import { command, Command, program } from '../src'
+import { command, Command, program } from '../../src/index.js'
 
 jest.mock('enquirer')
 

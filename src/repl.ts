@@ -3,9 +3,9 @@ import { CompleterResult } from 'readline'
 import nodeRepl, { REPLServer } from 'repl'
 import { parseArgsStringToArgv } from 'string-argv'
 import { Context } from 'vm'
-import { autocompleter, Autocompleter } from './autocompleter'
-import { History } from './history'
-import { Program } from './program'
+import { autocompleter, Autocompleter } from './autocompleter.js'
+import { History } from './history.js'
+import { Program } from './program.js'
 
 /**
  * Create new REPL instance.

@@ -1,8 +1,8 @@
 import { Arguments as BaseArguments, Argv, CommandModule } from 'yargs'
-import { Argument, ArgumentOptions } from './argument'
-import { InferArgType } from './baseArg'
-import { Option, OptionOptions } from './option'
-import { prompter } from './prompter'
+import { Argument, ArgumentOptions } from './argument.js'
+import { InferArgType } from './baseArg.js'
+import { Option, OptionOptions } from './option.js'
+import { prompter } from './prompter.js'
 
 export type Arguments<T = {}> = T &
   BaseArguments<T> & {

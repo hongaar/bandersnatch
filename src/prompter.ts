@@ -1,6 +1,6 @@
 import { prompt } from 'enquirer'
-import { Argument } from './argument'
-import { Option } from './option'
+import { Argument } from './argument.js'
+import { Option } from './option.js'
 
 type PromptType =
   | 'input'

@@ -1,4 +1,4 @@
-import { isPromise } from '../src'
+import { isPromise } from '../../src/index.js'
 
 test('isPromise should return true for promises', () => {
   expect(isPromise(Promise.resolve())).toBe(true)

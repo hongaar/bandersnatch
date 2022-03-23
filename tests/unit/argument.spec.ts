@@ -1,4 +1,4 @@
-import { argument, Argument } from '../src'
+import { argument, Argument } from '../../src/index.js'
 
 test('argument should return new Argument object', () => {
   expect(argument('test')).toBeInstanceOf(Argument)
