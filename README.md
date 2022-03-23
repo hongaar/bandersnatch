@@ -622,7 +622,6 @@ And create an example app in `src/cli.ts`:
 import { program, command } from 'bandersnatch'
 
 export default program()
-  .withHelp()
   .default(
     command('echo', 'Echo something in the terminal')
       .argument('words', 'Say some kind words', { variadic: true })
