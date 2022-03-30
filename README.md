@@ -593,9 +593,9 @@ provides [everything you need](https://nodejs.org/api/console.html).
 There are many options to bundle your application for distribution. We'll
 discuss a common pattern.
 
-ℹ An example can be found in the
+ℹ _An example can be found in the
 [examples/bundle](https://github.com/hongaar/bandersnatch/tree/main/examples/bundle)
-directory.
+directory._
 
 Init a `package.json` if needed:
 
