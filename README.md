@@ -22,14 +22,14 @@ $ ./bandersnatch
 Simple and intuitive yet powerful and versatile framework for Node.js CLI programs
 ```
 
-## Notable features
+## Features
 
 - 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax, intuitive to use
 - 🔜 Autocompletion of commands, arguments, options and choices
 - ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop) for interactive programs with 🔙 Command history
 - 💬 Can prompt for missing arguments
-- 🤯 Built in TypeScript, command arguments are fully typed
-- 🪆 Supports singular (e.g. `ssh`) and nested commands (e.g. `git commit`)
+- 🤯 Built for TypeScript, command arguments are fully typed
+- 🪆 Supports singular (e.g. `foo`) and nested commands (e.g. `foo bar`)
 - 🏃 Argument types are guaranteed at runtime (coming soon)
 
 ## Table of contents
@@ -84,15 +84,15 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 yarn|npm add bandersnatch
 ```
 
-_ℹ We recommend using a **Active LTS** or **Maintenance LTS**
-[Node.js version](https://nodejs.org/en/about/releases/). **Current** versions
+ℹ _We recommend using a_ Active LTS _or_ Maintenance LTS
+_[Node.js version](https://nodejs.org/en/about/releases/)._ Current _versions
 are tested, but not guaranteed to work._
 
 ### Simple example
 
-Let's create a simple program `foo.ts`:
+Let's create a simple program `foo.js`:
 
-```ts
+```js
 import { program, command } from 'bandersnatch'
 
 const cmd = command()
@@ -111,37 +111,32 @@ stdout, and runs the program.
 Now try your program by running it:
 
 ```
-$ ts-node foo.ts
+$ node foo.js
 bar
 ```
 
-_ℹ Assuming you have `ts-node` installed._
-
-Try running `ts-node foo.ts --help` to see the auto-generated help output:
+Try running `node foo.js --help` to see the auto-generated help output:
 
 ```
-$ ts-node foo.ts help
-bin.js
+$ node foo.js help
+foo.js
 
 Outputs "bar".
 
 Commands:
-  bin.js     Outputs "bar".                                            [default]
+  foo.js     Outputs "bar".                                            [default]
 
 Options:
   --help     Show help                                                 [boolean]
   --version  Show version number                                       [boolean]
 ```
 
-_ℹ You see `bin.js` here instead of `foo.ts` because we're running the program
-with `ts-node`._
-
 ### Error handling
 
-We first create a new program called `cat.ts` which is a naive version of the
+We first create a new program called `cat.js` which is a naive version of the
 `cat` program we all know:
 
-```ts
+```js
 import { readFileSync } from 'fs'
 import { program, command } from 'bandersnatch'
 
@@ -160,7 +155,7 @@ program().default(cat).run()
 Now try your program by running it:
 
 ```
-$ ts-node cat.ts somefile
+$ node cat.js somefile
 contents of somefile
 ```
 
@@ -183,24 +178,24 @@ Let's fix that:
 Which will yield:
 
 ```
-$ ts-node cat.ts somefile
+$ node cat.js somefile
 There was a problem running this command:
 Error: ENOENT: no such file or directory, open 'somefile'
 ```
 
-### REPL example
+### REPL
 
 A program can also show an interactive
 [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop) to make interacting
 with more complex programs easier and to enable autocompleting of commands and
 arguments.
 
-Let's create a new program `dice.ts` with a command to roll a dice:
+Let's create a new program `dice.js` with a command to roll a dice:
 
-```ts
+```js
 import { program, command } from 'bandersnatch'
 
-async function rng(bounds: [number, number]) {
+async function rng(bounds) {
   const [min, max] = bounds
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -229,7 +224,7 @@ This prompt will read any user input, parse it, and execute matching commands.
 Try rolling the dice:
 
 ```
-$ ts-node dice.ts
+$ node dice.js
 > roll
 5
 ```
@@ -238,7 +233,7 @@ The REPL can autocomplete commands, arguments, options and choices. Try typing
 only the letter `r` and then hit _TAB_. This works for options as well:
 
 ```
-$ ts-node dice.ts
+$ node dice.js
 > r
 [TAB]
 > roll -
@@ -253,9 +248,9 @@ $ ts-node dice.ts
 Bandersnatch can also ask a user for input if arguments were not provided on the
 command line:
 
-Let's say we want to write a program `pizza.ts` which takes pizza orders:
+Let's say we want to write a program `pizza.js` which takes pizza orders:
 
-```ts
+```js
 import { program, command } from 'bandersnatch'
 
 const cmd = command()
@@ -294,7 +289,7 @@ program().description('Order a pizza').default(cmd).run()
 And run it:
 
 ```
-$ ts-node pizza.ts
+$ node pizza.js
 ? Your address The Netherlands
 ? Your name Joram
 ? Choose pizza size small
@@ -313,7 +308,7 @@ You can choose to specify parameters on the command line, in which case you
 won't get a prompt for these options:
 
 ```
-$ ts-node pizza.ts "The Netherlands" --name Joram --confirmed
+$ node pizza.js "The Netherlands" --name Joram --confirmed
 ? Choose pizza size small
 ? Pick some toppings veggies
 ? Order pizza? Yes
@@ -326,17 +321,18 @@ $ ts-node pizza.ts "The Netherlands" --name Joram --confirmed
 }
 ```
 
-⚠ Please note that even though `--confirmed` was specified on the command line,
+⚠ _Please note that even though `--confirmed` was specified on the command line,
 it was still being prompted. This is a known issue. In this case, the default
 value was the same as the input, in which case bandersnatch doesn't know whether
-a value was explicitly passed in or inherited from the default value.
+a value was explicitly passed in or inherited from the default value._
 
 ### TypeScript
 
 Bandersnatch works perfectly well with non-TypeScript codebases. However, when
 you do use TypeScript the command arguments are fully typed.
 
-Let's slightly improve the example program above to illustrate this:
+Let's rename the example program to `pizza.ts` and add some minor type hints to
+illustrate this:
 
 ```diff
    .option('size', {
@@ -369,9 +365,9 @@ type Args = {
 
 ---
 
-ℹ More examples in the
+ℹ _More examples in the
 [examples](https://github.com/hongaar/bandersnatch/tree/main/examples)
-directory.
+directory._
 
 ## API
 
@@ -408,7 +404,7 @@ Use this prompt prefix (string, required) when in REPL mode.
 
 Adds a command to the program.
 
-```ts
+```js
 program().add(command(...))
 ```
 
@@ -416,7 +412,7 @@ program().add(command(...))
 
 Adds a default command to the program. Shorthand for:
 
-```ts
+```js
 program().add(command(...).default())
 ```
 
@@ -425,7 +421,7 @@ program().add(command(...).default())
 Uses process.argv or passed in command (string, optional) to match and execute
 command. Returns promise.
 
-```ts
+```js
 program()
   .add(command(...))
   .run()
@@ -435,7 +431,7 @@ program()
 
 Start a read-eval-print loop. Returns promise-like REPL instance.
 
-```ts
+```js
 program()
   .add(command(...))
   .repl()
@@ -446,7 +442,7 @@ program()
 Invokes `run()` if process.argv is set, `repl()` otherwise. Returns promise or
 promise-like REPL instance.
 
-```ts
+```js
 program()
   .add(command(...))
   .runOrRepl()
@@ -461,7 +457,7 @@ Returns `true` if program is running a REPL loop, `false` otherwise.
 Attaches a listener function for the event. Currently, these events are
 supported:
 
-```ts
+```js
 // Fired before a command action is invoked
 program().on('run', (cmd) => logger.debug(`Running ${cmd}`))
 ```
@@ -556,7 +552,7 @@ The bandersnatch API allows to catch errors in a promise-like way. The `run` and
 `repl` program methods return either a promise or promise-like object which can
 be used to handle program errors:
 
-```ts
+```js
 program()
   .default(
     command()
@@ -566,7 +562,7 @@ program()
       })
   )
   .runOrRepl()
-  .catch((error: any) => {
+  .catch((error) => {
     console.error('[failed]', String(error))
 
     if (!app.isRepl()) {
@@ -739,7 +735,7 @@ To create a binary (your app with Node.js bundled), add this script to
  }
 ```
 
-_ℹ Omit `-t host` to create binaries for all platforms._
+ℹ _Omit `-t host` to create binaries for all platforms._
 
 Run `yarn bundle` and then `./echo --help`. 💪
 
