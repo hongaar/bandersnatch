@@ -80,5 +80,6 @@
   },
   "tsd": {
     "directory": "tests/types"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
