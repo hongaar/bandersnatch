@@ -9,12 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14, 16]
-        experimental: [false]
         include:
+          - node: 14
+            lts: true
+          - node: 16
+            lts: true
           - node: 17
-            experimental: true
-    continue-on-error: ${{ matrix.experimental }}
+            lts: false
+          - node: 18
+            lts: false
+    continue-on-error: ${{ ! matrix.lts }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
