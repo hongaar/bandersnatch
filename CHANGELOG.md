@@ -1,3 +1,17 @@
+## [1.10.2](https://github.com/hongaar/bandersnatch/compare/v1.10.1...v1.10.2) (2022-04-02)
+
+
+### Bug Fixes
+
+* upgrade deps ([#393](https://github.com/hongaar/bandersnatch/issues/393)) ([eecfd4a](https://github.com/hongaar/bandersnatch/commit/eecfd4a2541f247f244c685d535721f1ba439d79))
+
+## [1.10.1](https://github.com/hongaar/bandersnatch/compare/v1.10.0...v1.10.1) (2022-03-23)
+
+
+### Bug Fixes
+
+* package.json main entry ([10f1828](https://github.com/hongaar/bandersnatch/commit/10f18280b46ef43d06fd3c9799e46c7fb272846b))
+
 # [1.10.0](https://github.com/hongaar/bandersnatch/compare/v1.9.2...v1.10.0) (2022-03-23)
 
 

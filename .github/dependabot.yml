@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directory: /examples/bundle
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directory: /tests/smoke/cjs
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directory: /tests/smoke/esm
+    schedule:
+      interval: daily
