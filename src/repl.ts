@@ -1,4 +1,3 @@
-import * as enquirer from 'enquirer'
 import { CompleterResult } from 'readline'
 import nodeRepl, { REPLServer } from 'repl'
 import { parseArgsStringToArgv } from 'string-argv'
@@ -6,12 +5,6 @@ import { Context } from 'vm'
 import { autocompleter, Autocompleter } from './autocompleter.js'
 import { History } from './history.js'
 import { Program } from './program.js'
-
-/**
- * Workaround for "The requested module 'enquirer' is a CommonJS module, which
- * may not support all module.exports as named exports."
- */
-const { Prompt } = enquirer
 
 /**
  * Create new REPL instance.
@@ -59,9 +52,9 @@ export class Repl {
     // Setup history
     this.history?.hydrateReplServer(this.server)
 
-    // Fixes bug with hidden cursor after enquirer prompt
-    // @ts-ignore
-    new Prompt().cursorShow()
+    // Fixes bug with hidden cursor after enquirer prompt, this is identical to
+    // the enquirer method Prompt.cursorShow()
+    process.stdout.write(`\u001b[?25h`)
   }
 
   public stop() {

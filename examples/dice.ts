@@ -14,4 +14,4 @@ const dice = program().add(
     })
 )
 
-dice.repl()
+dice.runOrRepl()

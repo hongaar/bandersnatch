@@ -4,7 +4,7 @@ import path from 'path'
 import TypedEventEmitter from 'typed-emitter'
 import { Argv, ParserConfigurationOptions } from 'yargs'
 import createYargs from 'yargs/yargs'
-import { Arguments, Command, command } from './command.js'
+import { command, Command } from './command.js'
 import { history, History } from './history.js'
 import { Repl, repl } from './repl.js'
 import { isPromise } from './utils.js'
@@ -215,7 +215,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
     return new Promise((resolve, reject) => {
       // @ts-ignore Not sure why this is needed?
       this.createYargsInstance()
-        .parse(cmd, {}, (err, argv: Arguments | Promise<Arguments>, output) => {
+        .parse(cmd, {}, (err, argv, output) => {
           // We don't use yargs 17 promise style argv
           if (isPromise(argv)) {
             throw new Error('argv is of unexpected type')
