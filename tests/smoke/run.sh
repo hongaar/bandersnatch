@@ -9,15 +9,15 @@ do
  
     echo "==== Testing $target build ===="
 
-    pushd "$cwd/$target" > /dev/null
+    pushd "$cwd/$target"
     echo "▶️ Installing..."
     touch yarn.lock
-    yarn install > /dev/null
+    yarn install
     echo "▶️ Copying lib..."
     rm -rf "./node_modules/bandersnatch/lib"
     cp -r "../../../lib" "./node_modules/bandersnatch"
     cp "../../../package.json" "./node_modules/bandersnatch"
-    yarn install > /dev/null
+    yarn install
     echo "▶️ Running test script..."
     actual=$(yarn test ok 2>&1)
     expected=ok
@@ -29,7 +29,7 @@ do
         echo -e "\nActual:\n\n$actual\n"
         status=1
     fi
-    popd > /dev/null
+    popd
 
 done
 
