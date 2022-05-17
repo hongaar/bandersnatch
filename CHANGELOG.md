@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/hongaar/bandersnatch/compare/v1.10.2...v1.10.3) (2022-05-17)
+
+
+### Bug Fixes
+
+* use esm build when using import ([#392](https://github.com/hongaar/bandersnatch/issues/392)) ([03e5cdb](https://github.com/hongaar/bandersnatch/commit/03e5cdb6b06eaf08db4f7f96852e70b7700d2077))
+
 ## [1.10.2](https://github.com/hongaar/bandersnatch/compare/v1.10.1...v1.10.2) (2022-04-02)
 
 
