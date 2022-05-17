@@ -11,11 +11,13 @@ do
 
     pushd "$cwd/$target" > /dev/null
     echo "▶️ Installing..."
-    yarn install > /dev/null
+    touch yarn.lock
+    yarn install --no-immutable > /dev/null
     echo "▶️ Copying lib..."
     rm -rf "./node_modules/bandersnatch/lib"
     cp -r "../../../lib" "./node_modules/bandersnatch"
     cp "../../../package.json" "./node_modules/bandersnatch"
+    yarn install --no-immutable > /dev/null
     echo "▶️ Running test script..."
     actual=$(yarn test ok 2>&1)
     expected=ok

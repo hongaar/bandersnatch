@@ -30,7 +30,7 @@
   "main": "./lib/cjs/index.cjs",
   "exports": {
     "types": "./lib/types/index.d.ts",
-    "import": "./lib/cjs/index.cjs",
+    "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.cjs"
   },
   "type": "module",
@@ -50,33 +50,33 @@
     "test:unit": "jest",
     "test:types": "tsd",
     "test:smoke": "./tests/smoke/run.sh",
-    "start": "ts-node",
+    "start": "node --loader ts-node/esm",
     "release": "semantic-release"
   },
   "dependencies": {
-    "@types/yargs": "17.0.2",
+    "@types/yargs": "17.0.10",
     "enquirer": "^2.3.6",
     "string-argv": "^0.3.1",
     "typed-emitter": "^2.1.0",
-    "yargs": "^17.4.0"
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
-    "@types/jest": "27.4.1",
-    "@types/node": "17.0.23",
+    "@types/jest": "27.5.1",
+    "@types/node": "17.0.33",
     "convert-extension": "0.3.0",
-    "doctoc": "2.1.0",
-    "husky": "7.0.4",
-    "jest": "27.5.1",
+    "doctoc": "2.2.0",
+    "husky": "8.0.1",
+    "jest": "28.1.0",
     "leasot": "13.1.0",
     "mock-argv": "2.0.8",
     "prettier": "2.6.2",
     "semantic-release": "19.0.2",
-    "ts-jest": "27.1.4",
+    "ts-jest": "28.0.2",
     "ts-node": "10.7.0",
     "tsd": "0.20.0",
-    "typescript": "4.6.3"
+    "typescript": "4.6.4"
   },
   "tsd": {
     "directory": "tests/types"

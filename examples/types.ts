@@ -1,4 +1,4 @@
-import { command, program } from '../src'
+import { command, program } from '../src/index.js'
 
 /**
  * Keep in mind that argument/option types are not validated at runtime.

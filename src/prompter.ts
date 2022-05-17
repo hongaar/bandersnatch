@@ -1,6 +1,12 @@
-import { prompt } from 'enquirer'
+import Enquirer from 'enquirer'
 import { Argument } from './argument.js'
 import { Option } from './option.js'
+
+/**
+ * Workaround for "The requested module 'enquirer' is a CommonJS module, which
+ * may not support all module.exports as named exports."
+ */
+const prompt = Enquirer.prompt
 
 type PromptType =
   | 'input'

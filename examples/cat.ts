@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { command, program } from '../src'
+import { command, program } from '../src/index.js'
 
 const cat = command('cat')
   .description('Concatenate files')

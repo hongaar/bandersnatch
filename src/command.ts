@@ -1,13 +1,10 @@
-import { Arguments as BaseArguments, Argv, CommandModule } from 'yargs'
+import { ArgumentsCamelCase, Argv, CommandModule } from 'yargs'
 import { Argument, ArgumentOptions } from './argument.js'
 import { InferArgType } from './baseArg.js'
 import { Option, OptionOptions } from './option.js'
 import { prompter } from './prompter.js'
 
-export type Arguments<T = {}> = T &
-  BaseArguments<T> & {
-    __promise?: Promise<any>
-  }
+export type YargsArguments<T = {}> = ArgumentsCamelCase<T>
 
 type CommandOptions = {
   /**
@@ -30,7 +27,7 @@ type CommandOptions = {
 type CommandRunner = (command: string) => Promise<unknown>
 
 export interface HandlerFn<T> {
-  (args: Omit<T, '_' | '$0'>, commandRunner: CommandRunner): Promise<any> | any
+  (args: T, commandRunner: CommandRunner): Promise<any> | any
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {
@@ -213,6 +210,7 @@ export class Command<T = {}> {
       aliases: [],
       describe: this.options.hidden ? false : this.options.description || '',
       builder: this.getBuilder(commandRunner),
+      // @ts-ignore Our handler returns a different type than void
       handler: this.getHandler(commandRunner),
     }
     return module
@@ -261,23 +259,21 @@ export class Command<T = {}> {
   }
 
   /**
-   * Wraps the actual command handler to insert prompt and async handler logic.
-   * Takes command runner.
+   * Wraps the actual command handler to insert prompt and handler logic.
    */
   private getHandler(commandRunner: CommandRunner) {
-    return async (argv: Arguments<T>) => {
-      const { _, $0, ...rest } = argv
+    return async (argv: YargsArguments<T> & { __promise?: Promise<any> }) => {
       const prompterInstance = prompter(
         [...this.getArguments(), ...this.getOptions()],
-        rest
+        argv
       )
 
       let promise = prompterInstance.prompt()
 
-      promise = promise.then((args) => {
+      promise = promise.then(({ _, $0, __promise, ...args }) => {
         // @todo coerce all types and remove coerce option from baseArg
         if (this.handler) {
-          return this.handler(args, commandRunner)
+          return this.handler(args as unknown as T, commandRunner)
         }
 
         // Display help if this command contains sub-commands

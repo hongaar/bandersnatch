@@ -1,11 +1,13 @@
-import { program, command, argument } from '../src'
+import { argument, command, program } from '../src/index.js'
 
 type Args = { number: number[] }
 
 const number = argument('number', { type: 'number', variadic: true })
 
-const makeOutput = (op: string, initial = (args: Args) => 0) => (args: Args) =>
-  args.number.reduce((sum, arg) => eval(`${sum} ${op} ${arg}`), initial(args))
+const makeOutput =
+  (op: string, initial = (args: Args) => 0) =>
+  (args: Args) =>
+    args.number.reduce((sum, arg) => eval(`${sum} ${op} ${arg}`), initial(args))
 
 program()
   .description('calculator')
