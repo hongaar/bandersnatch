@@ -60,7 +60,7 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
     - [`command.hidden()`](#commandhidden)
     - [`command.argument(name, options)`](#commandargumentname-options)
     - [`command.option(name, options)`](#commandoptionname-options)
-    - [`command.command(command)`](#commandcommandcommand)
+    - [`command.add(command)`](#commandaddcommand)
     - [`command.default()`](#commanddefault)
     - [`command.action(function)`](#commandactionfunction)
 - [Design principles](#design-principles)
@@ -522,7 +522,7 @@ Adds an option to the command.
   - `alias` (string|array) alias or aliases for the option.
   - `coerce` (function) transform function for this option value (untyped).
 
-#### `command.command(command)`
+#### `command.add(command)`
 
 Adds a sub-command to the command.
 
