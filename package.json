@@ -72,7 +72,7 @@
     "leasot": "13.1.0",
     "mock-argv": "2.0.8",
     "prettier": "2.6.2",
-    "semantic-release": "19.0.2",
+    "semantic-release": "19.0.3",
     "ts-jest": "28.0.2",
     "ts-node": "10.7.0",
     "tsd": "0.20.0",
