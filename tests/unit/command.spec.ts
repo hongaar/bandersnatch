@@ -68,6 +68,12 @@ test('async handler should be executed', async () => {
   expect(handled).toBeTruthy()
 })
 
+test('hidden', async () => {
+  const foo = command('foo').hidden()
+  await program().add(foo).run('help')
+  expect(outputSpy.mock.calls[0][0]).not.toContain('foo')
+})
+
 // Argument tests
 test('default argument', async () => {
   const cmd = command('test')
@@ -121,8 +127,13 @@ test('prompt for option', async () => {
   expect(prompt).toHaveBeenCalled()
 })
 
-test('hidden', async () => {
-  const foo = command('foo').hidden()
-  await program().add(foo).run('help')
-  expect(outputSpy.mock.calls[0][0]).not.toContain('foo')
+// Sub-command tests
+test('sub-commands', async () => {
+  const subCmd = command('sub')
+    .argument('foo')
+    .action((args) => {
+      expect(args.foo).toBe('bar')
+    })
+  const cmd = command('test').add(subCmd)
+  await program().add(cmd).run('test sub bar')
 })
