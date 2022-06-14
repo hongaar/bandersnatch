@@ -3,6 +3,8 @@ import { command, program } from '../src/index.js'
 let url: string | null = null
 
 const app = program()
+
+app
   .add(
     command('connect')
       .description('Connect to a server')
@@ -28,6 +30,7 @@ const app = program()
       .action(async ({ host, port, tls, protocol, timeout }) => {
         url = `${protocol}${tls && 's'}://${host}:${port}`
         console.log(`Connecting to ${url} (timeout set to ${timeout}s)...`)
+        app.options.prompt = `${host} > `
       })
   )
   .add(
@@ -39,6 +42,7 @@ const app = program()
         }
 
         console.log(`Disconnecting from ${url}...`)
+        app.options.prompt = '> '
         url = null
       })
   )
