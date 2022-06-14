@@ -29,6 +29,16 @@ cmd.argument('foo', { optional: true, default: 'bar' }).action((args) => {
   // Optional with default
   expectType<{ foo: string }>(args)
 })
+cmd.argument('foo', { choices: ['bar', 'baz'] as const }).action((args) => {
+  // Enum
+  expectType<{ foo: 'bar' | 'baz' }>(args)
+})
+cmd
+  .argument('foo', { choices: ['bar', 'baz'] as const, optional: true })
+  .action((args) => {
+    // Optional enum
+    expectType<{ foo: 'bar' | 'baz' | undefined }>(args)
+  })
 
 // Numeric argument types
 cmd.argument('foo', { type: 'number' }).action((args) => {
@@ -87,3 +97,6 @@ cmd.argument('foo', { optional: true, default: false }).action((args) => {
 })
 
 // @todo: option types
+
+// @fixme: unspecified options are omitted by yargs but are always present in
+// the args.

@@ -1,44 +1,55 @@
-import type { InferredOptionType, Options, PositionalOptions } from 'yargs'
+import type {
+  Choices,
+  InferredOptionType,
+  Options,
+  PositionalOptions,
+} from 'yargs'
 import type { ArgumentOptions } from './argument.js'
 import type { OptionOptions } from './option.js'
 
+type ChoicesFn<T extends Choices = Choices> = () => Promise<T> | T
+
 export interface BaseArgOptions {
   prompt?: true | string
+  // choices?: Choices | ChoicesFn
+  choices?: Choices
 }
 
 // prettier-ignore
 export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
   // Default number
-  O extends { default: number } ? number :  
+  O extends { default: number } ? number :
   // Optional number
-  O extends { type: 'number', optional: true } ? number | undefined :  
+  O extends { type: 'number', optional: true } ? number | undefined :
   // Variadic number
-  O extends { type: 'number', variadic: true } ? Array<number> :  
+  O extends { type: 'number', variadic: true } ? Array<number> :
   // Number
-  O extends { type: 'number' } ? number :  
+  O extends { type: 'number' } ? number :
   // Default boolean
-  O extends { default: boolean } ? boolean :  
+  O extends { default: boolean } ? boolean :
   // Optional boolean
-  O extends { type: 'boolean', optional: true } ? boolean | undefined :  
+  O extends { type: 'boolean', optional: true } ? boolean | undefined :
   // Variadic boolean
-  O extends { type: 'boolean', variadic: true } ? Array<boolean> :  
+  O extends { type: 'boolean', variadic: true } ? Array<boolean> :
   // Boolean
-  O extends { type: 'boolean' } ? boolean :  
-  // Default string
-  O extends { default: string } ? string :  
-  // Optional string
-  O extends { optional: true } ? string | undefined :  
-  // Variadic string
-  O extends { variadic: true } ? Array<string> :  
+  O extends { type: 'boolean' } ? boolean :
   // Choices with array type
   O extends { choices: ReadonlyArray<infer C>; type: 'array' } ? C[] :
   // Choices with array default
   O extends { choices: ReadonlyArray<infer C>, default: ReadonlyArray<string> } ? C[] :
+  // Choices, optional
+  O extends { choices: ReadonlyArray<infer C>, optional: true } ? C | undefined :
   // Prefer choices over default
   O extends { choices: ReadonlyArray<infer C> } ? C :
+  // Default string
+  O extends { default: string } ? string :
+  // Optional string
+  O extends { optional: true } ? string | undefined :
+  // Variadic string
+  O extends { variadic: true } ? Array<string> :
   // Allow fallback type
   unknown extends InferredOptionType<O> ? F :
-  // yargs type
+  // Base type from yargs
   InferredOptionType<O>
 
 export class BaseArg {

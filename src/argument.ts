@@ -5,6 +5,7 @@ import { BaseArg, BaseArgOptions } from './baseArg.js'
 // library easier. They could still be used at runtime but won't be documented
 // here.
 type IgnoreOptions =
+  | 'choices' // redefined in BaseArgOptions
   | 'array'
   | 'conflicts'
   | 'demandOption'
