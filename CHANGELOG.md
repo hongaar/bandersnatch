@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/hongaar/bandersnatch/compare/v1.10.3...v1.11.0) (2022-06-20)
+
+
+### Features
+
+* **prompter:** add limit to array prompts ([#405](https://github.com/hongaar/bandersnatch/issues/405)) ([3f951b6](https://github.com/hongaar/bandersnatch/commit/3f951b62684fd7fd0fc2ab5013a7016ea47fadac))
+
 ## [1.10.3](https://github.com/hongaar/bandersnatch/compare/v1.10.2...v1.10.3) (2022-05-17)
 
 
