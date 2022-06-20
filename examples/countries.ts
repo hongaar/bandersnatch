@@ -2286,7 +2286,7 @@ function countryNames() {
 }
 
 function countryDataByAlpha2Code(code: string) {
-  if (typeof data[code] === undefined) {
+  if (typeof data[code] === 'undefined') {
     throw new CountryNotFound(code)
   }
   return { alpha2: code, ...data[code] }
