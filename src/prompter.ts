@@ -8,20 +8,20 @@ import { Option } from './option.js'
  */
 const prompt = Enquirer.prompt
 
-type PromptType =
-  | 'input'
-  | 'number'
-  | 'confirm'
-  | 'list'
-  | 'rawlist'
-  | 'expand'
-  | 'checkbox'
-  | 'password'
-  | 'editor'
+/**
+ * Extract PromptOptions from exported Enquirer types, since types are not
+ * exported natively.
+ * @todo Wait for upstream change to import types from enquirer
+ * @link https://github.com/enquirer/enquirer/pull/258
+ */
+type EnquirerQuestion = Extract<Parameters<typeof prompt>[0], { initial?: any }>
 
-// @todo Wait for upstream change to import types from enquirer
-// @link https://github.com/enquirer/enquirer/pull/258
-type Question = any
+// Another workaround: we need to add the `limit` option to ArrayPromptOptions.
+type ArrayPromptOptions = Extract<EnquirerQuestion, { maxChoices?: number }> & {
+  limit?: number
+}
+
+type Question = EnquirerQuestion | ArrayPromptOptions
 
 /**
  * Creates a new prompter instance
@@ -48,6 +48,11 @@ export class Prompter<T = {}> {
       ...this.args,
       ...answers,
     }
+  }
+
+  private getSelectLimit() {
+    // Never more than what fits on the screen (+ some padding) or 20
+    return Math.min(process.stdout.rows - 3, 20)
   }
 
   /**
@@ -80,10 +85,8 @@ export class Prompter<T = {}> {
               type: 'multiselect',
               message: arg.getPrompt(),
               initial: defaultValue,
-              // @todo ignoring type error here, probably need another type
-              // than Question[]
-              // @ts-ignore
               choices: arg.getChoices() as string[],
+              limit: this.getSelectLimit(),
             })
             break
 
@@ -91,10 +94,11 @@ export class Prompter<T = {}> {
             // Use list question type
             questions.push({
               name,
-              type: 'select',
+              type: 'autocomplete',
               message: arg.getPrompt(),
               initial: defaultValue,
               choices: arg.getChoices() as string[],
+              limit: this.getSelectLimit(),
             })
             break
 
