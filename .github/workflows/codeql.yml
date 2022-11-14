@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: codeql
 
 on:
   push:
@@ -10,7 +10,6 @@ on:
 
 jobs:
   analyze:
-    name: Analyze
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -23,19 +22,19 @@ jobs:
         language: [ javascript ]
 
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v3
 
-      - name: Initialize CodeQL
+      - name: initialize
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
-      - name: Autobuild
+      - name: autobuild
         uses: github/codeql-action/autobuild@v2
 
-      - name: Perform CodeQL Analysis
+      - name: analysis
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{ matrix.language }}"
