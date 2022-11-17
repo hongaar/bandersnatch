@@ -28,6 +28,8 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
   O extends { choices: ReadonlyArray<infer C>; type: 'array' } ? C[] :
   // Choices with array default
   O extends { choices: ReadonlyArray<infer C>, default: ReadonlyArray<string> } ? C[] :
+  // Choices, variadic
+  O extends { choices: ReadonlyArray<infer C>; variadic: true } ? C[] :
   // Choices, optional
   O extends { choices: ReadonlyArray<infer C>, optional: true } ? C | undefined :
   // Prefer choices over default

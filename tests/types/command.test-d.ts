@@ -21,6 +21,10 @@ cmd.argument('foo', { default: 'bar' }).action((args) => {
   // With default
   expectType<{ foo: string }>(args)
 })
+cmd.argument('foo', { variadic: true }).action((args) => {
+  // Variadic
+  expectType<{ foo: string[] }>(args)
+})
 cmd.argument('foo', { optional: true }).action((args) => {
   // Optional
   expectType<{ foo: string | undefined }>(args)
@@ -38,6 +42,12 @@ cmd
   .action((args) => {
     // Optional enum
     expectType<{ foo: 'bar' | 'baz' | undefined }>(args)
+  })
+cmd
+  .argument('foo', { choices: ['bar', 'baz'] as const, variadic: true })
+  .action((args) => {
+    // Variadic enum
+    expectType<{ foo: ('bar' | 'baz')[] }>(args)
   })
 
 // Numeric argument types
