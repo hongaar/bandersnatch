@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/hongaar/bandersnatch/compare/v1.11.0...v1.11.1) (2022-11-17)
+
+
+### Bug Fixes
+
+* variadic enum type ([#414](https://github.com/hongaar/bandersnatch/issues/414)) ([f34e68f](https://github.com/hongaar/bandersnatch/commit/f34e68fe2202595abea1b18f2c989526b80872ac))
+
 # [1.11.0](https://github.com/hongaar/bandersnatch/compare/v1.10.3...v1.11.0) (2022-06-20)
 
 
