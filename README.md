@@ -601,7 +601,7 @@ Install dependencies:
 
 ```
 yarn add bandersnatch
-yarn add typescript pkg --dev
+yarn add typescript @types/node pkg --dev
 ```
 
 And create an example app in `src/cli.ts`:
@@ -610,8 +610,9 @@ And create an example app in `src/cli.ts`:
 import { program, command } from 'bandersnatch'
 
 export default program().default(
-  command('echo', 'Echo something in the terminal')
-    .argument('words', 'Say some kind words', { variadic: true })
+  command('echo')
+    .description('Echo something in the terminal')
+    .argument('words', { description: 'Say some kind words', variadic: true })
     .action(console.log)
 )
 ```
