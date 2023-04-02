@@ -769,12 +769,3 @@ A devcontainer configuration is included in this repo to
 💡 Inspired by [vorpal](https://vorpal.js.org/)  
 ⚡ Powered by [yargs](http://yargs.js.org) and
 [enquirer](https://github.com/enquirer/enquirer)
-
----
-
-[![npm](https://img.shields.io/npm/v/bandersnatch)](https://www.npmjs.com/package/bandersnatch)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hongaar/bandersnatch/ci)](https://github.com/hongaar/bandersnatch/actions?query=workflow%3Aci)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/hongaar/bandersnatch.svg)](https://lgtm.com/projects/g/hongaar/bandersnatch/alerts/)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hongaar/bandersnatch)](https://codeclimate.com/github/hongaar/bandersnatch/issues)
-[![Code Climate coverage](https://img.shields.io/codeclimate/coverage/hongaar/bandersnatch)](https://codeclimate.com/github/hongaar/bandersnatch/code)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/bandersnatch)](https://bundlephobia.com/result?p=bandersnatch)
