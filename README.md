@@ -496,6 +496,10 @@ Adds a positional argument to the command.
     string, it will be used as the question text.
   - `alias` (string|array) alias or aliases for the argument.
   - `coerce` (function) transform function for this argument value (untyped).
+  - `requires` (string|array) make another option or argument required if the
+    argument is present
+  - `excludes` (string|array) exclude another options or argument if the
+    argument is present
 
 #### `command.option(name, options)`
 
@@ -504,7 +508,7 @@ Adds an option to the command.
 - Name (string, required) is used to identify the option.
 - Options (object, optional) can be provided to change the behavior of the
   option. Object with any of these keys:
-  - `description` (string, optional) is used in help output.
+  - `description` (string) is used in help output.
   - `type` (string) one of `"array"|"boolean"|"count"|"number"|"string"` which
     determines the runtime type of the argument. Use count for the number of
     times an option was provided (e.g. verbosity levels).
@@ -516,6 +520,11 @@ Adds an option to the command.
     string, it will be used as the question text.
   - `alias` (string|array) alias or aliases for the option.
   - `coerce` (function) transform function for this option value (untyped).
+  - `required` (boolean) makes the option required.
+  - `requires` (string|array) make another option or argument required if the
+    option is present
+  - `excludes` (string|array) exclude another options or argument if the option
+    is present
 
 #### `command.add(command)`
 
