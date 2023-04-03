@@ -89,7 +89,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^17.0.2":
+"@types/yargs@npm:17.0.10":
   version: 17.0.10
   resolution: "@types/yargs@npm:17.0.10"
   dependencies:
@@ -184,15 +184,15 @@ __metadata:
   linkType: hard
 
 "bandersnatch@npm:^1.9.2":
-  version: 1.9.2
-  resolution: "bandersnatch@npm:1.9.2"
+  version: 1.11.1
+  resolution: "bandersnatch@npm:1.11.1"
   dependencies:
-    "@types/yargs": ^17.0.2
+    "@types/yargs": 17.0.10
     enquirer: ^2.3.6
     string-argv: ^0.3.1
-    typed-emitter: ^2.0.0
-    yargs: ^17.1.1
-  checksum: 20a1661aea80c3ecc80cab6483eb9ec8d2f3e28448ef67aca6951662e43572054d84c2ec6f8262bdba9faa5f6a75f11c3cf768a6923d808ab8c967a0a91bd6ec
+    typed-emitter: ^2.1.0
+    yargs: ^17.5.1
+  checksum: 83e7c2720f981e34690e16c78e34ab5b36d1d9c19b6a4e41a26fd4f32aa96c9e4df8ddcd7673d5cf12408406417e1dbbf2fc082bd69529eee793fff892270e56
   languageName: node
   linkType: hard
 
@@ -258,6 +258,17 @@ __metadata:
     strip-ansi: ^6.0.0
     wrap-ansi: ^7.0.0
   checksum: ce2e8f578a4813806788ac399b9e866297740eecd4ad1823c27fd344d78b22c5f8597d548adbcc46f0573e43e21e751f39446c5a5e804a12aace402b7a315d7f
+  languageName: node
+  linkType: hard
+
+"cliui@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "cliui@npm:8.0.1"
+  dependencies:
+    string-width: ^4.2.0
+    strip-ansi: ^6.0.1
+    wrap-ansi: ^7.0.0
+  checksum: 79648b3b0045f2e285b76fb2e24e207c6db44323581e421c3acbd0e86454cba1b37aea976ab50195a49e7384b871e6dfb2247ad7dec53c02454ac6497394cb56
   languageName: node
   linkType: hard
 
@@ -1416,7 +1427,7 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"typed-emitter@npm:^2.0.0":
+"typed-emitter@npm:^2.1.0":
   version: 2.1.0
   resolution: "typed-emitter@npm:2.1.0"
   dependencies:
@@ -1534,10 +1545,10 @@ typescript@^4.6.2:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^21.0.0":
-  version: 21.0.1
-  resolution: "yargs-parser@npm:21.0.1"
-  checksum: c3ea2ed12cad0377ce3096b3f138df8267edf7b1aa7d710cd502fe16af417bafe4443dd71b28158c22fcd1be5dfd0e86319597e47badf42ff83815485887323a
+"yargs-parser@npm:^21.1.1":
+  version: 21.1.1
+  resolution: "yargs-parser@npm:21.1.1"
+  checksum: ed2d96a616a9e3e1cc7d204c62ecc61f7aaab633dcbfab2c6df50f7f87b393993fe6640d017759fe112d0cb1e0119f2b4150a87305cc873fd90831c6a58ccf1c
   languageName: node
   linkType: hard
 
@@ -1556,17 +1567,17 @@ typescript@^4.6.2:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.1.1":
-  version: 17.4.0
-  resolution: "yargs@npm:17.4.0"
+"yargs@npm:^17.5.1":
+  version: 17.7.1
+  resolution: "yargs@npm:17.7.1"
   dependencies:
-    cliui: ^7.0.2
+    cliui: ^8.0.1
     escalade: ^3.1.1
     get-caller-file: ^2.0.5
     require-directory: ^2.1.1
     string-width: ^4.2.3
     y18n: ^5.0.5
-    yargs-parser: ^21.0.0
-  checksum: 63985bddddf1fb6b9c98744591e8b70f99839591521cb84eea60903d52ec0da35ab46c42c325d151f3ab5c41935f976c10da096b5a7067c217714a91c0bd4be3
+    yargs-parser: ^21.1.1
+  checksum: 3d8a43c336a4942bc68080768664aca85c7bd406f018bad362fd255c41c8f4e650277f42fd65d543fce99e084124ddafee7bbfc1a5c6a8fda4cec78609dcf8d4
   languageName: node
   linkType: hard
