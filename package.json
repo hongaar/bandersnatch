@@ -20,24 +20,25 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "types": "./lib/types/index.d.ts",
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.cjs"
+    "types": "./dist/types/index.d.ts",
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.cjs"
   },
-  "main": "./lib/cjs/index.cjs",
-  "types": "./lib/types/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "types": "dist/types/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
-    "build": "rm -rf lib && yarn build:cjs && yarn build:esm",
-    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir lib/cjs && yarn convert-extension cjs lib/cjs/ && rm lib/cjs/*.map",
-    "build:esm": "tsc --project tsconfig.build.json --module es6 --outDir lib/esm",
+    "build": "yarn clean && yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs && yarn convert-extension cjs dist/cjs/ && rm dist/cjs/*.map",
+    "build:esm": "tsc --project tsconfig.build.json --module es6 --outDir dist/esm",
+    "clean": "rm -rf dist",
     "format": "yarn format:code && yarn format:toc && yarn format:todos",
     "format:code": "prettier --write \"src/**/*\"",
     "format:toc": "doctoc README.md",
     "format:todos": "leasot --exit-nicely --reporter markdown --ignore \"**/node_modules\" \"**/*.ts\" > TODO.md",
-    "prepublishOnly": "yarn build",
+    "prepack ": "yarn build",
     "release": "semantic-release",
     "start": "node --loader ts-node/esm",
     "test": "yarn test:unit && yarn test:types && yarn test:smoke",
@@ -58,7 +59,7 @@
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
     "@types/jest": "28.1.1",
-    "@types/node": "17.0.42",
+    "@types/node": "18.15.11",
     "convert-extension": "0.3.0",
     "doctoc": "2.2.0",
     "husky": "8.0.1",
@@ -70,14 +71,16 @@
     "ts-jest": "28.0.5",
     "ts-node": "10.8.1",
     "tsd": "0.21.0",
-    "typescript": "4.7.3"
+    "typescript": "5.0.3"
   },
   "packageManager": "yarn@3.5.0",
   "engines": {
     "node": ">=12"
   },
   "moker": {
-    "plugins": []
+    "plugins": [
+      "typescript"
+    ]
   },
   "tsd": {
     "directory": "tests/types"

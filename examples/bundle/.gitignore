@@ -8,5 +8,5 @@
 
 node_modules/
 
-lib/
+dist/
 echo.exe

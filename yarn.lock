@@ -1482,10 +1482,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:17.0.42":
-  version: 17.0.42
-  resolution: "@types/node@npm:17.0.42"
-  checksum: a200cd87e4f12d4d5682a893ad6e1140720c6c074a2cd075f254b3b8306d6174f5a3630e5d2347efb5e9b80d420404b5fafc8fe3c7d4c81998cd914c50b19f75
+"@types/node@npm:18.15.11":
+  version: 18.15.11
+  resolution: "@types/node@npm:18.15.11"
+  checksum: 977b4ad04708897ff0eb049ecf82246d210939c82461922d20f7d2dcfd81bbc661582ba3af28869210f7e8b1934529dcd46bff7d448551400f9d48b9d3bddec3
   languageName: node
   linkType: hard
 
@@ -1888,7 +1888,7 @@ __metadata:
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/git": 10.0.1
     "@types/jest": 28.1.1
-    "@types/node": 17.0.42
+    "@types/node": 18.15.11
     "@types/yargs": 17.0.10
     convert-extension: 0.3.0
     doctoc: 2.2.0
@@ -1904,7 +1904,7 @@ __metadata:
     ts-node: 10.8.1
     tsd: 0.21.0
     typed-emitter: ^2.1.0
-    typescript: 4.7.3
+    typescript: 5.0.3
     yargs: ^17.5.1
   languageName: unknown
   linkType: soft
@@ -7454,23 +7454,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.3":
-  version: 4.7.3
-  resolution: "typescript@npm:4.7.3"
+"typescript@npm:5.0.3":
+  version: 5.0.3
+  resolution: "typescript@npm:5.0.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: fd13a1ce53790a36bb8350e1f5e5e384b5f6cb9b0635114a6d01d49cb99916abdcfbc13c7521cdae2f2d3f6d8bc4a8ae7625edf645a04ee940588cd5e7597b2f
+  checksum: 3cce0576d218cb4277ff8b6adfef1a706e9114a98b4261a38ad658a7642f1b274a8396394f6cbff8c0ba852996d7ed2e233e9b8431d5d55ac7c2f6fea645af02
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.7.3#~builtin<compat/typescript>":
-  version: 4.7.3
-  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=65a307"
+"typescript@patch:typescript@5.0.3#~builtin<compat/typescript>":
+  version: 5.0.3
+  resolution: "typescript@patch:typescript@npm%3A5.0.3#~builtin<compat/typescript>::version=5.0.3&hash=85af82"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 137d18a77f52254a284960b16ab53d0619f57b69b5d585804b8413f798a1175ce3e774fb95e6a101868577aafe357d8fcfc9171f0dc9fc0c210e9ae59d107cc0
+  checksum: 5580367025ff7ee1f2a61e5affdbddccfe6e893bc662aa33fefdbf12de7e493173fa7d47475e9e15121828691004c4ed13bcd115e57866baed97b54c60954e1c
   languageName: node
   linkType: hard
 

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "bin": "echo.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
     "prepublishOnly": "yarn build",

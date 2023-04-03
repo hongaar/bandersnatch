@@ -1,6 +1,6 @@
 # node
 node_modules/
-lib/
+dist/
 coverage/
 tests/smoke/*/yarn.lock
 
@@ -12,3 +12,6 @@ tests/smoke/*/yarn.lock
 !**/.yarn/releases
 !**/.yarn/sdks
 !**/.yarn/versions
+# artifacts
+/dist
+/types

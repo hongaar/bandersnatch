@@ -630,7 +630,7 @@ Add a `tsconfig.json`, similar to:
     "module": "commonjs",
     "lib": ["es2017"],
     "declaration": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "rootDir": "src",
     "strict": true,
     "allowSyntheticDefaultImports": true,
@@ -670,7 +670,7 @@ node:
 ```bash
 #!/usr/bin/env node
 
-require('./lib/cli').default.run()
+require('./dist/cli').default.run()
 ```
 
 To run your app, users may want to run `yarn global add echo`. For this to
@@ -683,7 +683,7 @@ work, we need to make a small adjustment to `package.json`:
 -  "main": "index.js",
 +  "bin": "echo.js",
 +  "files": [
-+    "lib"
++    "dist"
 +  ],
    "license": "MIT",
    "scripts": {
@@ -711,7 +711,7 @@ To create a binary (your app with Node.js bundled), add this script to
    "version": "1.0.0",
    "bin": "echo.js",
    "files": [
-     "lib"
+     "dist"
    ],
    "license": "MIT",
    "scripts": {
