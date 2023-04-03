@@ -87,12 +87,40 @@ const defaultValues = command("default")
     console.log("Args are", args);
   });
 
+const constraints = command("constraint")
+  .argument("arg", {
+    description: "Required argument",
+  })
+  .argument("optionalArg", {
+    description: "Required argument",
+    optional: true,
+  })
+  .option("opt", { description: "Required option", required: true })
+  .option("opt1a", {
+    description: "Also requires option 1a",
+    requires: "opt1b",
+  })
+  .option("opt1b", {
+    description: "Also requires option 1b",
+    requires: "opt1a",
+  })
+  .option("opt2", { description: "Forbids option 1a", excludes: "opt1a" })
+  .option("opt3", {
+    description: "Also requires optionalArg",
+    requires: "optionalArg",
+  })
+
+  .action((args) => {
+    console.log("Args are", args);
+  });
+
 const app = program()
   .description("All argument and option types")
   .add(string)
   .add(number)
   .add(boolean)
   .add(choices)
-  .add(defaultValues);
+  .add(defaultValues)
+  .add(constraints);
 
 app.runOrRepl();

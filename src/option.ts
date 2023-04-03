@@ -25,7 +25,6 @@ type IgnoreOptions =
   | "normalize"
   | "number"
   | "require"
-  | "required"
   | "requiresArg"
   | "skipValidation"
   | "string"
@@ -33,7 +32,9 @@ type IgnoreOptions =
 
 export interface OptionOptions
   extends Omit<BaseOptions, IgnoreOptions>,
-    BaseArgOptions {}
+    BaseArgOptions {
+  required?: true;
+}
 
 export function option(name: string) {
   return new Option(name);
@@ -50,6 +51,7 @@ export class Option extends BaseArg {
 
   configure(options: OptionOptions) {
     this.options = options;
+
     return this;
   }
 
@@ -58,6 +60,6 @@ export class Option extends BaseArg {
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
   toYargs<T>(yargs: Argv<T>) {
-    return yargs.option(this.name, this.options);
+    return yargs.option(this.name, BaseArg.getYargsOptions(this.options));
   }
 }
