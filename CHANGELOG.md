@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/hongaar/bandersnatch/compare/v1.11.2...v1.12.0) (2023-04-03)
+
+
+### Bug Fixes
+
+* **deps:** bump yargs and @types/yargs ([#427](https://github.com/hongaar/bandersnatch/issues/427)) ([cf636e1](https://github.com/hongaar/bandersnatch/commit/cf636e19958681f7a23df4e08765e3a5f54c5d7a))
+
+
+### Features
+
+* add requires and excludes ([#434](https://github.com/hongaar/bandersnatch/issues/434)) ([24982cb](https://github.com/hongaar/bandersnatch/commit/24982cb92f0f55336950a6a0dd9cb4ea21f92f27))
+
 ## [1.11.2](https://github.com/hongaar/bandersnatch/compare/v1.11.1...v1.11.2) (2023-04-03)
 
 
