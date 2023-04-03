@@ -106,7 +106,23 @@ cmd.argument("foo", { optional: true, default: false }).action((args) => {
   expectType<{ foo: boolean }>(args);
 });
 
-// @todo: option types
+// String option types
+cmd.option("foo").action((args) => {
+  // Default type
+  expectType<{ foo: unknown }>(args);
+});
+cmd.option("foo", { type: "string" }).action((args) => {
+  // Explicit string type
+  expectType<{ foo: string | undefined }>(args);
+});
+cmd.option("foo", { default: "string" }).action((args) => {
+  // Implicit string type
+  expectType<{ foo: string }>(args);
+});
+cmd.option("foo", { type: "string", required: true }).action((args) => {
+  // Required explicit string type
+  expectType<{ foo: string }>(args);
+});
 
 // @fixme: unspecified options are omitted by yargs but are always present in
 // the args.

@@ -4,6 +4,8 @@ import type { OptionOptions } from "./option.js";
 
 export interface BaseArgOptions {
   prompt?: true | string;
+  requires?: string | string[];
+  excludes?: string | string[];
 }
 
 // prettier-ignore
@@ -120,5 +122,15 @@ export class BaseArg {
    */
   getOptions() {
     return this.options;
+  }
+
+  protected static getYargsOptions<T extends BaseArgOptions>(options: T) {
+    const { requires, excludes, ...rest } = options;
+
+    return {
+      implies: requires,
+      conflicts: excludes,
+      ...rest,
+    };
   }
 }

@@ -72,6 +72,6 @@ export class Argument extends BaseArg {
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
   toYargs<T>(yargs: Argv<T>) {
-    return yargs.positional(this.name, this.options);
+    return yargs.positional(this.name, BaseArg.getYargsOptions(this.options));
   }
 }
