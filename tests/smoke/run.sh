@@ -13,9 +13,9 @@ do
     echo "▶️ Installing..."
     touch yarn.lock
     yarn install --no-immutable > /dev/null
-    echo "▶️ Copying lib..."
-    rm -rf "./node_modules/bandersnatch/lib"
-    cp -r "../../../lib" "./node_modules/bandersnatch"
+    echo "▶️ Copying dist..."
+    rm -rf "./node_modules/bandersnatch/dist"
+    cp -r "../../../dist" "./node_modules/bandersnatch"
     cp "../../../package.json" "./node_modules/bandersnatch"
     yarn install --no-immutable > /dev/null
     echo "▶️ Running test script..."

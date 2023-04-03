@@ -1,9 +1,9 @@
 {
-    "name": "bandersnatch-smoke-test-cjs",
-    "scripts": {
-        "test": "node index.cjs"
-    },
-    "dependencies": {
-        "bandersnatch": "^1.9.2"
-    }
+  "name": "bandersnatch-smoke-test-cjs",
+  "scripts": {
+    "test": "node index.cjs"
+  },
+  "dependencies": {
+    "bandersnatch": "^1.9.2"
+  }
 }

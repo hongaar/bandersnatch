@@ -1,6 +1,0 @@
-{
-  "extends": ["config:base"],
-  "dependencyDashboard": false,
-  "automerge": true,
-  "rangeStrategy": "update-lockfile"
-}

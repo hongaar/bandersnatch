@@ -1,12 +1,17 @@
-**/.yarn/*
-!**/.yarn/patches
-!**/.yarn/releases
-!**/.yarn/plugins
-!**/.yarn/sdks
-!**/.yarn/versions
-**/.pnp.*
-
+# node
 node_modules/
-lib/
+dist/
 coverage/
 tests/smoke/*/yarn.lock
+
+# yarn
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
+# artifacts
+/dist
+/types

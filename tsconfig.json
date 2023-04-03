@@ -1,16 +1,16 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 18 + ESM + Strictest",
   "include": ["src", "tests", "examples"],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
-
     "target": "es2017",
     "module": "es6",
     "lib": ["es2017"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-
     "strict": true
   }
 }

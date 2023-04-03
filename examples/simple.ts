@@ -1,18 +1,18 @@
-import { command, program } from '../src/index.js'
+import { command, program } from "../src/index.js";
 
-const echo = command('concat')
-  .description('Concatenate input')
-  .argument('input', {
-    description: 'List of inputs to concatenate',
+const echo = command("concat")
+  .description("Concatenate input")
+  .argument("input", {
+    description: "List of inputs to concatenate",
     variadic: true,
   })
-  .option('delimiter', {
-    type: 'string',
-    alias: 'd',
-    default: ' ',
+  .option("delimiter", {
+    type: "string",
+    alias: "d",
+    default: " ",
   })
   .action((args) => {
-    console.log(args.input.join(args.delimiter))
-  })
+    console.log(args.input.join(args.delimiter));
+  });
 
-program().default(echo).run()
+program().default(echo).run();

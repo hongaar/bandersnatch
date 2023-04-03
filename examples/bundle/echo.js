@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('./lib/cli').default.run()
+require("./dist/cli").default.run();

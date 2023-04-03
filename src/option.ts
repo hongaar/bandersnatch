@@ -1,56 +1,56 @@
-import { Argv, Options as BaseOptions } from 'yargs'
-import { BaseArg, BaseArgOptions } from './baseArg.js'
+import { Argv, Options as BaseOptions } from "yargs";
+import { BaseArg, BaseArgOptions } from "./baseArg.js";
 
 // We ignore some not-so-common use cases from the type to make using this
 // library easier. They could still be used at runtime but won't be documented
 // here.
 type IgnoreOptions =
-  | 'array'
-  | 'boolean'
-  | 'conflicts'
-  | 'config'
-  | 'configParser'
-  | 'count'
-  | 'defaultDescription'
-  | 'demand'
-  | 'demandOption'
-  | 'deprecate'
-  | 'desc'
-  | 'describe'
-  | 'global'
-  | 'group'
-  | 'hidden'
-  | 'implies'
-  | 'nargs'
-  | 'normalize'
-  | 'number'
-  | 'require'
-  | 'required'
-  | 'requiresArg'
-  | 'skipValidation'
-  | 'string'
-  | 'implies'
+  | "array"
+  | "boolean"
+  | "conflicts"
+  | "config"
+  | "configParser"
+  | "count"
+  | "defaultDescription"
+  | "demand"
+  | "demandOption"
+  | "deprecate"
+  | "desc"
+  | "describe"
+  | "global"
+  | "group"
+  | "hidden"
+  | "implies"
+  | "nargs"
+  | "normalize"
+  | "number"
+  | "require"
+  | "required"
+  | "requiresArg"
+  | "skipValidation"
+  | "string"
+  | "implies";
 
 export interface OptionOptions
   extends Omit<BaseOptions, IgnoreOptions>,
     BaseArgOptions {}
 
 export function option(name: string) {
-  return new Option(name)
+  return new Option(name);
 }
 
 export class Option extends BaseArg {
-  protected options: OptionOptions = {}
+  protected options: OptionOptions = {};
 
   constructor(name: string, options?: OptionOptions) {
-    super(name)
+    super(name);
 
-    this.configure(options || {})
+    this.configure(options || {});
   }
 
   configure(options: OptionOptions) {
-    this.options = options
-    return this
+    this.options = options;
+    return this;
   }
 
   /**
@@ -58,6 +58,6 @@ export class Option extends BaseArg {
    * it. See http://yargs.js.org/docs/#api-positionalkey-opt
    */
   toYargs<T>(yargs: Argv<T>) {
-    return yargs.option(this.name, this.options)
+    return yargs.option(this.name, this.options);
   }
 }

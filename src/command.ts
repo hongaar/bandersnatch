@@ -1,10 +1,10 @@
-import { ArgumentsCamelCase, Argv, CommandModule } from 'yargs'
-import { Argument, ArgumentOptions } from './argument.js'
-import { InferArgType } from './baseArg.js'
-import { Option, OptionOptions } from './option.js'
-import { prompter } from './prompter.js'
+import { ArgumentsCamelCase, Argv, CommandModule } from "yargs";
+import { Argument, ArgumentOptions } from "./argument.js";
+import { InferArgType } from "./baseArg.js";
+import { Option, OptionOptions } from "./option.js";
+import { prompter } from "./prompter.js";
 
-export type YargsArguments<T = {}> = ArgumentsCamelCase<T>
+export type YargsArguments<T = {}> = ArgumentsCamelCase<T>;
 
 type CommandOptions = {
   /**
@@ -13,7 +13,7 @@ type CommandOptions = {
    *
    * Defaults to `undefined`.
    */
-  description?: string
+  description?: string;
 
   /**
    * When set to true, creates a hidden command not visible in autocomplete or
@@ -21,25 +21,25 @@ type CommandOptions = {
    *
    * Default to `false`.
    */
-  hidden?: boolean
-}
+  hidden?: boolean;
+};
 
-type CommandRunner = (command: string) => Promise<unknown>
+type CommandRunner = (command: string) => Promise<unknown>;
 
 export interface HandlerFn<T> {
-  (args: T, commandRunner: CommandRunner): Promise<any> | any
+  (args: T, commandRunner: CommandRunner): Promise<any> | any;
 }
 
 function isArgument(obj: Argument | Option | Command): obj is Argument {
-  return obj instanceof Argument
+  return obj instanceof Argument;
 }
 
 function isOption(obj: Argument | Option | Command): obj is Option {
-  return obj instanceof Option
+  return obj instanceof Option;
 }
 
 function isCommand(obj: Argument | Option | Command): obj is Command {
-  return obj instanceof Command
+  return obj instanceof Command;
 }
 
 /**
@@ -49,13 +49,13 @@ export function command<T = {}>(
   command?: string | string[],
   options: CommandOptions = {}
 ) {
-  return new Command<T>(command, options)
+  return new Command<T>(command, options);
 }
 
 export class Command<T = {}> {
-  private args: (Argument | Option | Command)[] = []
-  private handler?: HandlerFn<T>
-  private parent?: Command<any>
+  private args: (Argument | Option | Command)[] = [];
+  private handler?: HandlerFn<T>;
+  private parent?: Command<any>;
 
   constructor(
     private command?: string | string[],
@@ -66,8 +66,8 @@ export class Command<T = {}> {
    * Set the command description.
    */
   public description(description: string) {
-    this.options.description = description
-    return this
+    this.options.description = description;
+    return this;
   }
 
   /**
@@ -75,8 +75,8 @@ export class Command<T = {}> {
    * output.
    */
   public hidden() {
-    this.options.hidden = true
-    return this
+    this.options.hidden = true;
+    return this;
   }
 
   /**
@@ -87,11 +87,11 @@ export class Command<T = {}> {
     name: K,
     options?: O
   ) {
-    this.add(new Argument(name, options))
+    this.add(new Argument(name, options));
 
     return this as unknown as Command<
       T & { [key in K]: InferArgType<O, string> }
-    >
+    >;
   }
 
   /**
@@ -102,9 +102,9 @@ export class Command<T = {}> {
     name: K,
     options?: O
   ) {
-    this.add(new Option(name, options))
+    this.add(new Option(name, options));
 
-    return this as unknown as Command<T & { [key in K]: InferArgType<O> }>
+    return this as unknown as Command<T & { [key in K]: InferArgType<O> }>;
   }
 
   /**
@@ -115,41 +115,41 @@ export class Command<T = {}> {
     if (isArgument(obj)) {
       // If last argument is variadic, we should not add more arguments. See
       // https://github.com/yargs/yargs/blob/master/docs/advanced.md#variadic-positional-arguments
-      const allArguments = this.getArguments()
-      const lastArgument = allArguments[allArguments.length - 1]
+      const allArguments = this.getArguments();
+      const lastArgument = allArguments[allArguments.length - 1];
 
       if (lastArgument && lastArgument.isVariadic()) {
-        throw new Error("Can't add more arguments.")
+        throw new Error("Can't add more arguments.");
       }
 
-      this.args.push(obj)
+      this.args.push(obj);
     } else if (isOption(obj)) {
-      this.args.push(obj)
+      this.args.push(obj);
     } else if (isCommand(obj)) {
-      obj.setParentCommand(this)
-      this.args.push(obj)
+      obj.setParentCommand(this);
+      this.args.push(obj);
     } else {
-      console.log('add', { obj, command: this })
-      throw new Error('Not implemented.')
+      console.log("add", { obj, command: this });
+      throw new Error("Not implemented.");
     }
 
-    return this
+    return this;
   }
 
   /**
    * Mark as the default command.
    */
   public default() {
-    this.command = '$0'
-    return this
+    this.command = "$0";
+    return this;
   }
 
   /**
    * Provide a function to execute when this command is invoked.
    */
   public action(fn: HandlerFn<T>) {
-    this.handler = fn
-    return this
+    this.handler = fn;
+    return this;
   }
 
   /**
@@ -159,19 +159,19 @@ export class Command<T = {}> {
    * @private
    */
   public setParentCommand(parentCommand: Command<any>) {
-    this.parent = parentCommand
+    this.parent = parentCommand;
   }
 
   private getArguments() {
-    return this.args.filter(isArgument)
+    return this.args.filter(isArgument);
   }
 
   private getOptions() {
-    return this.args.filter(isOption)
+    return this.args.filter(isOption);
   }
 
   private getCommands() {
-    return this.args.filter(isCommand)
+    return this.args.filter(isCommand);
   }
 
   /**
@@ -179,16 +179,18 @@ export class Command<T = {}> {
    */
   private getFqn(): string {
     if (!this.command) {
-      throw new Error("Can't get command FQN for default commands.")
+      throw new Error("Can't get command FQN for default commands.");
     }
 
-    const command = Array.isArray(this.command) ? this.command[0] : this.command
+    const command = Array.isArray(this.command)
+      ? this.command[0]
+      : this.command;
 
     if (this.parent) {
-      return `${this.parent.getFqn()} ${command}`
+      return `${this.parent.getFqn()} ${command}`;
     }
 
-    return command
+    return command;
   }
 
   /**
@@ -197,7 +199,7 @@ export class Command<T = {}> {
    * See https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module
    */
   public toYargs(yargs: Argv, commandRunner: CommandRunner) {
-    return yargs.command(this.toModule(commandRunner))
+    return yargs.command(this.toModule(commandRunner));
   }
 
   /**
@@ -208,12 +210,12 @@ export class Command<T = {}> {
     const module: CommandModule<{}, T> = {
       command: this.toYargsCommand(),
       aliases: [],
-      describe: this.options.hidden ? false : this.options.description || '',
+      describe: this.options.hidden ? false : this.options.description || "",
       builder: this.getBuilder(commandRunner),
       // @ts-ignore Our handler returns a different type than void
       handler: this.getHandler(commandRunner),
-    }
-    return module
+    };
+    return module;
   }
 
   /**
@@ -222,20 +224,20 @@ export class Command<T = {}> {
    */
   private toYargsCommand() {
     if (!this.command) {
-      throw new Error('Command name must be set')
+      throw new Error("Command name must be set");
     }
 
     const args = this.getArguments()
       .map((arg) => arg.toCommand())
-      .join(' ')
+      .join(" ");
 
-    if (args !== '') {
+    if (args !== "") {
       return Array.isArray(this.command)
         ? [`${this.command[0]} ${args}`, ...this.command.slice(1)]
-        : `${this.command} ${args}`
+        : `${this.command} ${args}`;
     }
 
-    return this.command
+    return this.command;
   }
 
   /**
@@ -248,14 +250,14 @@ export class Command<T = {}> {
       yargs = [...this.getArguments(), ...this.getOptions()].reduce(
         (yargs, arg) => arg.toYargs(yargs),
         yargs
-      )
+      );
       // Call toYargs on each subcommand to add it to the command.
       yargs = this.getCommands().reduce(
         (yargs, cmd) => cmd.toYargs(yargs, commandRunner),
         yargs
-      )
-      return yargs as Argv<T>
-    }
+      );
+      return yargs as Argv<T>;
+    };
   }
 
   /**
@@ -266,30 +268,30 @@ export class Command<T = {}> {
       const prompterInstance = prompter(
         [...this.getArguments(), ...this.getOptions()],
         argv
-      )
+      );
 
-      let promise = prompterInstance.prompt()
+      let promise = prompterInstance.prompt();
 
       promise = promise.then(({ _, $0, __promise, ...args }) => {
         // @todo coerce all types and remove coerce option from baseArg
         if (this.handler) {
-          return this.handler(args as unknown as T, commandRunner)
+          return this.handler(args as unknown as T, commandRunner);
         }
 
         // Display help if this command contains sub-commands
         if (this.getCommands().length) {
-          return commandRunner(`${this.getFqn()} --help`)
+          return commandRunner(`${this.getFqn()} --help`);
         }
 
-        throw new Error('No handler defined for this command.')
-      })
+        throw new Error("No handler defined for this command.");
+      });
 
       // Save promise chain on argv instance, so we can access it in parse
       // callback.
       // @todo Upgrade to native async handlers in yarn 17
-      argv.__promise = promise
+      argv.__promise = promise;
 
-      return promise
-    }
+      return promise;
+    };
   }
 }
