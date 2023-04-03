@@ -1,11 +1,7 @@
 {
   "name": "bandersnatch",
-  "description": "Simple TypeScript CLI / REPL framework",
   "version": "1.11.1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hongaar/bandersnatch.git"
-  },
+  "description": "Simple TypeScript CLI / REPL framework",
   "keywords": [
     "cli",
     "args",
@@ -18,40 +14,38 @@
     "argument",
     "option"
   ],
-  "author": "",
+  "repository": "github:hongaar/bandersnatch",
   "license": "MIT",
-  "engines": {
-    "node": ">=12"
-  },
+  "author": "Joram van den Boezem <joram@vandenboezem.nl>",
   "sideEffects": false,
-  "files": [
-    "lib"
-  ],
-  "main": "./lib/cjs/index.cjs",
+  "type": "module",
   "exports": {
     "types": "./lib/types/index.d.ts",
     "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.cjs"
   },
-  "type": "module",
+  "main": "./lib/cjs/index.cjs",
   "types": "./lib/types/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "prepublishOnly": "yarn build",
     "build": "rm -rf lib && yarn build:cjs && yarn build:esm",
     "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir lib/cjs && yarn convert-extension cjs lib/cjs/ && rm lib/cjs/*.map",
     "build:esm": "tsc --project tsconfig.build.json --module es6 --outDir lib/esm",
-    "watch:cjs": "yarn build:cjs --watch",
-    "watch:esm": "yarn build:esm --watch",
     "format": "yarn format:code && yarn format:toc && yarn format:todos",
     "format:code": "prettier --write \"src/**/*\"",
     "format:toc": "doctoc README.md",
     "format:todos": "leasot --exit-nicely --reporter markdown --ignore \"**/node_modules\" \"**/*.ts\" > TODO.md",
-    "test": "yarn test:unit && yarn test:types && yarn test:smoke",
-    "test:unit": "jest",
-    "test:types": "tsd",
-    "test:smoke": "./tests/smoke/run.sh",
+    "prepublishOnly": "yarn build",
+    "release": "semantic-release",
     "start": "node --loader ts-node/esm",
-    "release": "semantic-release"
+    "test": "yarn test:unit && yarn test:types && yarn test:smoke",
+    "test:smoke": "./tests/smoke/run.sh",
+    "test:types": "tsd",
+    "test:unit": "jest",
+    "watch:cjs": "yarn build:cjs --watch",
+    "watch:esm": "yarn build:esm --watch"
   },
   "dependencies": {
     "@types/yargs": "17.0.10",
@@ -78,8 +72,14 @@
     "tsd": "0.21.0",
     "typescript": "4.7.3"
   },
+  "packageManager": "yarn@3.5.0",
+  "engines": {
+    "node": ">=12"
+  },
+  "moker": {
+    "plugins": []
+  },
   "tsd": {
     "directory": "tests/types"
-  },
-  "packageManager": "yarn@3.2.1"
+  }
 }
