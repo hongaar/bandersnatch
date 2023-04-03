@@ -1,9 +1,9 @@
-import type { InferredOptionType, Options, PositionalOptions } from 'yargs'
-import type { ArgumentOptions } from './argument.js'
-import type { OptionOptions } from './option.js'
+import type { InferredOptionType, Options, PositionalOptions } from "yargs";
+import type { ArgumentOptions } from "./argument.js";
+import type { OptionOptions } from "./option.js";
 
 export interface BaseArgOptions {
-  prompt?: true | string
+  prompt?: true | string;
 }
 
 // prettier-ignore
@@ -46,44 +46,44 @@ export type InferArgType<O extends Options | PositionalOptions, F = unknown> =
   InferredOptionType<O>
 
 export class BaseArg {
-  protected name: string
-  protected options: ArgumentOptions | OptionOptions = {}
+  protected name: string;
+  protected options: ArgumentOptions | OptionOptions = {};
 
   constructor(name: string) {
-    this.name = name
+    this.name = name;
   }
 
   /**
    * Set the argument/option description.
    */
   public description(description: string) {
-    this.options.description = description
-    return this
+    this.options.description = description;
+    return this;
   }
 
   /**
    * Whether this argument/option can be interactive.
    */
   isPromptable() {
-    return !!this.options.prompt
+    return !!this.options.prompt;
   }
 
   /**
    * Returns the prompt line.
    */
   getPrompt() {
-    return typeof this.options.prompt === 'string'
+    return typeof this.options.prompt === "string"
       ? this.options.prompt
       : this.options.description
       ? this.options.description
-      : this.name
+      : this.name;
   }
 
   /**
    * Get default value, if specified.
    */
   getDefault() {
-    return this.options.default
+    return this.options.default;
   }
 
   /**
@@ -91,34 +91,34 @@ export class BaseArg {
    * @todo See if we can add this to autocompleter
    */
   getChoices() {
-    return this.options.choices
+    return this.options.choices;
   }
 
   /**
    * Get type, is specified.
    */
   getType() {
-    return this.options.type
+    return this.options.type;
   }
 
   /**
    * Returns the argument/option identifier.
    */
   getName() {
-    return this.name
+    return this.name;
   }
 
   /**
    * Returns the argument/option description.
    */
   getDescription() {
-    return this.options.description
+    return this.options.description;
   }
 
   /**
    * Returns the argument/option options.
    */
   getOptions() {
-    return this.options
+    return this.options;
   }
 }

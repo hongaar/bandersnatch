@@ -1,4 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn format && git add .
+yarn todos && git add TODO.md
+yarn prettier --write TODO.md && git add TODO.md
+yarn doctoc && git add README.md
+yarn prettier --write README.md && git add README.md
+yarn lint-staged

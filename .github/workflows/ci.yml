@@ -1,0 +1,47 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+      - run: yarn install
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: e1a2f8ecd90c13810c302d9cdfb4a26a5b79666e899c4f353e558416c168da0d
+        with:
+          coverageCommand: yarn test:unit --coverage

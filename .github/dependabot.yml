@@ -1,22 +1,26 @@
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: daily
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
   - package-ecosystem: npm
     directory: /examples/bundle
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: npm
     directory: /tests/smoke/cjs
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: npm
     directory: /tests/smoke/esm
     schedule:
-      interval: daily
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

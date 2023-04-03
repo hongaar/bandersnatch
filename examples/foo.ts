@@ -1,7 +1,7 @@
-import { command, program } from '../src/index.js'
+import { command, program } from "../src/index.js";
 
-const foo = command('foo')
+const foo = command("foo")
   .description('Outputs "bar".')
-  .action(() => console.log('bar'))
+  .action(() => console.log("bar"));
 
-program().default(foo).run()
+program().default(foo).run();

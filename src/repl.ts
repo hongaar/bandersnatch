@@ -1,38 +1,38 @@
-import { CompleterResult } from 'readline'
-import nodeRepl, { REPLServer } from 'repl'
-import { parseArgsStringToArgv } from 'string-argv'
-import { Context } from 'vm'
-import { autocompleter, Autocompleter } from './autocompleter.js'
-import { History } from './history.js'
-import { Program } from './program.js'
+import { CompleterResult } from "readline";
+import nodeRepl, { REPLServer } from "repl";
+import { parseArgsStringToArgv } from "string-argv";
+import { Context } from "vm";
+import { autocompleter, Autocompleter } from "./autocompleter.js";
+import { History } from "./history.js";
+import { Program } from "./program.js";
 
 /**
  * Create new REPL instance.
  */
 export function repl(program: Program) {
-  return new Repl(program)
+  return new Repl(program);
 }
 
 export class Repl {
-  private server?: REPLServer
-  private history?: History
-  private autocompleter: Autocompleter
+  private server?: REPLServer;
+  private history?: History;
+  private autocompleter: Autocompleter;
 
-  private successHandler: (value?: unknown) => void = () => {}
+  private successHandler: (value?: unknown) => void = () => {};
   private errorHandler: (reason?: any) => void = (reason) =>
-    console.error(reason)
+    console.error(reason);
 
   constructor(private program: Program) {
-    this.autocompleter = autocompleter(program)
+    this.autocompleter = autocompleter(program);
 
     // Stop the server to avoid eval'ing stdin from prompts
-    this.program.on('run', () => {
-      this.stop()
-    })
+    this.program.on("run", () => {
+      this.stop();
+    });
   }
 
   attachHistory(history: History) {
-    this.history = history
+    this.history = history;
   }
 
   /**
@@ -47,18 +47,18 @@ export class Repl {
       eval: this.eval.bind(this),
       completer: this.completer.bind(this),
       ignoreUndefined: true,
-    })
+    });
 
     // Setup history
-    this.history?.hydrateReplServer(this.server)
+    this.history?.hydrateReplServer(this.server);
 
     // Fixes bug with hidden cursor after enquirer prompt, this is identical to
     // the enquirer method Prompt.cursorShow()
-    process.stdout.write(`\u001b[?25h`)
+    process.stdout.write(`\u001b[?25h`);
   }
 
   public stop() {
-    this.server?.close()
+    this.server?.close();
   }
 
   /**
@@ -66,8 +66,8 @@ export class Repl {
    * each command which resolves.
    */
   public then(cb: (value?: unknown) => void) {
-    this.successHandler = cb
-    return this
+    this.successHandler = cb;
+    return this;
   }
 
   /**
@@ -75,8 +75,8 @@ export class Repl {
    * each command which rejects.
    */
   public catch(cb: (reason?: any) => void) {
-    this.errorHandler = cb
-    return this
+    this.errorHandler = cb;
+    return this;
   }
 
   /**
@@ -87,19 +87,19 @@ export class Repl {
     cb: (err?: null | Error, result?: CompleterResult) => void
   ) {
     function addSpace(str: string) {
-      return `${str} `
+      return `${str} `;
     }
-    const argv = parseArgsStringToArgv(line)
-    const current = argv.slice(-1).toString()
+    const argv = parseArgsStringToArgv(line);
+    const current = argv.slice(-1).toString();
     const completions = (await this.autocompleter.completions(argv)).map(
       addSpace
-    )
+    );
     let hits = completions.filter((completion) =>
       completion.startsWith(current)
-    )
+    );
 
     // Show all completions if none found
-    cb(null, [hits.length ? hits : completions, current])
+    cb(null, [hits.length ? hits : completions, current]);
   }
 
   /**
@@ -112,19 +112,19 @@ export class Repl {
     cb: (err: Error | null, result: any) => void
   ) {
     try {
-      const result = await this.program.run(line.trim())
-      this.successHandler(result)
+      const result = await this.program.run(line.trim());
+      this.successHandler(result);
     } catch (error) {
-      this.errorHandler(error)
+      this.errorHandler(error);
     }
 
     // Since we stop the server when a command is executed (by listening to the
     // 'run' event in the constructor), we need to start a new instance when the
     // command is finished.
-    this.start()
+    this.start();
 
     // The result passed to this function is printed by the Node REPL server,
     // but we don't want to use that, so we pass undefined instead.
-    cb(null, undefined)
+    cb(null, undefined);
   }
 }

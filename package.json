@@ -34,8 +34,10 @@
     "build:cjs": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs && yarn convert-extension cjs dist/cjs/ && rm dist/cjs/*.map",
     "build:esm": "tsc --project tsconfig.build.json --module es6 --outDir dist/esm",
     "clean": "rm -rf dist",
+    "doctoc": "doctoc README.md",
     "format": "yarn format:code && yarn format:toc && yarn format:todos",
-    "format:code": "prettier --write \"src/**/*\"",
+    "format:check": "prettier --check --ignore-unknown .",
+    "format:code": "prettier --write --ignore-unknown .",
     "format:toc": "doctoc README.md",
     "format:todos": "leasot --exit-nicely --reporter markdown --ignore \"**/node_modules\" \"**/*.ts\" > TODO.md",
     "prepack ": "yarn build",
@@ -48,6 +50,9 @@
     "watch:cjs": "yarn build:cjs --watch",
     "watch:esm": "yarn build:esm --watch"
   },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
+  },
   "dependencies": {
     "@types/yargs": "17.0.10",
     "enquirer": "^2.3.6",
@@ -56,19 +61,21 @@
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/jest": "28.1.1",
+    "@types/jest": "29.5.0",
     "@types/node": "18.15.11",
     "convert-extension": "0.3.0",
-    "doctoc": "2.2.0",
-    "husky": "8.0.1",
-    "jest": "28.1.1",
-    "leasot": "13.1.0",
+    "doctoc": "2.2.1",
+    "husky": "8.0.3",
+    "jest": "29.5.0",
+    "leasot": "13.3.0",
+    "lint-staged": "13.2.0",
     "mock-argv": "2.0.8",
-    "prettier": "2.7.0",
-    "semantic-release": "19.0.3",
-    "ts-jest": "28.0.5",
+    "prettier": "2.8.7",
+    "semantic-release": "21.0.1",
+    "semantic-release-yarn": "0.3.2",
+    "ts-jest": "29.1.0",
     "ts-node": "10.8.1",
     "tsd": "0.21.0",
     "typescript": "5.0.3"
@@ -79,7 +86,17 @@
   },
   "moker": {
     "plugins": [
-      "typescript"
+      "typescript",
+      "github-actions",
+      "todos",
+      "doctoc",
+      "husky",
+      "jest",
+      "lint-staged",
+      "prettier",
+      "semantic-release",
+      "dependabot",
+      "devcontainer"
     ]
   },
   "tsd": {

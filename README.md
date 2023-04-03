@@ -4,10 +4,10 @@
 program()
   .default(
     command()
-      .description('What is bandersnatch?')
+      .description("What is bandersnatch?")
       .action(() => console.log(description))
   )
-  .run()
+  .run();
 ```
 
 ```
@@ -17,9 +17,11 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 
 ## Features
 
-- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax, intuitive to use
+- 🌊 [Fluid](https://www.martinfowler.com/bliki/FluentInterface.html) syntax,
+  intuitive to use
 - 🔜 Autocompletion of commands, arguments, options and choices
-- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop) for interactive programs with 🔙 Command history
+- ➰ Built-in [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop) for
+  interactive programs with 🔙 Command history
 - 💬 Can prompt for missing arguments
 - 🤯 Built for TypeScript, command arguments are fully typed
 - 🪆 Supports singular (e.g. `foo`) and nested commands (e.g. `foo bar`)
@@ -86,16 +88,16 @@ are tested, but not guaranteed to work._
 Let's create a simple program `foo.js`:
 
 ```js
-import { program, command } from 'bandersnatch'
+import { program, command } from "bandersnatch";
 
 const cmd = command()
   .default()
   .description('Outputs "bar".')
-  .action(() => console.log('bar'))
+  .action(() => console.log("bar"));
 
-const app = program().description('foo').add(cmd)
+const app = program().description("foo").add(cmd);
 
-app.run()
+app.run();
 ```
 
 This creates a new program, adds a default command which logs "bar" to the
@@ -130,19 +132,19 @@ We first create a new program called `cat.js` which is a naive version of the
 `cat` program we all know:
 
 ```js
-import { readFileSync } from 'fs'
-import { program, command } from 'bandersnatch'
+import { readFileSync } from "fs";
+import { program, command } from "bandersnatch";
 
-const cat = command('cat')
-  .description('Concatenate files')
-  .argument('files', { variadic: true })
+const cat = command("cat")
+  .description("Concatenate files")
+  .argument("files", { variadic: true })
   .action(({ files }) =>
     console.log(
-      files.reduce((str, file) => str + readFileSync(file, 'utf8'), '')
+      files.reduce((str, file) => str + readFileSync(file, "utf8"), "")
     )
-  )
+  );
 
-program().default(cat).run()
+program().default(cat).run();
 ```
 
 Now try your program by running it:
@@ -186,32 +188,32 @@ arguments.
 Let's create a new program `dice.js` with a command to roll a dice:
 
 ```js
-import { program, command } from 'bandersnatch'
+import { program, command } from "bandersnatch";
 
 async function rng(bounds) {
-  const [min, max] = bounds
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  const [min, max] = bounds;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const dice = program().add(
-  command('roll')
-    .option('min', { default: 1 })
-    .option('max', { default: 6 })
+  command("roll")
+    .option("min", { default: 1 })
+    .option("max", { default: 6 })
     .action(async (args) => {
-      console.log(await rng([args.min, args.max]))
+      console.log(await rng([args.min, args.max]));
     })
-)
+);
 
-dice.repl()
+dice.repl();
 ```
 
 This code defines a program `dice` and a command `roll` with two options, both
-of which will inherit a default value. When the command is executed, it calls
-an async random number generator (async only for illustrative purposes) and
-writes its results to stdout.
+of which will inherit a default value. When the command is executed, it calls an
+async random number generator (async only for illustrative purposes) and writes
+its results to stdout.
 
-The last line in our code runs the program as a interactive REPL, which means
-it won't accept any arguments on the command line, but render a prompt instead.
+The last line in our code runs the program as a interactive REPL, which means it
+won't accept any arguments on the command line, but render a prompt instead.
 This prompt will read any user input, parse it, and execute matching commands.
 
 Try rolling the dice:
@@ -244,39 +246,39 @@ command line:
 Let's say we want to write a program `pizza.js` which takes pizza orders:
 
 ```js
-import { program, command } from 'bandersnatch'
+import { program, command } from "bandersnatch";
 
 const cmd = command()
-  .argument('address', {
-    prompt: 'Your address',
+  .argument("address", {
+    prompt: "Your address",
   })
-  .option('name', {
-    description: 'Your name',
-    default: 'anonymous',
+  .option("name", {
+    description: "Your name",
+    default: "anonymous",
     prompt: true,
   })
-  .option('size', {
-    description: 'Choose pizza size',
-    choices: ['small', 'medium', 'large'],
-    default: 'medium',
+  .option("size", {
+    description: "Choose pizza size",
+    choices: ["small", "medium", "large"],
+    default: "medium",
     prompt: true,
   })
-  .option('toppings', {
-    description: 'Pick some toppings',
-    choices: ['mozzarella', 'pepperoni', 'veggies'],
-    default: ['mozzarella'],
+  .option("toppings", {
+    description: "Pick some toppings",
+    choices: ["mozzarella", "pepperoni", "veggies"],
+    default: ["mozzarella"],
     prompt: true,
   })
-  .option('confirmed', {
-    description: 'Order pizza?',
+  .option("confirmed", {
+    description: "Order pizza?",
     default: true,
     prompt: true,
   })
   .action((args) => {
-    console.log(args)
-  })
+    console.log(args);
+  });
 
-program().description('Order a pizza').default(cmd).run()
+program().description("Order a pizza").default(cmd).run();
 ```
 
 And run it:
@@ -348,12 +350,12 @@ The first argument passed to the action handler function is now typed like this:
 
 ```ts
 type Args = {
-  address: string
-  name: string
-  size: 'small' | 'medium' | 'large'
-  toppings: ('mozzarella' | 'pepperoni' | 'veggies')[]
-  confirmed: boolean
-}
+  address: string;
+  name: string;
+  size: "small" | "medium" | "large";
+  toppings: ("mozzarella" | "pepperoni" | "veggies")[];
+  confirmed: boolean;
+};
 ```
 
 ---
@@ -452,7 +454,7 @@ supported:
 
 ```js
 // Fired before a command action is invoked
-program().on('run', (cmd) => logger.debug(`Running ${cmd}`))
+program().on("run", (cmd) => logger.debug(`Running ${cmd}`));
 ```
 
 ### `command(name, options)`
@@ -549,19 +551,19 @@ be used to handle program errors:
 program()
   .default(
     command()
-      .description('This command will always fail')
+      .description("This command will always fail")
       .action(function () {
-        throw new Error('Whoops')
+        throw new Error("Whoops");
       })
   )
   .runOrRepl()
   .catch((error) => {
-    console.error('[failed]', String(error))
+    console.error("[failed]", String(error));
 
     if (!app.isRepl()) {
-      process.exit(1)
+      process.exit(1);
     }
-  })
+  });
 ```
 
 ### Output
@@ -607,14 +609,14 @@ yarn add typescript @types/node pkg --dev
 And create an example app in `src/cli.ts`:
 
 ```ts
-import { program, command } from 'bandersnatch'
+import { program, command } from "bandersnatch";
 
 export default program().default(
-  command('echo')
-    .description('Echo something in the terminal')
-    .argument('words', { description: 'Say some kind words', variadic: true })
+  command("echo")
+    .description("Echo something in the terminal")
+    .argument("words", { description: "Say some kind words", variadic: true })
     .action(console.log)
-)
+);
 ```
 
 Building your app with TypeScript is very powerful, but runtime compilation is
@@ -673,8 +675,8 @@ node:
 require('./dist/cli').default.run()
 ```
 
-To run your app, users may want to run `yarn global add echo`. For this to
-work, we need to make a small adjustment to `package.json`:
+To run your app, users may want to run `yarn global add echo`. For this to work,
+we need to make a small adjustment to `package.json`:
 
 ```diff
  {

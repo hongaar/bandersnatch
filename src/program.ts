@@ -1,20 +1,20 @@
-import { EventEmitter } from 'events'
-import os from 'os'
-import path from 'path'
-import TypedEventEmitter from 'typed-emitter'
-import { Argv, ParserConfigurationOptions } from 'yargs'
-import createYargs from 'yargs/yargs'
-import { command, Command } from './command.js'
-import { history, History } from './history.js'
-import { Repl, repl } from './repl.js'
-import { isPromise } from './utils.js'
+import { EventEmitter } from "events";
+import os from "os";
+import path from "path";
+import TypedEventEmitter from "typed-emitter";
+import { Argv, ParserConfigurationOptions } from "yargs";
+import createYargs from "yargs/yargs";
+import { command, Command } from "./command.js";
+import { history, History } from "./history.js";
+import { Repl, repl } from "./repl.js";
+import { isPromise } from "./utils.js";
 
-const DEFAULT_PROMPT = '> '
-const DEFAULT_HISTORY_FILE = '.bandersnatch_history'
+const DEFAULT_PROMPT = "> ";
+const DEFAULT_HISTORY_FILE = ".bandersnatch_history";
 
 type Events = {
-  run: (command: string | readonly string[]) => void
-}
+  run: (command: string | readonly string[]) => void;
+};
 
 type ProgramOptions = {
   /**
@@ -23,7 +23,7 @@ type ProgramOptions = {
    *
    * Defaults to `undefined`.
    */
-  description?: string
+  description?: string;
 
   /**
    * Sets a custom REPL prompt. Can also be set by calling
@@ -31,7 +31,7 @@ type ProgramOptions = {
    *
    * Defaults to `> `.
    */
-  prompt?: string
+  prompt?: string;
 
   /**
    * Whether or not to add a global help command that displays an overview of
@@ -39,7 +39,7 @@ type ProgramOptions = {
    *
    * Defaults to `true`.
    */
-  help?: boolean
+  help?: boolean;
 
   /**
    * Whether or not to add a global version command that displays the version as
@@ -47,14 +47,14 @@ type ProgramOptions = {
    *
    * Defaults to `true`.
    */
-  version?: boolean
+  version?: boolean;
 
   /**
    * Use this history file. Set to NULL to disable history file.
    *
    * Defaults to `{homedir}/.bandersnatch_history`.
    */
-  historyFile?: string | null
+  historyFile?: string | null;
 
   /**
    * Specifies whether to add a default behaviour for an `exit` command.
@@ -66,7 +66,7 @@ type ProgramOptions = {
    *
    * Defaults to `() => process.exit()`.
    */
-  exit?: boolean | (() => void)
+  exit?: boolean | (() => void);
 
   /**
    * Pass Yargs parser configuration, for available options, see
@@ -74,48 +74,48 @@ type ProgramOptions = {
    *
    * Defaults to `undefined`.
    */
-  parserConfiguration?: Partial<ParserConfigurationOptions>
-}
+  parserConfiguration?: Partial<ParserConfigurationOptions>;
+};
 
 /**
  * Creates a new bandersnatch program.
  */
 export function program(options: ProgramOptions = {}) {
-  return new Program(options)
+  return new Program(options);
 }
 
 function extractCommandFromProcess() {
-  return process.argv.slice(2)
+  return process.argv.slice(2);
 }
 
 export class Program extends (EventEmitter as new () => TypedEventEmitter<Events>) {
-  private commands: Command<any>[] = []
-  private history?: History
-  private replInstance?: Repl
+  private commands: Command<any>[] = [];
+  private history?: History;
+  private replInstance?: Repl;
 
   constructor(public options: ProgramOptions = {}) {
-    super()
+    super();
 
     // Set default prompt
-    if (typeof this.options.prompt === 'undefined') {
-      this.options.prompt = DEFAULT_PROMPT
+    if (typeof this.options.prompt === "undefined") {
+      this.options.prompt = DEFAULT_PROMPT;
     }
 
     // Set default historyFile
-    if (typeof this.options.historyFile === 'undefined') {
-      this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE)
+    if (typeof this.options.historyFile === "undefined") {
+      this.options.historyFile = path.join(os.homedir(), DEFAULT_HISTORY_FILE);
     }
 
     // Set default exit handler
     if (
       this.options.exit === true ||
-      typeof this.options.exit === 'undefined'
+      typeof this.options.exit === "undefined"
     ) {
-      this.options.exit = () => process.exit()
+      this.options.exit = () => process.exit();
     }
 
     if (this.options.historyFile !== null) {
-      this.history = history(this)
+      this.history = history(this);
     }
   }
 
@@ -123,16 +123,16 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
    * Set the program description.
    */
   public description(description: string) {
-    this.options.description = description
-    return this
+    this.options.description = description;
+    return this;
   }
 
   /**
    * Sets a custom REPL prompt.
    */
   public prompt(prompt: string) {
-    this.options.prompt = prompt
-    return this
+    this.options.prompt = prompt;
+    return this;
   }
 
   /**
@@ -144,71 +144,71 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   public createYargsInstance(
     overrideParserConfiguration?: Partial<ParserConfigurationOptions>
   ) {
-    let yargs = createYargs()
+    let yargs = createYargs();
 
-    this.options.description && yargs.usage(this.options.description)
+    this.options.description && yargs.usage(this.options.description);
 
     // Help accepts boolean
-    yargs.help(this.options.help !== false)
+    yargs.help(this.options.help !== false);
 
     // Version must be false or undefined
-    this.options.version !== false ? yargs.version() : yargs.version(false)
+    this.options.version !== false ? yargs.version() : yargs.version(false);
 
     // Pass yargs parser options if defined
-    if (typeof this.options.parserConfiguration !== 'undefined') {
+    if (typeof this.options.parserConfiguration !== "undefined") {
       yargs = yargs.parserConfiguration({
         ...this.options.parserConfiguration,
         ...overrideParserConfiguration,
-      })
+      });
     }
 
     // Non-configurable options
-    yargs.recommendCommands()
-    yargs.strict()
-    yargs.demandCommand()
+    yargs.recommendCommands();
+    yargs.strict();
+    yargs.demandCommand();
 
     // Hidden completion command
-    yargs.completion('completion', false)
+    yargs.completion("completion", false);
 
     // Custom fail function.
-    yargs.fail(this.failHandler.bind(this))
+    yargs.fail(this.failHandler.bind(this));
 
     // In case we're in a REPL session, do not exit on errors.
-    yargs.exitProcess(!this.isRepl())
+    yargs.exitProcess(!this.isRepl());
 
     // Add commands
     this.commands.forEach((command) => {
       command.toYargs(yargs, (command: string) => {
-        return this.run(command)
-      })
-    })
+        return this.run(command);
+      });
+    });
 
-    return yargs
+    return yargs;
   }
 
   /**
    * Adds a new command to the program.
    */
   public add<T>(command: Command<T>) {
-    this.commands.push(command)
-    return this
+    this.commands.push(command);
+    return this;
   }
 
   /**
    * Adds a new command to the program and marks it as the default command.
    */
   public default<T>(command: Command<T>) {
-    this.commands.push(command.default())
-    return this
+    this.commands.push(command.default());
+    return this;
   }
 
   /**
    * Evaluate command (or process.argv) and return promise.
    */
   public run(command?: string | readonly string[]) {
-    const cmd = command || extractCommandFromProcess()
+    const cmd = command || extractCommandFromProcess();
 
-    this.emit('run', cmd)
+    this.emit("run", cmd);
 
     // Return promise resolving to the return value of the command
     // handler.
@@ -218,7 +218,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
         .parse(cmd, {}, (err, argv, output) => {
           // We don't use yargs 17 promise style argv
           if (isPromise(argv)) {
-            throw new Error('argv is of unexpected type')
+            throw new Error("argv is of unexpected type");
           }
 
           /**
@@ -231,7 +231,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
            * --version and --help.
            */
           if (output) {
-            console.log(output)
+            console.log(output);
           }
 
           /**
@@ -248,54 +248,54 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
 
           if (isPromise(argv.__promise)) {
             // Delegate resolve/reject to promise returned from handler
-            argv.__promise.then(resolve).catch(reject)
+            argv.__promise.then(resolve).catch(reject);
           } else {
             // Resolve with undefined if promise is not available, which is the
             // case with e.g. --version and --help. It should be noted that
             // this might need to be filtered when e.g. printing resolved values
             // from command handlers in a .then() function.
-            resolve(undefined)
+            resolve(undefined);
           }
         })
-        .catch(() => {})
-    })
+        .catch(() => {});
+    });
   }
 
   /**
    * Run event loop which reads command from stdin.
    */
   public repl() {
-    this.replInstance = repl(this)
+    this.replInstance = repl(this);
 
     // Add exit command
-    if (typeof this.options.exit === 'function') {
+    if (typeof this.options.exit === "function") {
       this.add(
-        command('exit')
-          .description('Exit the application')
+        command("exit")
+          .description("Exit the application")
           .action(this.options.exit)
-      )
+      );
     }
 
     if (this.history) {
-      this.replInstance.attachHistory(this.history)
+      this.replInstance.attachHistory(this.history);
     }
-    this.replInstance.start()
+    this.replInstance.start();
 
-    return this.replInstance
+    return this.replInstance;
   }
 
   /**
    * When argv is set, run the program, otherwise start repl loop.
    */
   public runOrRepl() {
-    return extractCommandFromProcess().length ? this.run() : this.repl()
+    return extractCommandFromProcess().length ? this.run() : this.repl();
   }
 
   /**
    * Returns `true` if program is running a repl loop, `false` otherwise.
    */
   public isRepl() {
-    return !!this.replInstance
+    return !!this.replInstance;
   }
 
   /**
@@ -308,7 +308,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
   private failHandler(msg: string, err: Error, yargs: Argv) {
     if (msg) {
       // Simply throw validation messages to reject runner promise
-      throw new Error(msg)
+      throw new Error(msg);
     }
   }
 }

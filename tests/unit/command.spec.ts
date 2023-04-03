@@ -1,139 +1,139 @@
-import Enquirer from 'enquirer'
-import { command, Command, program } from '../../src/index.js'
+import Enquirer from "enquirer";
+import { command, Command, program } from "../../src/index.js";
 
-jest.mock('enquirer', () => {
+jest.mock("enquirer", () => {
   return {
     prompt: jest.fn(),
-  }
-})
+  };
+});
 
-const prompt = Enquirer.prompt as jest.Mock
+const prompt = Enquirer.prompt as jest.Mock;
 
-let outputSpy: jest.MockInstance<any, any>
-let errorSpy: jest.MockInstance<any, any>
+let outputSpy: jest.MockInstance<any, any>;
+let errorSpy: jest.MockInstance<any, any>;
 
 beforeEach(() => {
-  outputSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
-  errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
-  prompt.mockClear()
-})
+  outputSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  prompt.mockClear();
+});
 
 afterEach(() => {
-  outputSpy.mockRestore()
-  errorSpy.mockRestore()
-})
+  outputSpy.mockRestore();
+  errorSpy.mockRestore();
+});
 
-test('command should return new Command object', () => {
-  expect(command('test')).toBeInstanceOf(Command)
-})
+test("command should return new Command object", () => {
+  expect(command("test")).toBeInstanceOf(Command);
+});
 
-test('with description', async () => {
-  const cmd = command('test').description('foo description')
-  await program().add(cmd).run('help')
-  expect(outputSpy.mock.calls[0][0]).toContain('foo description')
-})
+test("with description", async () => {
+  const cmd = command("test").description("foo description");
+  await program().add(cmd).run("help");
+  expect(outputSpy.mock.calls[0][0]).toContain("foo description");
+});
 
-test('variadic argument must be last', () => {
-  const cmd = command('test').argument('var', { variadic: true })
+test("variadic argument must be last", () => {
+  const cmd = command("test").argument("var", { variadic: true });
   expect(() => {
-    cmd.argument('reg')
-  }).toThrowErrorMatchingSnapshot()
-})
+    cmd.argument("reg");
+  }).toThrowErrorMatchingSnapshot();
+});
 
-test('handler is required', async () => {
-  let error
+test("handler is required", async () => {
+  let error;
   try {
-    await program().add(command('test')).run('test')
+    await program().add(command("test")).run("test");
   } catch (err) {
-    error = err
+    error = err;
   }
-  expect(error).toMatchSnapshot()
-})
+  expect(error).toMatchSnapshot();
+});
 
-test('sync handler should be executed', (done) => {
-  const cmd = command('test').action(() => {
-    done()
-  })
-  const app = program().add(cmd)
-  app.run('test')
-})
+test("sync handler should be executed", (done) => {
+  const cmd = command("test").action(() => {
+    done();
+  });
+  const app = program().add(cmd);
+  app.run("test");
+});
 
-test('async handler should be executed', async () => {
-  let handled = false
-  const cmd = command('test').action(async () => {
-    handled = true
-  })
-  const app = program().add(cmd)
-  await app.run('test')
-  expect(handled).toBeTruthy()
-})
+test("async handler should be executed", async () => {
+  let handled = false;
+  const cmd = command("test").action(async () => {
+    handled = true;
+  });
+  const app = program().add(cmd);
+  await app.run("test");
+  expect(handled).toBeTruthy();
+});
 
-test('hidden', async () => {
-  const foo = command('foo').hidden()
-  await program().add(foo).run('help')
-  expect(outputSpy.mock.calls[0][0]).not.toContain('foo')
-})
+test("hidden", async () => {
+  const foo = command("foo").hidden();
+  await program().add(foo).run("help");
+  expect(outputSpy.mock.calls[0][0]).not.toContain("foo");
+});
 
 // Argument tests
-test('default argument', async () => {
-  const cmd = command('test')
-    .argument('foo')
+test("default argument", async () => {
+  const cmd = command("test")
+    .argument("foo")
     .action((args) => {
-      expect(args.foo).toBe('bar')
-    })
-  await program().add(cmd).run('test bar')
-})
+      expect(args.foo).toBe("bar");
+    });
+  await program().add(cmd).run("test bar");
+});
 
-test('argument with description', async () => {
-  const cmd = command('test').argument('foo').description('bar description')
-  await program().add(cmd).run('test --help')
-  expect(outputSpy.mock.calls[0][0]).toContain('bar description')
-})
+test("argument with description", async () => {
+  const cmd = command("test").argument("foo").description("bar description");
+  await program().add(cmd).run("test --help");
+  expect(outputSpy.mock.calls[0][0]).toContain("bar description");
+});
 
-test('prompt for argument', async () => {
-  prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
-  const cmd = command('test')
-    .argument('foo', { prompt: true })
+test("prompt for argument", async () => {
+  prompt.mockReturnValueOnce(Promise.resolve({ foo: "bar" }));
+  const cmd = command("test")
+    .argument("foo", { prompt: true })
     .action((args) => {
-      expect(args.foo).toBe('bar')
-    })
-  await program().add(cmd).run('test')
-  expect(prompt).toHaveBeenCalled()
-})
+      expect(args.foo).toBe("bar");
+    });
+  await program().add(cmd).run("test");
+  expect(prompt).toHaveBeenCalled();
+});
 
 // Option tests
-test('default option', async () => {
-  const cmd = command('test')
-    .option('foo')
+test("default option", async () => {
+  const cmd = command("test")
+    .option("foo")
     .action((args) => {
-      expect(args.foo).toBe('bar')
-    })
-  await program().add(cmd).run('test --foo bar')
-})
+      expect(args.foo).toBe("bar");
+    });
+  await program().add(cmd).run("test --foo bar");
+});
 
-test('option with description', async () => {
-  const cmd = command('test').option('foo').description('bar description')
-  await program().add(cmd).run('test --help')
-})
+test("option with description", async () => {
+  const cmd = command("test").option("foo").description("bar description");
+  await program().add(cmd).run("test --help");
+});
 
-test('prompt for option', async () => {
-  prompt.mockReturnValueOnce(Promise.resolve({ foo: 'bar' }))
-  const cmd = command('test')
-    .option('foo', { prompt: true })
+test("prompt for option", async () => {
+  prompt.mockReturnValueOnce(Promise.resolve({ foo: "bar" }));
+  const cmd = command("test")
+    .option("foo", { prompt: true })
     .action((args) => {
-      expect(args.foo).toBe('bar')
-    })
-  await program().add(cmd).run('test')
-  expect(prompt).toHaveBeenCalled()
-})
+      expect(args.foo).toBe("bar");
+    });
+  await program().add(cmd).run("test");
+  expect(prompt).toHaveBeenCalled();
+});
 
 // Sub-command tests
-test('sub-commands', async () => {
-  const subCmd = command('sub')
-    .argument('foo')
+test("sub-commands", async () => {
+  const subCmd = command("sub")
+    .argument("foo")
     .action((args) => {
-      expect(args.foo).toBe('bar')
-    })
-  const cmd = command('test').add(subCmd)
-  await program().add(cmd).run('test sub bar')
-})
+      expect(args.foo).toBe("bar");
+    });
+  const cmd = command("test").add(subCmd);
+  await program().add(cmd).run("test sub bar");
+});
