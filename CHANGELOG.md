@@ -1,3 +1,15 @@
+## [1.11.2](https://github.com/hongaar/bandersnatch/compare/v1.11.1...v1.11.2) (2023-04-03)
+
+
+### Bug Fixes
+
+* **chore:** moker ([#423](https://github.com/hongaar/bandersnatch/issues/423)) ([a42dcc0](https://github.com/hongaar/bandersnatch/commit/a42dcc0e395d0d0f4790183b17cbf6769c3ed20d))
+
+
+### Reverts
+
+* bump mock-argv from 2.0.8 to 3.0.0 ([#432](https://github.com/hongaar/bandersnatch/issues/432)) ([c41ca63](https://github.com/hongaar/bandersnatch/commit/c41ca63b2622c1c94ba7990d45a96f8fa7d50b53))
+
 ## [1.11.1](https://github.com/hongaar/bandersnatch/compare/v1.11.0...v1.11.1) (2022-11-17)
 
 ### Bug Fixes
