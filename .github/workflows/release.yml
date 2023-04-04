@@ -17,6 +17,7 @@ jobs:
           node-version: lts/*
           cache: yarn
       - run: yarn install
+      - run: yarn build
       - run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -40,7 +40,6 @@
     "format:code": "prettier --write --ignore-unknown .",
     "format:toc": "doctoc README.md",
     "format:todos": "leasot --exit-nicely --reporter markdown --ignore \"**/node_modules\" \"**/*.ts\" > TODO.md",
-    "prepack ": "yarn build",
     "release": "semantic-release",
     "start": "node --loader ts-node/esm",
     "test": "yarn test:unit && yarn test:types && yarn test:smoke",
