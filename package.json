@@ -76,7 +76,7 @@
     "semantic-release-yarn": "0.3.2",
     "ts-jest": "29.1.0",
     "ts-node": "10.8.1",
-    "tsd": "0.21.0",
+    "tsd": "0.28.1",
     "typescript": "5.0.3"
   },
   "packageManager": "yarn@3.5.0",
