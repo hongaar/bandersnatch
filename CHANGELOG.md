@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/hongaar/bandersnatch/compare/v1.12.0...v1.12.1) (2023-04-04)
+
+
+### Bug Fixes
+
+* release artefacts ([#437](https://github.com/hongaar/bandersnatch/issues/437)) ([22e927a](https://github.com/hongaar/bandersnatch/commit/22e927ab985b51969f3d95404922da93e354c912))
+
 # [1.12.0](https://github.com/hongaar/bandersnatch/compare/v1.11.2...v1.12.0) (2023-04-03)
 
 
