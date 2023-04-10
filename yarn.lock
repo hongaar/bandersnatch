@@ -1975,7 +1975,7 @@ __metadata:
     mock-argv: 2.0.8
     prettier: 2.8.7
     semantic-release: 21.0.1
-    semantic-release-yarn: 0.3.2
+    semantic-release-yarn: 1.0.0
     string-argv: ^0.3.1
     ts-jest: 29.1.0
     ts-node: 10.9.1
@@ -7049,9 +7049,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release-yarn@npm:0.3.2":
-  version: 0.3.2
-  resolution: "semantic-release-yarn@npm:0.3.2"
+"semantic-release-yarn@npm:1.0.0":
+  version: 1.0.0
+  resolution: "semantic-release-yarn@npm:1.0.0"
   dependencies:
     "@semantic-release/error": ^3.0.0
     aggregate-error: ^4.0.1
@@ -7065,7 +7065,7 @@ __metadata:
     semver: ^7.3.8
   peerDependencies:
     semantic-release: ">=19.0.0"
-  checksum: 1de40a4c0d8d77652defbad2c45ea9a4571ddde9bd392250ea9c4f36edc967a71c87f2a9958cbae77dc718e1efd7113881694903642e28e98534bdb0ec9738cb
+  checksum: 5eb38a09c708dad9d1680a58fd2d0049664331fbdeb7947d79b9bc2a17f0a9e48f85d1181f2857d8fa3c1dddb205f6ca7f661b983378f9f52168fa88037a87ce
   languageName: node
   linkType: hard
 
