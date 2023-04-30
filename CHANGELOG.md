@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/hongaar/bandersnatch/compare/v1.12.1...v1.12.2) (2023-04-30)
+
+
+### Bug Fixes
+
+* **deps:** bump yaml from 2.2.1 to 2.2.2 ([#448](https://github.com/hongaar/bandersnatch/issues/448)) ([6628bf9](https://github.com/hongaar/bandersnatch/commit/6628bf9c8088d052ea721c38adda150af5072170))
+
 ## [1.12.1](https://github.com/hongaar/bandersnatch/compare/v1.12.0...v1.12.1) (2023-04-04)
 
 
