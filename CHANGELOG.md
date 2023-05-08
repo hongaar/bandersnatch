@@ -1,3 +1,10 @@
+## [1.12.4](https://github.com/hongaar/bandersnatch/compare/v1.12.3...v1.12.4) (2023-05-08)
+
+
+### Bug Fixes
+
+* **deps:** bump string-argv from 0.3.1 to 0.3.2 ([#456](https://github.com/hongaar/bandersnatch/issues/456)) ([03d9d0a](https://github.com/hongaar/bandersnatch/commit/03d9d0ad7a65c7ef184b95cd4e3911411fb3e0ad))
+
 ## [1.12.3](https://github.com/hongaar/bandersnatch/compare/v1.12.2...v1.12.3) (2023-05-02)
 
 
