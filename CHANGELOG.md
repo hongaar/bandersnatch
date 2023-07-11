@@ -1,3 +1,10 @@
+## [1.12.5](https://github.com/hongaar/bandersnatch/compare/v1.12.4...v1.12.5) (2023-07-11)
+
+
+### Bug Fixes
+
+* **deps:** bump semver from 5.7.1 to 5.7.2 ([#482](https://github.com/hongaar/bandersnatch/issues/482)) ([1ee1766](https://github.com/hongaar/bandersnatch/commit/1ee17661df069db6997904e007ee4a602832d21c))
+
 ## [1.12.4](https://github.com/hongaar/bandersnatch/compare/v1.12.3...v1.12.4) (2023-05-08)
 
 
