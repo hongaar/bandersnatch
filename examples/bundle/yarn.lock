@@ -225,15 +225,15 @@ __metadata:
   linkType: hard
 
 "bandersnatch@npm:^1.9.2":
-  version: 1.12.4
-  resolution: "bandersnatch@npm:1.12.4"
+  version: 1.12.5
+  resolution: "bandersnatch@npm:1.12.5"
   dependencies:
     "@types/yargs": 17.0.24
     enquirer: ^2.3.6
     string-argv: ^0.3.1
     typed-emitter: ^2.1.0
     yargs: ^17.5.1
-  checksum: 2328625900e34ee32651ca28792528dcc6607be64cc14dc267ef5c626e3fad7acfbda6d68cc959d0d6867cae5f15c2aaa7c09d591019f3db218a61d17ec9ba96
+  checksum: fa6892607d15bb08a26c24e1f53395888a56f75baad5128addd49e4f23c1cc4e2ec6db35c7be7d06312b857b0145d972d80cd05c17b1d53f382330c0f956877b
   languageName: node
   linkType: hard
 
