@@ -1,3 +1,10 @@
+## [1.12.6](https://github.com/hongaar/bandersnatch/compare/v1.12.5...v1.12.6) (2023-07-31)
+
+
+### Bug Fixes
+
+* **deps:** bump enquirer from 2.3.6 to 2.4.1 ([#488](https://github.com/hongaar/bandersnatch/issues/488)) ([417829e](https://github.com/hongaar/bandersnatch/commit/417829ed38b17b11c7e3b075440c8c4898968261))
+
 ## [1.12.5](https://github.com/hongaar/bandersnatch/compare/v1.12.4...v1.12.5) (2023-07-11)
 
 
