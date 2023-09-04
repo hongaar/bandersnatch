@@ -1448,10 +1448,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsd/typescript@npm:~5.0.2":
-  version: 5.0.3
-  resolution: "@tsd/typescript@npm:5.0.3"
-  checksum: 0317bfc59d23185a32a44b4637db8c5f698d8bf67f66cd64aa30555b907ea7b5ffb582d55c8796117d53357888eb7ecbbaa1b882b292aec7755a07293bd42525
+"@tsd/typescript@npm:~5.2.2":
+  version: 5.2.2
+  resolution: "@tsd/typescript@npm:5.2.2"
+  checksum: b72d6311356a1fabcd78ffeb878a6ba3d51804d02fefdc6cf36ae8957d97b13823b9e396f550e37c2d1b405b6ad0fa190f4ec791bc6d730b02b22e39b33a4c76
   languageName: node
   linkType: hard
 
@@ -2042,7 +2042,7 @@ __metadata:
     string-argv: ^0.3.1
     ts-jest: 29.1.1
     ts-node: 10.9.1
-    tsd: 0.28.1
+    tsd: 0.29.0
     typed-emitter: ^2.1.0
     typescript: 5.2.2
     yargs: ^17.5.1
@@ -8091,11 +8091,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsd@npm:0.28.1":
-  version: 0.28.1
-  resolution: "tsd@npm:0.28.1"
+"tsd@npm:0.29.0":
+  version: 0.29.0
+  resolution: "tsd@npm:0.29.0"
   dependencies:
-    "@tsd/typescript": ~5.0.2
+    "@tsd/typescript": ~5.2.2
     eslint-formatter-pretty: ^4.1.0
     globby: ^11.0.1
     jest-diff: ^29.0.3
@@ -8104,7 +8104,7 @@ __metadata:
     read-pkg-up: ^7.0.0
   bin:
     tsd: dist/cli.js
-  checksum: ca0f0d2ba3063a252ac3ecf5799c6dc8c4c35726f0d0683e6577992a9916cfe3e476f9fdbb67bf57ce8e46ef9cd0189bb847d336d1c01679232f1b91828b0fa6
+  checksum: 66b5f5f04c46b4c5cea28faba54d7372cdf3126876d968958eb3fb8dab0247ef50a466f10d59c6aea60751c35a518a594a06eecdb5e274cb8d739f804fc62da1
   languageName: node
   linkType: hard
 
