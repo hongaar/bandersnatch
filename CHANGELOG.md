@@ -1,3 +1,10 @@
+## [1.12.7](https://github.com/hongaar/bandersnatch/compare/v1.12.6...v1.12.7) (2023-09-25)
+
+
+### Bug Fixes
+
+* **deps:** bump @types/yargs from 17.0.24 to 17.0.25 ([#514](https://github.com/hongaar/bandersnatch/issues/514)) ([9c76f43](https://github.com/hongaar/bandersnatch/commit/9c76f43050ce5648784541933e70083345c6b550))
+
 ## [1.12.6](https://github.com/hongaar/bandersnatch/compare/v1.12.5...v1.12.6) (2023-07-31)
 
 
