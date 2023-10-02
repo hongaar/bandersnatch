@@ -53,7 +53,7 @@
     "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@types/yargs": "17.0.25",
+    "@types/yargs": "17.0.26",
     "enquirer": "^2.3.6",
     "string-argv": "^0.3.1",
     "typed-emitter": "^2.1.0",
