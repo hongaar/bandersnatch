@@ -1,6 +1,6 @@
 {
   "name": "bandersnatch",
-  "version": "1.12.9",
+  "version": "1.12.10",
   "description": "Simple TypeScript CLI / REPL framework",
   "keywords": [
     "cli",

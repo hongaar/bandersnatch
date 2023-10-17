@@ -1,3 +1,10 @@
+## [1.12.10](https://github.com/hongaar/bandersnatch/compare/v1.12.9...v1.12.10) (2023-10-17)
+
+
+### Bug Fixes
+
+* **deps:** bump @babel/traverse from 7.17.10 to 7.23.2 ([#521](https://github.com/hongaar/bandersnatch/issues/521)) ([84cd98c](https://github.com/hongaar/bandersnatch/commit/84cd98c25697b52437ef244434dc1496a40a77dc))
+
 ## [1.12.9](https://github.com/hongaar/bandersnatch/compare/v1.12.8...v1.12.9) (2023-10-09)
 
 
