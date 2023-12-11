@@ -62,7 +62,7 @@
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/jest": "29.5.10",
+    "@types/jest": "29.5.11",
     "@types/node": "20.10.3",
     "convert-extension": "0.3.0",
     "doctoc": "2.2.1",
