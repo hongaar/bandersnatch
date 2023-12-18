@@ -36,7 +36,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: yarn
       - run: yarn install
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
