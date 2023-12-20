@@ -33,7 +33,7 @@ const asyncValidation = command("async")
   .action(async () => "call without arguments");
 
 const noHandler = command("no_handler").description(
-  "Test missing command handler"
+  "Test missing command handler",
 );
 
 // Say bye
@@ -53,19 +53,19 @@ app
     command("ok")
       .description("Print message to stdout from handler")
       .add(syncOk)
-      .add(asyncOk)
+      .add(asyncOk),
   )
   .add(
     command("nok")
       .description("Throw various errors")
       .add(syncNok)
-      .add(asyncNok)
+      .add(asyncNok),
   )
   .add(
     command("validation")
       .description("Validation errors")
       .add(syncValidation)
-      .add(asyncValidation)
+      .add(asyncValidation),
   )
   .add(noHandler)
   .runOrRepl()

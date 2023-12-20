@@ -11,7 +11,7 @@ const dice = program().add(
     .option("max", { default: 6 })
     .action(async (args) => {
       console.log(await rng([args.min, args.max]));
-    })
+    }),
 );
 
 dice.runOrRepl();

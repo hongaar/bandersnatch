@@ -32,7 +32,7 @@ test("program executes command", async () => {
   const app = program().add(
     command("test").action(() => {
       return "foo";
-    })
+    }),
   );
   await expect(app.run("test")).resolves.toBe("foo");
 });
@@ -42,7 +42,7 @@ test("program executes argv", async () => {
     const app = program().add(
       command("test").action(() => {
         return "foo";
-      })
+      }),
     );
     await expect(app.run()).resolves.toBe("foo");
   });
@@ -55,7 +55,7 @@ test("program passes parserConfiguration", async () => {
         .option("test-field")
         .action((args) => {
           return JSON.stringify(args);
-        })
+        }),
     );
     await expect(app.run()).resolves.toBe('{"testField":1}');
   });

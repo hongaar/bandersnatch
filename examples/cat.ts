@@ -6,8 +6,8 @@ const cat = command("cat")
   .argument("files", { variadic: true, default: [] })
   .action(({ files }) =>
     console.log(
-      files.reduce((str, file) => str + readFileSync(file, "utf8"), "")
-    )
+      files.reduce((str, file) => str + readFileSync(file, "utf8"), ""),
+    ),
   );
 
 program()

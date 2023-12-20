@@ -77,8 +77,8 @@ export class BaseArg {
     return typeof this.options.prompt === "string"
       ? this.options.prompt
       : this.options.description
-      ? this.options.description
-      : this.name;
+        ? this.options.description
+        : this.name;
   }
 
   /**

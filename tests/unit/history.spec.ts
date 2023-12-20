@@ -13,7 +13,7 @@ import {
 function tmpFile(
   name = "tmp_file",
   data = "",
-  encoding: BufferEncoding = "utf8"
+  encoding: BufferEncoding = "utf8",
 ) {
   return new Promise<string>((resolve, reject) => {
     const tempPath = path.join(os.tmpdir(), "bandersnatch-");
@@ -49,21 +49,24 @@ test("commands should end up in history file", async () => {
 test("history file should be truncated", async () => {
   const historyFile = await tmpFile(
     "history_file",
-    [...Array(HISTSIZE).keys()].join(os.EOL) + os.EOL
+    [...Array(HISTSIZE).keys()].join(os.EOL) + os.EOL,
   );
   const app = program({ historyFile }).add(command("test").action(() => {}));
 
   await app.run("test");
 
   expect(fs.readFileSync(historyFile, "utf8")).toBe(
-    [...Array(HISTSIZE).keys()].slice(1).join(os.EOL) + os.EOL + "test" + os.EOL
+    [...Array(HISTSIZE).keys()].slice(1).join(os.EOL) +
+      os.EOL +
+      "test" +
+      os.EOL,
   );
 });
 
 test("commands should not end up in history file when disabled", async () => {
   const historyFile = await tmpFile("history_file");
   const app = program({ historyFile: null }).add(
-    command("test").action(() => {})
+    command("test").action(() => {}),
   );
 
   await app.run("test");

@@ -47,7 +47,7 @@ function isCommand(obj: Argument | Option | Command): obj is Command {
  */
 export function command<T = {}>(
   command?: string | string[],
-  options: CommandOptions = {}
+  options: CommandOptions = {},
 ) {
   return new Command<T>(command, options);
 }
@@ -59,7 +59,7 @@ export class Command<T = {}> {
 
   constructor(
     private command?: string | string[],
-    private options: CommandOptions = {}
+    private options: CommandOptions = {},
   ) {}
 
   /**
@@ -85,7 +85,7 @@ export class Command<T = {}> {
    */
   public argument<K extends string, O extends ArgumentOptions>(
     name: K,
-    options?: O
+    options?: O,
   ) {
     this.add(new Argument(name, options));
 
@@ -100,7 +100,7 @@ export class Command<T = {}> {
    */
   public option<K extends string, O extends OptionOptions>(
     name: K,
-    options?: O
+    options?: O,
   ) {
     this.add(new Option(name, options));
 
@@ -249,12 +249,12 @@ export class Command<T = {}> {
       // Call toYargs on each argument and option to add it to the command.
       yargs = [...this.getArguments(), ...this.getOptions()].reduce(
         (yargs, arg) => arg.toYargs(yargs),
-        yargs
+        yargs,
       );
       // Call toYargs on each subcommand to add it to the command.
       yargs = this.getCommands().reduce(
         (yargs, cmd) => cmd.toYargs(yargs, commandRunner),
-        yargs
+        yargs,
       );
       return yargs as Argv<T>;
     };
@@ -267,7 +267,7 @@ export class Command<T = {}> {
     return async (argv: YargsArguments<T> & { __promise?: Promise<any> }) => {
       const prompterInstance = prompter(
         [...this.getArguments(), ...this.getOptions()],
-        argv
+        argv,
       );
 
       let promise = prompterInstance.prompt();

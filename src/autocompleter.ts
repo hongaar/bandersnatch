@@ -31,7 +31,7 @@ export class Autocompleter {
           if (argv.getYargsCompletions) {
             resolve(output ? output.split("\n") : []);
           }
-        }
+        },
       );
     });
   }

@@ -84,7 +84,7 @@ export class Repl {
    */
   private async completer(
     line: string,
-    cb: (err?: null | Error, result?: CompleterResult) => void
+    cb: (err?: null | Error, result?: CompleterResult) => void,
   ) {
     function addSpace(str: string) {
       return `${str} `;
@@ -92,10 +92,10 @@ export class Repl {
     const argv = parseArgsStringToArgv(line);
     const current = argv.slice(-1).toString();
     const completions = (await this.autocompleter.completions(argv)).map(
-      addSpace
+      addSpace,
     );
     let hits = completions.filter((completion) =>
-      completion.startsWith(current)
+      completion.startsWith(current),
     );
 
     // Show all completions if none found
@@ -109,7 +109,7 @@ export class Repl {
     line: string,
     context: Context,
     file: string,
-    cb: (err: Error | null, result: any) => void
+    cb: (err: Error | null, result: any) => void,
   ) {
     try {
       const result = await this.program.run(line.trim());

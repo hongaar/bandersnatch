@@ -142,7 +142,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
    * @private
    */
   public createYargsInstance(
-    overrideParserConfiguration?: Partial<ParserConfigurationOptions>
+    overrideParserConfiguration?: Partial<ParserConfigurationOptions>,
   ) {
     let yargs = createYargs();
 
@@ -272,7 +272,7 @@ export class Program extends (EventEmitter as new () => TypedEventEmitter<Events
       this.add(
         command("exit")
           .description("Exit the application")
-          .action(this.options.exit)
+          .action(this.options.exit),
       );
     }
 

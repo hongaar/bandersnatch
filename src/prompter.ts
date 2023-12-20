@@ -34,7 +34,10 @@ export function prompter<T = {}>(baseArgs: Array<Argument | Option>, args: T) {
 }
 
 export class Prompter<T = {}> {
-  constructor(private baseArgs: Array<Argument | Option>, private args: T) {}
+  constructor(
+    private baseArgs: Array<Argument | Option>,
+    private args: T,
+  ) {}
 
   public async prompt() {
     const questions = this.getQuestions(this.args);

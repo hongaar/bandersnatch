@@ -15,7 +15,7 @@ const app = program()
         args.color
           ? console.dir(json)
           : console.log(JSON.stringify(json, undefined, 4));
-      })
+      }),
   );
 
 app.runOrRepl();

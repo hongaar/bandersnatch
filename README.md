@@ -5,7 +5,7 @@ program()
   .default(
     command()
       .description("What is bandersnatch?")
-      .action(() => console.log(description))
+      .action(() => console.log(description)),
   )
   .run();
 ```
@@ -36,7 +36,7 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
   - [Installation](#installation)
   - [Simple example](#simple-example)
   - [Error handling](#error-handling)
-  - [REPL example](#repl-example)
+  - [REPL](#repl)
   - [Prompt](#prompt)
   - [TypeScript](#typescript)
 - [API](#api)
@@ -140,8 +140,8 @@ const cat = command("cat")
   .argument("files", { variadic: true })
   .action(({ files }) =>
     console.log(
-      files.reduce((str, file) => str + readFileSync(file, "utf8"), "")
-    )
+      files.reduce((str, file) => str + readFileSync(file, "utf8"), ""),
+    ),
   );
 
 program().default(cat).run();
@@ -201,7 +201,7 @@ const dice = program().add(
     .option("max", { default: 6 })
     .action(async (args) => {
       console.log(await rng([args.min, args.max]));
-    })
+    }),
 );
 
 dice.repl();
@@ -316,10 +316,10 @@ $ node pizza.js "The Netherlands" --name Joram --confirmed
 }
 ```
 
-⚠ _Please note that even though `--confirmed` was specified on the command line,
-it was still being prompted. This is a known issue. In this case, the default
-value was the same as the input, in which case bandersnatch doesn't know whether
-a value was explicitly passed in or inherited from the default value._
+⚠ _Please note that even though `--confirmed` was specified on the command
+line, it was still being prompted. This is a known issue. In this case, the
+default value was the same as the input, in which case bandersnatch doesn't know
+whether a value was explicitly passed in or inherited from the default value._
 
 ### TypeScript
 
@@ -563,7 +563,7 @@ program()
       .description("This command will always fail")
       .action(function () {
         throw new Error("Whoops");
-      })
+      }),
   )
   .runOrRepl()
   .catch((error) => {
@@ -624,7 +624,7 @@ export default program().default(
   command("echo")
     .description("Echo something in the terminal")
     .argument("words", { description: "Say some kind words", variadic: true })
-    .action(console.log)
+    .action(console.log),
 );
 ```
 

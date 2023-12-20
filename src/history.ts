@@ -36,7 +36,7 @@ export class History {
         fs.writeFileSync(
           this.path,
           historyContents.slice(historyContents.length - HISTSIZE).join(os.EOL),
-          "utf8"
+          "utf8",
         );
       }
     } catch (err) {}

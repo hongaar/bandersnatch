@@ -1,117 +1,132 @@
 ## [1.12.13](https://github.com/hongaar/bandersnatch/compare/v1.12.12...v1.12.13) (2023-11-27)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.31 to 17.0.32 ([#541](https://github.com/hongaar/bandersnatch/issues/541)) ([4f33cfb](https://github.com/hongaar/bandersnatch/commit/4f33cfbebfff9d69d9146c514b6a1ef5538a13af))
+- **deps:** bump @types/yargs from 17.0.31 to 17.0.32
+  ([#541](https://github.com/hongaar/bandersnatch/issues/541))
+  ([4f33cfb](https://github.com/hongaar/bandersnatch/commit/4f33cfbebfff9d69d9146c514b6a1ef5538a13af))
 
 ## [1.12.12](https://github.com/hongaar/bandersnatch/compare/v1.12.11...v1.12.12) (2023-11-13)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.29 to 17.0.31 ([#536](https://github.com/hongaar/bandersnatch/issues/536)) ([6fd5bd2](https://github.com/hongaar/bandersnatch/commit/6fd5bd24ffe82c0ffe456934c72e036112a7923e))
+- **deps:** bump @types/yargs from 17.0.29 to 17.0.31
+  ([#536](https://github.com/hongaar/bandersnatch/issues/536))
+  ([6fd5bd2](https://github.com/hongaar/bandersnatch/commit/6fd5bd24ffe82c0ffe456934c72e036112a7923e))
 
 ## [1.12.11](https://github.com/hongaar/bandersnatch/compare/v1.12.10...v1.12.11) (2023-10-23)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.28 to 17.0.29 ([#522](https://github.com/hongaar/bandersnatch/issues/522)) ([29937e9](https://github.com/hongaar/bandersnatch/commit/29937e9819aeb67193e545b1ec398c3764bfdb12))
+- **deps:** bump @types/yargs from 17.0.28 to 17.0.29
+  ([#522](https://github.com/hongaar/bandersnatch/issues/522))
+  ([29937e9](https://github.com/hongaar/bandersnatch/commit/29937e9819aeb67193e545b1ec398c3764bfdb12))
 
 ## [1.12.10](https://github.com/hongaar/bandersnatch/compare/v1.12.9...v1.12.10) (2023-10-17)
 
-
 ### Bug Fixes
 
-* **deps:** bump @babel/traverse from 7.17.10 to 7.23.2 ([#521](https://github.com/hongaar/bandersnatch/issues/521)) ([84cd98c](https://github.com/hongaar/bandersnatch/commit/84cd98c25697b52437ef244434dc1496a40a77dc))
+- **deps:** bump @babel/traverse from 7.17.10 to 7.23.2
+  ([#521](https://github.com/hongaar/bandersnatch/issues/521))
+  ([84cd98c](https://github.com/hongaar/bandersnatch/commit/84cd98c25697b52437ef244434dc1496a40a77dc))
 
 ## [1.12.9](https://github.com/hongaar/bandersnatch/compare/v1.12.8...v1.12.9) (2023-10-09)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.26 to 17.0.28 ([#517](https://github.com/hongaar/bandersnatch/issues/517)) ([66abe50](https://github.com/hongaar/bandersnatch/commit/66abe501c8b6711ddd9137a7cc0a6c7fbb06bc17))
+- **deps:** bump @types/yargs from 17.0.26 to 17.0.28
+  ([#517](https://github.com/hongaar/bandersnatch/issues/517))
+  ([66abe50](https://github.com/hongaar/bandersnatch/commit/66abe501c8b6711ddd9137a7cc0a6c7fbb06bc17))
 
 ## [1.12.8](https://github.com/hongaar/bandersnatch/compare/v1.12.7...v1.12.8) (2023-10-02)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.25 to 17.0.26 ([#515](https://github.com/hongaar/bandersnatch/issues/515)) ([6ce1a3f](https://github.com/hongaar/bandersnatch/commit/6ce1a3fbc54ba07b6327da623ce5a828c53098f7))
+- **deps:** bump @types/yargs from 17.0.25 to 17.0.26
+  ([#515](https://github.com/hongaar/bandersnatch/issues/515))
+  ([6ce1a3f](https://github.com/hongaar/bandersnatch/commit/6ce1a3fbc54ba07b6327da623ce5a828c53098f7))
 
 ## [1.12.7](https://github.com/hongaar/bandersnatch/compare/v1.12.6...v1.12.7) (2023-09-25)
 
-
 ### Bug Fixes
 
-* **deps:** bump @types/yargs from 17.0.24 to 17.0.25 ([#514](https://github.com/hongaar/bandersnatch/issues/514)) ([9c76f43](https://github.com/hongaar/bandersnatch/commit/9c76f43050ce5648784541933e70083345c6b550))
+- **deps:** bump @types/yargs from 17.0.24 to 17.0.25
+  ([#514](https://github.com/hongaar/bandersnatch/issues/514))
+  ([9c76f43](https://github.com/hongaar/bandersnatch/commit/9c76f43050ce5648784541933e70083345c6b550))
 
 ## [1.12.6](https://github.com/hongaar/bandersnatch/compare/v1.12.5...v1.12.6) (2023-07-31)
 
-
 ### Bug Fixes
 
-* **deps:** bump enquirer from 2.3.6 to 2.4.1 ([#488](https://github.com/hongaar/bandersnatch/issues/488)) ([417829e](https://github.com/hongaar/bandersnatch/commit/417829ed38b17b11c7e3b075440c8c4898968261))
+- **deps:** bump enquirer from 2.3.6 to 2.4.1
+  ([#488](https://github.com/hongaar/bandersnatch/issues/488))
+  ([417829e](https://github.com/hongaar/bandersnatch/commit/417829ed38b17b11c7e3b075440c8c4898968261))
 
 ## [1.12.5](https://github.com/hongaar/bandersnatch/compare/v1.12.4...v1.12.5) (2023-07-11)
 
-
 ### Bug Fixes
 
-* **deps:** bump semver from 5.7.1 to 5.7.2 ([#482](https://github.com/hongaar/bandersnatch/issues/482)) ([1ee1766](https://github.com/hongaar/bandersnatch/commit/1ee17661df069db6997904e007ee4a602832d21c))
+- **deps:** bump semver from 5.7.1 to 5.7.2
+  ([#482](https://github.com/hongaar/bandersnatch/issues/482))
+  ([1ee1766](https://github.com/hongaar/bandersnatch/commit/1ee17661df069db6997904e007ee4a602832d21c))
 
 ## [1.12.4](https://github.com/hongaar/bandersnatch/compare/v1.12.3...v1.12.4) (2023-05-08)
 
-
 ### Bug Fixes
 
-* **deps:** bump string-argv from 0.3.1 to 0.3.2 ([#456](https://github.com/hongaar/bandersnatch/issues/456)) ([03d9d0a](https://github.com/hongaar/bandersnatch/commit/03d9d0ad7a65c7ef184b95cd4e3911411fb3e0ad))
+- **deps:** bump string-argv from 0.3.1 to 0.3.2
+  ([#456](https://github.com/hongaar/bandersnatch/issues/456))
+  ([03d9d0a](https://github.com/hongaar/bandersnatch/commit/03d9d0ad7a65c7ef184b95cd4e3911411fb3e0ad))
 
 ## [1.12.3](https://github.com/hongaar/bandersnatch/compare/v1.12.2...v1.12.3) (2023-05-02)
 
-
 ### Bug Fixes
 
-* **deps:** bump yargs from 17.7.1 to 17.7.2 ([#451](https://github.com/hongaar/bandersnatch/issues/451)) ([e5286df](https://github.com/hongaar/bandersnatch/commit/e5286df1b340190059118844f114c693607932c2))
+- **deps:** bump yargs from 17.7.1 to 17.7.2
+  ([#451](https://github.com/hongaar/bandersnatch/issues/451))
+  ([e5286df](https://github.com/hongaar/bandersnatch/commit/e5286df1b340190059118844f114c693607932c2))
 
 ## [1.12.2](https://github.com/hongaar/bandersnatch/compare/v1.12.1...v1.12.2) (2023-04-30)
 
-
 ### Bug Fixes
 
-* **deps:** bump yaml from 2.2.1 to 2.2.2 ([#448](https://github.com/hongaar/bandersnatch/issues/448)) ([6628bf9](https://github.com/hongaar/bandersnatch/commit/6628bf9c8088d052ea721c38adda150af5072170))
+- **deps:** bump yaml from 2.2.1 to 2.2.2
+  ([#448](https://github.com/hongaar/bandersnatch/issues/448))
+  ([6628bf9](https://github.com/hongaar/bandersnatch/commit/6628bf9c8088d052ea721c38adda150af5072170))
 
 ## [1.12.1](https://github.com/hongaar/bandersnatch/compare/v1.12.0...v1.12.1) (2023-04-04)
 
-
 ### Bug Fixes
 
-* release artefacts ([#437](https://github.com/hongaar/bandersnatch/issues/437)) ([22e927a](https://github.com/hongaar/bandersnatch/commit/22e927ab985b51969f3d95404922da93e354c912))
+- release artefacts ([#437](https://github.com/hongaar/bandersnatch/issues/437))
+  ([22e927a](https://github.com/hongaar/bandersnatch/commit/22e927ab985b51969f3d95404922da93e354c912))
 
 # [1.12.0](https://github.com/hongaar/bandersnatch/compare/v1.11.2...v1.12.0) (2023-04-03)
 
-
 ### Bug Fixes
 
-* **deps:** bump yargs and @types/yargs ([#427](https://github.com/hongaar/bandersnatch/issues/427)) ([cf636e1](https://github.com/hongaar/bandersnatch/commit/cf636e19958681f7a23df4e08765e3a5f54c5d7a))
-
+- **deps:** bump yargs and @types/yargs
+  ([#427](https://github.com/hongaar/bandersnatch/issues/427))
+  ([cf636e1](https://github.com/hongaar/bandersnatch/commit/cf636e19958681f7a23df4e08765e3a5f54c5d7a))
 
 ### Features
 
-* add requires and excludes ([#434](https://github.com/hongaar/bandersnatch/issues/434)) ([24982cb](https://github.com/hongaar/bandersnatch/commit/24982cb92f0f55336950a6a0dd9cb4ea21f92f27))
+- add requires and excludes
+  ([#434](https://github.com/hongaar/bandersnatch/issues/434))
+  ([24982cb](https://github.com/hongaar/bandersnatch/commit/24982cb92f0f55336950a6a0dd9cb4ea21f92f27))
 
 ## [1.11.2](https://github.com/hongaar/bandersnatch/compare/v1.11.1...v1.11.2) (2023-04-03)
 
-
 ### Bug Fixes
 
-* **chore:** moker ([#423](https://github.com/hongaar/bandersnatch/issues/423)) ([a42dcc0](https://github.com/hongaar/bandersnatch/commit/a42dcc0e395d0d0f4790183b17cbf6769c3ed20d))
-
+- **chore:** moker ([#423](https://github.com/hongaar/bandersnatch/issues/423))
+  ([a42dcc0](https://github.com/hongaar/bandersnatch/commit/a42dcc0e395d0d0f4790183b17cbf6769c3ed20d))
 
 ### Reverts
 
-* bump mock-argv from 2.0.8 to 3.0.0 ([#432](https://github.com/hongaar/bandersnatch/issues/432)) ([c41ca63](https://github.com/hongaar/bandersnatch/commit/c41ca63b2622c1c94ba7990d45a96f8fa7d50b53))
+- bump mock-argv from 2.0.8 to 3.0.0
+  ([#432](https://github.com/hongaar/bandersnatch/issues/432))
+  ([c41ca63](https://github.com/hongaar/bandersnatch/commit/c41ca63b2622c1c94ba7990d45a96f8fa7d50b53))
 
 ## [1.11.1](https://github.com/hongaar/bandersnatch/compare/v1.11.0...v1.11.1) (2022-11-17)
 

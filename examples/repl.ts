@@ -31,7 +31,7 @@ app
         url = `${protocol}${tls && "s"}://${host}:${port}`;
         console.log(`Connecting to ${url} (timeout set to ${timeout}s)...`);
         app.options.prompt = `${host} > `;
-      })
+      }),
   )
   .add(
     command("disconnect")
@@ -44,7 +44,7 @@ app
         console.log(`Disconnecting from ${url}...`);
         app.options.prompt = "> ";
         url = null;
-      })
+      }),
   );
 
 app.runOrRepl();

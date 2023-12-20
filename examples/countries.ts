@@ -2294,7 +2294,7 @@ function countryDataByAlpha2Code(code: string) {
 
 function countryDataByName(name: string) {
   const entry = Object.entries(data).filter(
-    ([code, data]) => data.name === name
+    ([code, data]) => data.name === name,
   );
   if (entry.length === 0) {
     throw new CountryNotFound(name);
