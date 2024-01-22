@@ -2303,7 +2303,7 @@ __metadata:
     string-argv: ^0.3.1
     ts-jest: 29.1.2
     ts-node: 10.9.2
-    tsd: 0.30.3
+    tsd: 0.30.4
     typed-emitter: ^2.1.0
     typescript: 5.3.3
     yargs: ^17.5.1
@@ -8615,9 +8615,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsd@npm:0.30.3":
-  version: 0.30.3
-  resolution: "tsd@npm:0.30.3"
+"tsd@npm:0.30.4":
+  version: 0.30.4
+  resolution: "tsd@npm:0.30.4"
   dependencies:
     "@tsd/typescript": ~5.3.3
     eslint-formatter-pretty: ^4.1.0
@@ -8628,7 +8628,7 @@ __metadata:
     read-pkg-up: ^7.0.0
   bin:
     tsd: dist/cli.js
-  checksum: 7dd8db3f06b210bd4581c4fa3611d9334482f0d8eff4310d7a7c875fe78a44e9db2e490d062e46f0ca5db1b8f0315c135082cc6ca758f50072caa72eec0a54d0
+  checksum: bf6c060797a0f4a6ed77c5198c388a592b4c46f906804db61ed13e476aed58887e6627ea8e36c13fbb99fe09c996c72e860619a3c3a0147f0689751131b218dd
   languageName: node
   linkType: hard
 
