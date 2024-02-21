@@ -1,3 +1,10 @@
+## [1.12.14](https://github.com/hongaar/bandersnatch/compare/v1.12.13...v1.12.14) (2024-02-21)
+
+
+### Bug Fixes
+
+* **deps:** bump ip from 1.1.8 to 1.1.9 ([#579](https://github.com/hongaar/bandersnatch/issues/579)) ([c5c103e](https://github.com/hongaar/bandersnatch/commit/c5c103e3e3f693e444d5f30727dc21769007ab60))
+
 ## [1.12.13](https://github.com/hongaar/bandersnatch/compare/v1.12.12...v1.12.13) (2023-11-27)
 
 ### Bug Fixes
