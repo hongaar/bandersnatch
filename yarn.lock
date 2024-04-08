@@ -2359,7 +2359,7 @@ __metadata:
     lint-staged: 15.2.2
     mock-argv: 2.0.8
     prettier: 3.2.5
-    semantic-release: 23.0.6
+    semantic-release: 23.0.7
     semantic-release-yarn: 3.0.2
     string-argv: ^0.3.1
     ts-jest: 29.1.2
@@ -3005,6 +3005,13 @@ __metadata:
   bin:
     convert-extension: build/es5/command.cjs
   checksum: 23cd2e51d2fe272692f2b91ac622627b98cb974b8b52d1c52eb651c6487d1ce3a67ed8af69a3e06a572ad60f03fef7b8b69b495b4dbade15b26ca2277a9c0eb6
+  languageName: node
+  linkType: hard
+
+"convert-hrtime@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "convert-hrtime@npm:5.0.0"
+  checksum: 5245ad1ac6dd57b2d87624ae0eeac1d2a74812a6631208c09368bef787a28e7dbfa736cddaa9c8a0c425cb240437ea506afec7b9684ff617004d06a551f26c87
   languageName: node
   linkType: hard
 
@@ -3726,12 +3733,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-versions@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "find-versions@npm:5.1.0"
+"find-versions@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "find-versions@npm:6.0.0"
   dependencies:
     semver-regex: ^4.0.5
-  checksum: 680bdb0081f631f7bfb6f0f8edcfa0b74ab8cabc82097a4527a37b0d042aabc56685bf459ff27991eab0baddc04eb8e3bba8a2869f5004ecf7cdd2779b6e51de
+    super-regex: ^1.0.0
+  checksum: d622e711bd17099015506bafd18b13e51fcc54f80ad073cf819ce4598d6b485774f55708ca356235770bed0148ae55a7daf3ef6deb72730c5b1e2f32b432fed5
   languageName: node
   linkType: hard
 
@@ -3830,6 +3838,13 @@ __metadata:
   version: 1.1.1
   resolution: "function-bind@npm:1.1.1"
   checksum: b32fbaebb3f8ec4969f033073b43f5c8befbb58f1a79e12f1d7490358150359ebd92f49e72ff0144f65f2c48ea2a605bff2d07965f548f6474fd8efd95bf361a
+  languageName: node
+  linkType: hard
+
+"function-timeout@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "function-timeout@npm:1.0.1"
+  checksum: 7933ff6590018364482e9db28952dae8f24b6af69ed88b5f2cb34da0a5669c27991fdf6bc89acaea04bc0a9b60904735413d0d609ce0544ecbc9ea4363cdcbc7
   languageName: node
   linkType: hard
 
@@ -7914,9 +7929,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:23.0.6":
-  version: 23.0.6
-  resolution: "semantic-release@npm:23.0.6"
+"semantic-release@npm:23.0.7":
+  version: 23.0.7
+  resolution: "semantic-release@npm:23.0.7"
   dependencies:
     "@semantic-release/commit-analyzer": ^12.0.0
     "@semantic-release/error": ^4.0.0
@@ -7929,7 +7944,7 @@ __metadata:
     env-ci: ^11.0.0
     execa: ^8.0.0
     figures: ^6.0.0
-    find-versions: ^5.1.0
+    find-versions: ^6.0.0
     get-stream: ^6.0.0
     git-log-parser: ^1.2.0
     hook-std: ^3.0.0
@@ -7949,7 +7964,7 @@ __metadata:
     yargs: ^17.5.1
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: f1232ffaeac4c37abde17affa9a981a014f78cab666073adaa41a58eb947ad6b1a508f03412998ce0ca3ffb619ccb26091420f983ea339804766c873cefadd63
+  checksum: b466be299b6931ad8dd58968200520c87a2756376938cb032ebd546147b20cdbc995e3dafada97a1846cc5a692a917eb2c0107e9ddcd41b8e4a0d81533af1036
   languageName: node
   linkType: hard
 
@@ -8473,6 +8488,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"super-regex@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "super-regex@npm:1.0.0"
+  dependencies:
+    function-timeout: ^1.0.1
+    time-span: ^5.1.0
+  checksum: d99e90ee0950356b86b01ad327605080e72ee0712c7e5c66335e7e4e3bd2919206caea929fa2d5ca97c2afc1d1ab91466d09eadcf1101196edcfb94bebfea388
+  languageName: node
+  linkType: hard
+
 "supports-color@npm:^5.3.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
@@ -8638,6 +8663,15 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: a38c3e059853c494af95d50c072b83f8b676a9ba2818dcc5b108ef252230735c54e0185437618596c790bbba8fcdaef5b290405981ffa09dce67b1f1bf190cbd
+  languageName: node
+  linkType: hard
+
+"time-span@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "time-span@npm:5.1.0"
+  dependencies:
+    convert-hrtime: ^5.0.0
+  checksum: 949c45fcb873f2d26fda3db1b7f7161ce65206f6e94a7c6c9bf3a5a07a373570dba57ca5c1f816efa6326adbc3f9e93bb6ef19a7a220f4259a917e1192d49418
   languageName: node
   linkType: hard
 
