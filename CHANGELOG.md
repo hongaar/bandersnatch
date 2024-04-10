@@ -1,3 +1,10 @@
+## [1.12.15](https://github.com/hongaar/bandersnatch/compare/v1.12.14...v1.12.15) (2024-04-10)
+
+
+### Bug Fixes
+
+* **deps:** bump tar from 6.1.11 to 6.2.1 ([#596](https://github.com/hongaar/bandersnatch/issues/596)) ([bdb1c06](https://github.com/hongaar/bandersnatch/commit/bdb1c06ac2e0d0d2c9140b9ee70828c521ded5df))
+
 ## [1.12.14](https://github.com/hongaar/bandersnatch/compare/v1.12.13...v1.12.14) (2024-02-21)
 
 
