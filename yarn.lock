@@ -2359,7 +2359,7 @@ __metadata:
     lint-staged: 15.2.2
     mock-argv: 2.0.8
     prettier: 3.2.5
-    semantic-release: 23.0.7
+    semantic-release: 23.0.8
     semantic-release-yarn: 3.0.2
     string-argv: ^0.3.1
     ts-jest: 29.1.2
@@ -7586,6 +7586,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"read-package-up@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "read-package-up@npm:11.0.0"
+  dependencies:
+    find-up-simple: ^1.0.0
+    read-pkg: ^9.0.0
+    type-fest: ^4.6.0
+  checksum: 535b7554d47fae5fb5c2e7aceebd48b5de4142cdfe7b21f942fa9a0f56db03d3b53cce298e19438e1149292279c285e6ba6722eca741d590fd242519c4bdbc17
+  languageName: node
+  linkType: hard
+
 "read-pkg-up@npm:^11.0.0":
   version: 11.0.0
   resolution: "read-pkg-up@npm:11.0.0"
@@ -7929,9 +7940,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semantic-release@npm:23.0.7":
-  version: 23.0.7
-  resolution: "semantic-release@npm:23.0.7"
+"semantic-release@npm:23.0.8":
+  version: 23.0.8
+  resolution: "semantic-release@npm:23.0.8"
   dependencies:
     "@semantic-release/commit-analyzer": ^12.0.0
     "@semantic-release/error": ^4.0.0
@@ -7956,7 +7967,7 @@ __metadata:
     micromatch: ^4.0.2
     p-each-series: ^3.0.0
     p-reduce: ^3.0.0
-    read-pkg-up: ^11.0.0
+    read-package-up: ^11.0.0
     resolve-from: ^5.0.0
     semver: ^7.3.2
     semver-diff: ^4.0.0
@@ -7964,7 +7975,7 @@ __metadata:
     yargs: ^17.5.1
   bin:
     semantic-release: bin/semantic-release.js
-  checksum: b466be299b6931ad8dd58968200520c87a2756376938cb032ebd546147b20cdbc995e3dafada97a1846cc5a692a917eb2c0107e9ddcd41b8e4a0d81533af1036
+  checksum: b3207a08d4d5d6c63240fbcd9386d24a985a985b28ea3ca52833b55564e1df560489c650bc2cdab3c06dbbe2f22e75224c60f3c3182520eaed37117a9ff9391c
   languageName: node
   linkType: hard
 
