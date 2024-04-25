@@ -359,8 +359,6 @@ type Args = {
 };
 ```
 
----
-
 > [!TIP]
 > More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/main/examples)
 > directory.
