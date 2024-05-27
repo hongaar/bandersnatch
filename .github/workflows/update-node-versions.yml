@@ -18,4 +18,4 @@ jobs:
             Automated changes by [update-node-versions](https://github.com/hongaar/update-node-versions) GitHub action
 
             BREAKING CHANGE: This updates the supported node.js versions
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_TOKEN }}
