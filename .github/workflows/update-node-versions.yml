@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "30 7 * * 0"
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   update-node-versions:
     runs-on: ubuntu-latest
@@ -18,4 +22,3 @@ jobs:
             Automated changes by [update-node-versions](https://github.com/hongaar/update-node-versions) GitHub action
 
             BREAKING CHANGE: This updates the supported node.js versions
-          token: ${{ secrets.GH_TOKEN }}
