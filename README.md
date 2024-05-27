@@ -79,9 +79,10 @@ Simple and intuitive yet powerful and versatile framework for Node.js CLI progra
 yarn|npm add bandersnatch
 ```
 
-> [!NOTE]
-> We recommend using an _Active LTS_ or _Maintenance LTS_ [Node.js version](https://nodejs.org/en/about/releases/).
-> _Current_ versions are tested, but not guaranteed to work.
+> [!NOTE]  
+> We recommend using an _Active LTS_ or _Maintenance LTS_ Node.js
+> [version](https://nodejs.org/en/about/releases/). _Current_ versions are
+> tested, but not guaranteed to work.
 
 ### Simple example
 
@@ -316,10 +317,10 @@ $ node pizza.js "The Netherlands" --name Joram --confirmed
 }
 ```
 
-> [!WARNING]
-> Please note that even though `--confirmed` was specified on the command
-> line, it was still being prompted. This is a known issue. In this case, the
-> default value was the same as the input, in which case bandersnatch doesn't know
+> [!WARNING]  
+> Please note that even though `--confirmed` was specified on the command line,
+> it was still being prompted. This is a known issue. In this case, the default
+> value was the same as the input, in which case bandersnatch doesn't know
 > whether a value was explicitly passed in or inherited from the default value.
 
 ### TypeScript
@@ -359,8 +360,9 @@ type Args = {
 };
 ```
 
-> [!TIP]
-> More examples in the [examples](https://github.com/hongaar/bandersnatch/tree/main/examples)
+> [!TIP]  
+> More examples in the
+> [examples](https://github.com/hongaar/bandersnatch/tree/main/examples)
 > directory.
 
 ## API
@@ -596,8 +598,9 @@ provides [everything you need](https://nodejs.org/api/console.html).
 There are many options to bundle your application for distribution. We'll
 discuss a common pattern.
 
-> [!TIP]
-> An example can be found in the [examples/bundle](https://github.com/hongaar/bandersnatch/tree/main/examples/bundle)
+> [!TIP]  
+> An example can be found in the
+> [examples/bundle](https://github.com/hongaar/bandersnatch/tree/main/examples/bundle)
 > directory.
 
 Init a `package.json` if needed:
@@ -739,7 +742,7 @@ To create a binary (your app with Node.js bundled), add this script to
  }
 ```
 
-> [!TIP]
+> [!TIP]  
 > Omit `-t host` to create binaries for all platforms.
 
 Run `yarn bundle` and then `./echo --help`. 💪

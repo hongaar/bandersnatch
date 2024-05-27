@@ -1,12 +1,15 @@
 name: release
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
   release:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
