@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/hongaar/bandersnatch/compare/v1.12.15...v2.0.0) (2024-05-27)
+
+
+* feat!: update node.js versions (#608) ([d94e449](https://github.com/hongaar/bandersnatch/commit/d94e449006296ebd7eade66a99edf20882bbb8c1)), closes [#608](https://github.com/hongaar/bandersnatch/issues/608)
+
+
+### BREAKING CHANGES
+
+* This updates the minimum supported node.js version to 18
+
 ## [1.12.15](https://github.com/hongaar/bandersnatch/compare/v1.12.14...v1.12.15) (2024-04-10)
 
 ### Bug Fixes
