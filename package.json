@@ -63,7 +63,7 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/jest": "29.5.12",
-    "@types/node": "20.12.7",
+    "@types/node": "20.14.8",
     "convert-extension": "0.3.0",
     "doctoc": "2.2.1",
     "husky": "9.0.11",
