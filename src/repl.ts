@@ -42,8 +42,9 @@ export class Repl {
    * @private
    */
   public async start() {
+    const { prompt } = this.program.options;
     this.server = nodeRepl.start({
-      prompt: this.program.options.prompt,
+      prompt: typeof prompt === "function" ? prompt() : prompt,
       eval: this.eval.bind(this),
       completer: this.completer.bind(this),
       ignoreUndefined: true,
