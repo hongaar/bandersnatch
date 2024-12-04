@@ -1,5 +1,9 @@
 import { command, program } from "../src/index.js";
 
+function printArgs<T>(args: T) {
+  console.log("Args are", args);
+}
+
 /**
  * Keep in mind that argument/option types are not validated at runtime.
  * For example, when providing a default value with type boolean, it can be set
@@ -15,9 +19,7 @@ const string = command("string")
     default: "foo",
     description: "String option with default",
   })
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const number = command("number")
   .argument("arg1", { type: "number", description: "Required number argument" })
@@ -31,11 +33,9 @@ const number = command("number")
     variadic: true,
     description: "Variadic number argument",
   })
-  .option("opt1", { type: "number", description: "number option" })
+  .option("opt1", { type: "number", description: "Number option" })
   .option("opt2", { default: 100, description: "Number option with default" })
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const boolean = command("boolean")
   .argument("arg1", {
@@ -52,15 +52,12 @@ const boolean = command("boolean")
     variadic: true,
     description: "Variadic boolean argument",
   })
-  .option("opt1", { type: "boolean", description: "number option" })
+  .option("opt1", { type: "boolean", description: "Boolean option" })
   .option("opt2", {
-    type: "boolean",
     default: false,
-    description: "Number option with default",
+    description: "Boolean option with default",
   })
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const choices = command("choices")
   .argument("arg", {
@@ -72,9 +69,7 @@ const choices = command("choices")
     choices: ["option1", "option2"] as const,
     default: "option3",
   })
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const defaultValues = command("default")
   .argument("arg", {
@@ -83,9 +78,7 @@ const defaultValues = command("default")
     optional: true,
   })
   .option("opt", { description: "Default value", default: true })
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const constraints = command("constraint")
   .argument("arg", {
@@ -110,9 +103,7 @@ const constraints = command("constraint")
     requires: "optionalArg",
   })
 
-  .action((args) => {
-    console.log("Args are", args);
-  });
+  .action(printArgs);
 
 const app = program()
   .description("All argument and option types")
