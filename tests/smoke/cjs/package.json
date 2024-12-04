@@ -4,6 +4,6 @@
     "test": "node index.cjs"
   },
   "dependencies": {
-    "bandersnatch": "^1.9.2"
+    "bandersnatch": "^2.0.0"
   }
 }
