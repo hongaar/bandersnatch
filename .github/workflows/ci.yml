@@ -15,6 +15,7 @@ jobs:
           - 18
           - 20
           - 22
+          - 23
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,7 +36,10 @@ jobs:
     strategy:
       matrix:
         node-version:
+          - 18
+          - 20
           - 22
+          - 23
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
