@@ -5,6 +5,6 @@
     "test": "node index.mjs"
   },
   "dependencies": {
-    "bandersnatch": "^1.9.2"
+    "bandersnatch": "^2.0.1"
   }
 }
