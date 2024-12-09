@@ -47,7 +47,7 @@ jobs:
         with:
           name: dist-${{ matrix.node-version }}
           path: dist
-      - uses: paambaati/codeclimate-action@v6.0.0
+      - uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: e1a2f8ecd90c13810c302d9cdfb4a26a5b79666e899c4f353e558416c168da0d
         with:
