@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/hongaar/bandersnatch/compare/v2.0.0...v2.0.1) (2024-12-09)
+
+
+### Bug Fixes
+
+* **deps:** bump the npm_and_yarn group with 2 updates ([#633](https://github.com/hongaar/bandersnatch/issues/633)) ([7d06780](https://github.com/hongaar/bandersnatch/commit/7d06780ddbab99007a26e621ec34b56f5191341f))
+
 # [2.0.0](https://github.com/hongaar/bandersnatch/compare/v1.12.15...v2.0.0) (2024-05-27)
 
 - feat!: update node.js versions (#608)
