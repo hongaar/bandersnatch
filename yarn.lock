@@ -2357,7 +2357,7 @@ __metadata:
     jest: 29.7.0
     leasot: 13.3.0
     lint-staged: 15.2.2
-    mock-argv: 2.0.8
+    mock-argv: 4.0.0
     prettier: 3.2.5
     semantic-release: 23.0.8
     semantic-release-yarn: 3.0.2
@@ -6452,10 +6452,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mock-argv@npm:2.0.8":
-  version: 2.0.8
-  resolution: "mock-argv@npm:2.0.8"
-  checksum: 013a5792e4c536407a20581776709b69bc19cd0d6c62418c975f714d70fe4c6d7b6b281f9e60e60f17449ff12c6ede2a9b55a29799ca5e2d5218e4e077857895
+"mock-argv@npm:4.0.0":
+  version: 4.0.0
+  resolution: "mock-argv@npm:4.0.0"
+  checksum: eea7bdef322b042c30068587a8b6b0c91091095bc5340614b13734b785213d73dbf9d4afd5fb6e795ef7f6767ecfebdc96a5bb28a9ffbf88f490a8ab6d59344f
   languageName: node
   linkType: hard
 
