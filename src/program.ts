@@ -31,7 +31,7 @@ type ProgramOptions = {
    *
    * Defaults to `> `.
    */
-  prompt?: string;
+  prompt?: string | (() => string);
 
   /**
    * Whether or not to add a global help command that displays an overview of
