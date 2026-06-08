@@ -15,6 +15,10 @@
     "option"
   ],
   "repository": "github:hongaar/bandersnatch",
+  "homepage": "https://github.com/hongaar/bandersnatch#readme",
+  "bugs": {
+    "url": "https://github.com/hongaar/bandersnatch/issues"
+  },
   "license": "MIT",
   "author": "Joram van den Boezem <joram@vandenboezem.nl>",
   "sideEffects": false,
